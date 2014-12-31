@@ -19,7 +19,6 @@ $( document ).ready(function() {
         $('.chatBoxContainer').animate({ height: 30}, 1000)
     })
 
-    //$('.content_box').perfectScrollbar()
     //$('.chat_box_text').perfectScrollbar()
     
     ////////////////////////////////////////////////////////////////////////////////
@@ -44,11 +43,16 @@ $( document ).ready(function() {
     $('.topNavigationEntry').click(function(){
         var site = $(this).attr('id')
         switch(site){
-            case 'profileSettings':
-                
+            case 'profileSettings':                
                 $('.content_box').load('/forms/editProfile.html', function(){
                     loadProfile()
                 })
+                break
+            case 'browseChannels':                
+                break
+            case 'browseRooms':                
+                break
+            case 'logout':                
                 break
         }   
         
@@ -120,7 +124,7 @@ $( document ).ready(function() {
     })
     
     $('.content_box').on('click', '.episode_download', function(){
-        window.location.href = $(this).attr('id');
+        window.location.href = $(this).attr('id')
     })
          
     
@@ -283,15 +287,12 @@ $( document ).ready(function() {
     })    
     
     $('.chat_box_input').keyup(function(e) {
-        if(e.keyCode == 13) {
-            
+        if(e.keyCode == 13) {            
             var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
             var message = { timestamp: date, message: $(this).val(), color: '00ff00' }
-            socket.emit('chatmessage', message)
-            
-            $(this).val('')
-            
+            socket.emit('chatmessage', message)            
+            $(this).val('')            
         }
-    });
+    })
     
 })

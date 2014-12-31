@@ -75,15 +75,13 @@ root.on('connection', function(socket){
     var username = require('./routes').username
     socket.username = username
     userlist[socket.username] = socket.username
-    
-    
+        
     console.log('connected')
     
-    // Temp
+    // Temp Auto Join
     socket.join('alexandria')
     socket.join('bitcoin')
-        
-        
+                
     socket.emit('setUserlist', userlist)    
  
     socket.on('chatMessage', function (msg) {
