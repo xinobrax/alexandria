@@ -13,13 +13,14 @@ var mongoose = require('mongoose')
 var bodyParser = require('body-parser')
 var session = require('express-session')
 
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Basic Setup
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-
+// Alexandria Modules
 var feedParser = require('./modules/feedParser.js')
 var formatChatMessage = require('./modules/formatChatMessage.js')
 
@@ -30,10 +31,11 @@ var Channel = require('./models/channel')
 var Episode = require('./models/episode')
 var Message = require('./models/message')
 
-
+// Globals
 var username = ''
 var userlist = {}
 
+// Connect to Database
 mongoose.connect('mongodb://localhost/alexandria_dev')
 
 // App Use
@@ -48,7 +50,6 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-
 // App Set
 app.set('view engine', 'ejs')
 
@@ -56,8 +57,6 @@ app.set('view engine', 'ejs')
 passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
-
-
 
 // Routes
 require('./routes')(app)
@@ -70,7 +69,6 @@ require('./routes')(app)
 ////////////////////////////////////////////////////////////////////////////////
 
 root = io.of('/root')
-
 
 root.on('connection', function(socket){
     
@@ -98,8 +96,6 @@ root.on('connection', function(socket){
         
         msg.username = socket.username
     
-        
-        
         newMessage = new Message(msg)
         newMessage.save(function(err, newMessage){
             if(err) console.error(err)
@@ -119,8 +115,7 @@ root.on('connection', function(socket){
             if(err) console.error(err)
             socket.emit('getRoomHistory', roomHistory) 
         })    
-    })     
-    
+    })         
     
     socket.on('disconnect', function(){
         console.log('User disconnected')
@@ -181,9 +176,6 @@ settingsChannel.on('connection', function(socket){
         })           
         console.log(user)
     })
-    
-    
-    
     
     socket.on('disconnect', function(){
         //console.log('User disconnected')        
