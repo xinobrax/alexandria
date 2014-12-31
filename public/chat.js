@@ -130,83 +130,6 @@ $( document ).ready(function() {
     
     ////////////////////////////////////////////////////////////////////////////////
     //
-    // Socket > /root
-    //
-    //////////////////////////////////////////////////////////////////////////////// 
-    
-    /*
-    var socket = io('/root')
-    $('#messages').perfectScrollbar()
-    
-    socket.on('getUsername', function(msg){        
-        socket.emit('getUsername', $('#user').val())
-    })     
-    
-    socket.on('setUserlist', function(userlist){              
-        var list = ''
-        for(username in userlist){            
-            list += '<li class=\'navigation_channel\' ><img src=\'http://cropfm.at/cropfm_icons/cropfm_rss_channel_logo.jpg\' /><p>' + userlist[username] + '</p></li>'  
-            //list += userlist[username]
-        }   
-        $('.left_space').html(list).append(function(){
-            $('.left_space').children('.navigation_channel').show()
-        })        
-    })  
-    
-
-    $('button.send').click(function(){        
-        var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
-        var message = { timestamp: date, user: $('#user').val(), message: $('#field').val(), color: '00ff00' }
-        
-        socket.emit('chatmessage', message)
-        
-        $('#field').val('')
-        $('#messages').perfectScrollbar('update')
-        $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 400)
-                
-        return false
-    })
-    
-    socket.on('chatmessage', function(msg){
-        
-        var message = ''
-        message += '<div class=\'chat_post\'>'
-        if(msg.user == $('#user').val()){
-            message += '<div class=\'chat_post_user\' style=\'float:right;\' >'
-        }else{
-            message += '<div class=\'chat_post_user\'>'
-        }
-        
-        message += '<font style=\'color:#' + msg.color + ';\'>'
-        message += msg.user
-        message += '</font>'
-        message += '<br/><img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' width=\'40\' />'
-        message += '</div>'
-        if(msg.user == $('#user').val()){
-            message += '<div class=\'chat_post_message\' style=\'float:right;\' >'
-            
-        }else{
-            message += '<div class=\'chat_post_message\'>'
-        }
-        message += '<font style=\'color:#' + msg.color + ';font-weight:bold;\'>'
-        message += '[' + msg.timestamp + '] '
-        message += '</font><br/>'
-        message += msg.message
-        message += '</div>'
-        message += '</div>'
-        
-        $('#messages').append(message).each(function(){
-            $('.chat_post').show(400)
-        })
-        
-        $('#messages').perfectScrollbar('update')
-        $("#messages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 400)
-    })
-    */
-
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    //
     // Admin Settings > Channels > Add new Channel
     //
     ////////////////////////////////////////////////////////////////////////////////
@@ -288,7 +211,7 @@ $( document ).ready(function() {
     
     $('.chat_box_input').keyup(function(e) {
         if(e.keyCode == 13) {            
-            var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
+            var date = ('0' + new Date().getHours()).slice(-2) + ':' + ('0' + new Date().getMinutes()).slice(-2) + ':' + ('0' + new Date().getSeconds()).slice(-2)
             var message = { timestamp: date, message: $(this).val(), color: '00ff00' }
             socket.emit('chatmessage', message)            
             $(this).val('')            
