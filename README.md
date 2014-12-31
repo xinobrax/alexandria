@@ -17,7 +17,7 @@ Media based Social Network
 - Usergroups
 
 
-##3 Later
+### 3 Later
 - Rating System
 - Text Chat Encryption
 - Audio Chat
