@@ -3,10 +3,10 @@ alexandria
 Media based Social Network
 
 
-### Todo...
+## Todo...
 
 
-## Next
+### Next
 - Edit Channel
 - Parse Youtube Feeds
 - Dynamic Site Fetcher
@@ -17,7 +17,7 @@ Media based Social Network
 - Usergroups
 
 
-## Later
+##3 Later
 - Rating System
 - Text Chat Encryption
 - Audio Chat
