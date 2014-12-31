@@ -1,0 +1,17 @@
+{
+  "name": "Alexandria",
+  "version": "0.0.1",
+  "description": "News Feed Chat",
+  "main": "app.js",
+  "dependencies": {
+    "browserify": "^8.0.1",
+    "ejs": "*",
+    "express": "latest",
+    "feedparser": "*",
+    "passport": "*",
+    "passport-local-mongoose": "^1.0.0",
+    "request": "*",
+    "socket.io": "latest"
+  },
+  "author": "Rave"
+}

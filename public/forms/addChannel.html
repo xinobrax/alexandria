@@ -1,0 +1,30 @@
+<h1>Add Channel</h1>
+
+ http://cropfm.at/cropfm/services/cropfmrssservlet
+
+<table>
+    <tr><td width='200'>Feed URL</td><td><input id='aaa' type='text' name='feedurl'></td></tr>
+    <tr><td>&nbsp;</td><td><button name='fetchfeed'>Fetch Feed</button></td></tr>
+    <tr><td>&nbsp;<br/>&nbsp;</td><td></td></tr>
+    <tr><td>Title</td><td><input type='text' name='title'></td></tr>
+    <tr><td>Description</td><td><textarea type='text' name='description'></textarea></td></tr>
+    <tr><td>Website</td><td><input type='text' name='website'></td></tr>
+    <tr><td>Image</td><td><input type='text' name='image'></td></tr>
+    <tr><td>Filter</td><td><input type='text' name='filter'></td></tr>
+    <tr><td>Type</td><td>
+        <select name="type" size="1">
+            <option value='audio_podcast'>Audio (Podcast)</option>
+            <option value='audio_soundcloud'>Audio (Soundcloud)</option>
+            <option value='video_podcast'>Video (Podcast)</option>
+            <option value='video_youtube'>Video (Youtube)</option>
+        </select>
+    </td></tr>   
+    <tr><td>Language</td><td>
+        <select name="language" size="1">
+            <option value='english'>English</option>
+            <option value='german'>German</option>
+            <option value='swissgerman'>Swissgerman</option>
+        </select>
+    </td></tr>
+</table>
+<button name='addChannel'>Add Channel</button>

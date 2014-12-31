@@ -1,0 +1,734 @@
+/*##############################################################################
+##
+## Main
+##
+##############################################################################*/
+
+::selection {background: #ffc438; color: #000;}
+::-moz-selection {background: #ffc438; color: #000;}
+
+html{
+    height: 100%;
+    font-family : Verdana, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+}
+
+body{
+    background-color: #1d1f21;
+    position:relative;
+    height: 100%;
+    margin: 0px;
+    padding: 0px; 
+    top:0px;
+    background-image:url('images/bg.png');
+    overflow:hidden;
+    font-size:13px;
+    color:#FFF;
+    background-size: cover;
+}
+
+h1{
+    font-size: 18px;
+    margin:0px;
+    margin-bottom:8px;
+    margin-left:2px;
+    color:#ffc438;    
+}
+
+h1:first-letter{
+    text-transform: uppercase;
+}
+
+h2{
+    font-size: 16px;
+    margin:0px;
+    margin-top:12px;
+    margin-bottom:8px;
+    margin-left:2px;
+    color:#ffc438;
+}
+
+h3{
+    font-size: 13px;
+    margin-top:22px;
+    margin-bottom:4px;
+    color:#ffc438;
+}
+
+button{
+    height:40px;
+    border:1px solid #ffc438;
+    color:#ffc438;
+    font-weight:bold;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.display{
+    width:100%;
+    height: 100%;
+    display:table;
+}
+
+header{
+    position:absolute;
+    width: 100%;
+    height: 0px;
+    background-image:url('images/box_bg_dark.png');
+    margin-top:-20;
+    padding:0px;
+    margin:0px;
+    top:0px;
+    text-align: center;  
+    border-bottom: 1px solid #2a2b2d;
+}
+
+header img{
+    margin-top:12px;
+    display:none;
+}
+
+header img:hover{
+    cursor:pointer;
+}
+
+main{
+    position: relative;
+    display: table-cell;  
+    width:100%;
+    overflow:hidden;
+}
+
+
+/*##############################################################################
+##
+## Login > Termianl
+##
+##############################################################################*/
+
+.terminal{
+    position:relative;
+    display:block;
+    width:500px;
+    height:200px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:30%;    
+    padding:6px;
+    color:#FFF;
+    text-align:left;
+    background-image:url('images/box_bg.png');
+    overflow-y: hidden;
+}
+
+.terminal_input{
+    background-color: rgba(0,0,0,0);
+    color: #FFF;
+    width:350px;
+    font-weight: bold;
+    border: none;
+}
+
+.terminal_input:focus{
+    outline: 0;
+}
+
+.input{
+    position:absolute;
+    bottom: 0px;
+}
+
+
+/*##############################################################################
+##
+## Navigation Top
+##
+##############################################################################*/
+
+.topNavigation{
+    position:absolute;
+    display:none;
+    top:39px;
+    left:0px;
+    right:0px;
+    width:250px;
+    height:0px;
+    margin-left:auto;
+    margin-right:auto;
+    background-image:url('images/box_bg_dark.png');
+    text-align:center;
+    border-bottom: 1px solid #2a2b2d;
+    border-left: 1px solid #2a2b2d;
+    border-right: 1px solid #2a2b2d;
+}
+
+.topNavigationEntry{
+    position:relative;
+    padding:8px;
+    display:none;
+}
+
+.topNavigationEntry:hover{
+    background-image:url('images/box_bg_orange.png');
+    cursor:pointer;
+}
+
+/*##############################################################################
+##
+## Navigation Left
+##
+##############################################################################*/
+
+.channels{
+    position:absolute; 
+    width: 0px; 
+    left:0px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    text-shadow: 1px 1px 1px black;
+    font-size:14px;
+    display: table-cell;
+    border-right: 1px solid black;
+    background-image:url('images/box_bg.png');
+    vertical-align:top;
+}
+
+.channels_parent{
+    height:26px;
+    padding-left:10px;
+    padding-top:12px;
+    background-color:#47484b;
+    font-weight:bold;
+    border-bottom: 1px solid #2a2b2d;
+    border-top: 1px solid #4f5053;
+    display:none;
+}
+
+.navigationChannel{
+    height:28px;
+    color:#FFF;
+    font-size:13px;
+    clear:left;
+    display:none;
+    list-style-type: none;
+}
+
+.navigationChannel img{
+    width:20px;
+    height:20px;
+    margin-left:4px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-right:6px;
+    float:left;
+}
+
+.navigationChannel p{
+    margin-top:6px;
+    margin-left:0px;
+    float:left;
+}
+
+.navigationChannel:hover{
+    height:28px;
+    color:#fff;
+    background-image:url('images/box_bg_orange.png');
+    font-size:13px;
+    cursor:pointer;
+}
+
+.navigationMessageCounter{
+    position:absolute;
+    right:4px;
+    padding-right:6px;
+    padding-left:6px;
+    padding-top:2px;
+    padding-bottom:2px;
+    border-radius:9px;
+    background-color:#ffc438;
+    font-weight:bold;
+    display:none;
+    text-shadow: 0 -1px #000, 1px 0 #000, 0 1px #000, -1px 0 #000;
+}
+
+.navigationRoom{
+    height:28px;
+    color:#FFF;
+    font-size:13px;
+    clear:left;
+    display:none;
+    list-style-type: none;
+}
+
+.navigationRoom img{
+    width:20px;
+    height:20px;
+    margin-left:4px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-right:6px;
+    float:left;
+}
+
+.navigationRoom p{
+    margin-top:4px;
+    margin-left:0px;
+    float:left;
+}
+
+.navigationRoom:hover{
+    height:28px;
+    color:#fff;
+    background-image:url('images/box_bg_orange.png');
+    font-size:13px;
+    cursor:pointer;
+}
+
+
+.entryAudio{
+    position: relative;
+    width: 800px;
+    height: 100px;
+    margin-bottom:10px;
+    margin-left:10px;
+    color:#FFF;
+    background-color: #47484b;    
+    font-size: 13px;
+}
+
+.entryAudio img{
+    width: 40px;
+    padding:5px;
+    float: left;
+}
+
+.entryAudio h1{
+    padding-top: 5px;
+    font-size: 13px;
+}
+
+.input{
+    position:absolute;
+    bottom:0px;
+    display:table;
+    width:100%;
+    height:34px;
+}
+
+.field{
+    width: 100%;
+    display: table-cell;
+}
+
+#field{
+    width:100%;
+    height:40px;
+    margin:0px;
+    padding:0px;
+    padding-left:10px;
+    background-image:url('images/box_bg.png');
+    color:#FFF;
+    border:0px;    
+}
+
+
+
+.connections{
+    position:absolute;
+    right:0px;
+    width:0px;
+    height:100%;
+    display: table-cell;
+    background-image:url('images/box_bg.png');
+}
+
+
+/*##############################################################################
+##
+## Navigation Right
+##
+##############################################################################*/
+
+.player{
+    display:none;
+}
+
+.navigationPlaylistBox{
+    position:relative;
+    display: none;
+    padding:8px;
+    padding-top:4px;
+
+    margin-bottom:0px;
+    clear:left;
+    text-shadow: 1px 1px 1px black;
+}
+
+.navigationPlaylistBox:hover{
+    background-image:url('images/box_bg_orange.png');
+    cursor:pointer;
+}
+
+.navigationPlaylistTitle{
+    display: block;
+    color:#ffc438;
+    font-weight:bold;
+    padding:0px;
+    margin-top:6px;
+    margin-bottom:6px;
+}
+
+.navigationPlaylistImage{
+    display: block;
+    padding-right:8px;
+    float:left;
+}
+
+.navigationPlaylistChannel{
+    display: block;
+    margin-bottom:8px;
+}
+
+.navigationPlaylistBottom{
+    margin-bottom:4px;
+}
+
+
+/*##############################################################################
+##
+## Interface
+##
+##############################################################################*/
+
+.content_box{
+    position:fixed;
+    display:none;
+    right:270px;
+    left:270px;
+    bottom:40px;
+    top:50px;
+    padding:10px;
+    border-radius: 9px;
+    text-shadow: 1px 1px 1px black;
+    background-image:url('images/box_bg.png');
+}
+
+.main_box{
+    border-radius: 9px;
+    padding:6px;
+    background-image:url('images/box_bg_orange_dark.png');
+}
+
+.main_list_entry:hover{
+    cursor:pointer;
+    background-image:url('images/box_bg_orange.png');
+}
+
+.main_list_box td{
+    padding-top:4px;
+    padding-left:4px;
+}
+
+
+.channels_box_top{
+    position:relative;
+    clear:left;
+    padding:10px;
+    padding-right:0px;
+    margin-bottom:10px;
+    border:1px solid #ededed;
+    border-radius: 9px;
+    overflow:hidden;
+}
+
+.channel_preview{
+    float:left;
+    width:174px;
+    height:210px;
+    text-align:center;
+    vertical-align:middle;
+    background-image:url('images/box_bg_white.png');
+    margin-right:10px;
+    margin-bottom:10px;
+    border-radius: 9px;
+    font-weight:bold;
+    box-shadow: 3px 3px 3px #000;
+    display:inline-block;
+}
+
+.channel_img_preview{
+    width:130px;
+}
+
+
+/*##############################################################################
+##
+## Channel > Details
+##
+##############################################################################*/
+
+.episodesList{
+    position:absolute;
+    display:block;
+    top:240px;
+    bottom:10px;
+    left:0px;
+    right:0px;
+    overflow:auto;
+}
+
+.episode_info_table{
+    position:absolute;
+    display:table;
+    /*border-collapse: collapse;*/
+}
+
+.episode_info_row{
+    display:table-row;
+    /*border:1px solid #c68b01;*/
+}
+
+.episode_info_row_space{
+    display:table-row;
+}
+
+.episode_info_cell_left{
+    display:table-cell;
+    padding:10px;
+}
+
+.episode_info_cell_right{
+    display:table-cell;
+    width:120px;
+    padding-right:14px;
+}
+
+.episode_meta{
+    margin:0px;
+}
+
+.episode_play_now{
+    cursor:pointer;
+    font-weight:bold;
+    color:#ffc438;
+    font-size:15px;
+}
+
+.episode_play_now:hover{
+    color:#fff;
+}
+
+.episode_play_later{
+    cursor:pointer;
+    font-weight:bold;
+    color:#ffc438;
+    font-size:15px;
+}
+
+.episode_play_later:hover{
+    color:#fff;
+}
+
+.episode_download{
+    cursor:pointer;
+    font-weight:bold;
+    color:#ffc438;
+    font-size:15px;
+}
+
+.episode_download:hover{
+    color:#fff;
+}
+
+
+/*##############################################################################
+##
+## Chat Box
+##
+##############################################################################*/
+
+.chatBoxContainer{
+    position:absolute;
+    height:0px;
+    right:270px;
+    left:270px;
+    bottom:0px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    background-image:url('images/box_bg.png');
+}
+
+.chatBox{
+    position:absolute;
+    bottom:0px;
+    left:6px;
+    height:0px;
+    width:220px;
+    float:left;    
+}
+
+.chat_box_header{
+    position:relative;
+    height:22px;
+    width:219px;
+    bottom:0px;
+    font-weight:bold;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;  
+    text-shadow: 0 -1px #000, 1px 0 #000, 0 1px #000, -1px 0 #000;
+    border: 1px solid #000;
+    background-image:url('images/box_bg_orange_dark.png');
+}
+
+.chat_box_header:hover{
+    cursor:pointer;
+}
+
+.chat_box_header img{
+    width:10px;
+    margin-right:6px;
+    margin-top:2px;
+    float:right;
+}
+
+.chat_box_header_text{
+    margin:0px;
+    padding:0px;
+    margin-left:6px;
+    margin-top:5px;
+}
+
+.chat_box_text{
+    position:relative;
+    overflow:AUTO;
+    width:219px;
+    bottom:0px;
+    background:#2f2f2f;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+}
+
+.chat_box_input{
+    position:fixed;
+    bottom:0px;
+    margin:0px;    
+    padding:0px;
+    padding-left:4px;
+    padding-top:0px;
+    width:215px;
+    height:0px;
+    overflow:hidden;
+    background:#1a1a1a;
+    resize: none;
+    border:0px;
+    border-left:1px solid #000;
+    border-right:1px solid #000;
+    color:#fff;
+    font-size:13px;
+}
+
+.chat_box_input:focus{
+    outline: 0;
+}
+
+
+/*##############################################################################
+##
+## Chat Window
+##
+##############################################################################*/
+
+.chatWindowMessages{
+    position:absolute;
+    display:block;
+    top:30px;
+    bottom:50px;
+    left:0px;
+    right:0px;
+    margin-top:4px;
+    padding:10px;
+    overflow:auto;
+}
+
+.chatWindowInput{
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+}
+
+.chatWindowInputFieldDiv{
+    position:absolute;
+    left:0px;
+    right:100px;
+    height:40px;
+    margin:0px;
+    padding:0px;
+    bottom:0px;
+}
+
+.chatWindowInputField{
+    position:absolute;
+    width:100%;
+    height:40px;
+    margin:0px;
+    padding:0px;
+    border:0px;
+    color:#FFF; 
+    resize: none;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.chatWindowInputField:focus{
+    outline: 0;
+}
+
+.chatWindowSendButtonDiv{
+    position:absolute;
+    width:100px;
+    right:0px;
+    margin:0x;
+    padding:0px;
+    bottom:0px;    
+}
+
+.chatWindowSendButton{
+    width:100px;
+    margin:0px;
+    padding:0px; 
+}
+
+.chatWindowSendButton:focus{
+    outline: 0;
+}
+
+.chatWindowPost{
+    position:block;
+    margin-top:4px;
+    width:100%;
+    min-height:70px;
+    display:none;
+    text-shadow: 1px 1px 1px black;
+    clear:right;
+    
+}
+
+.chatWindowPostUser{
+    margin-right:10px;
+    margin-left:10px;
+    margin-top:2px;
+    padding:10px;
+    text-align: center;
+    border-radius: 18px;
+    font-weight:bold;
+    background-image:url('images/box_bg.png');
+    float:left;
+    box-shadow:1px 1px 1px 1px #000;
+}
+
+.chatWindowPostMessage{
+    margin-top:4px;
+    padding:10px;
+    border-radius: 18px;
+    background-image:url('images/box_bg.png');
+    box-shadow:1px 1px 1px 1px #000;
+}

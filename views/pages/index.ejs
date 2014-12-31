@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%= include ../partials/head %>
+    </head>
+    <body>
+        <div class='display'>
+
+
+            
+            <main>
+                
+                <header><img src='header.png' /></header>
+                
+                <div class='content_box'>&nbsp;</div>
+                
+                
+                <div class='channels'>
+
+                    <div class='channels_parent'>Channels</div>     
+
+                    <br/>
+                    <li class='navigationChannel'><img src='images/icons/play.png' /><p>My Channels</p></li>
+
+
+                    <br/>
+
+                    <div class='channels_parent'>Friends</div>
+                    <br/>
+                    <div class='left_space'></div>
+                    <br/>
+                    
+                    <div class='channels_parent'>Rooms</div>
+                    <br/>
+                    <li id='alexandria' class='navigationRoom'>
+                        <img src='images/icons/upload.png' />
+                        <p>Alexandria</p>
+                        <p id='alexandria' class='navigationMessageCounter'>0</p>
+                    </li>
+                    <li id='bitcoin' class='navigationRoom'>
+                        <img src='http://coinmarketcap.com/static/img/coins/16x16/bitcoin.png' />
+                        <p>Bitcoin</p>
+                        <p id='bitcoin' class='navigationMessageCounter'>0</p>
+                    </li>
+
+                    <input type='hidden' id='user' value='<%= user.username %>'>
+                    <input type='hidden' id='userId' value='<%= user._id %>'>
+                    <input type='hidden' id='room' value='empty'>
+                </div>
+                <div class='topNavigation'>
+                    <div id='profileSettings' class='topNavigationEntry'>Profile Settings</div>
+                    <div class='topNavigationEntry'>Browse Channels</div>
+                    <div class='topNavigationEntry'>Browse Rooms</div>
+                    <div class='topNavigationEntry'>Logout</div>
+                </div>
+                
+                <!--
+                <div id='messages'></div><br/>                
+                <div class='input'>
+                    <form action="">
+                        <div class='field'>
+                            <input type='hidden' id='user' value='<%= user.username %>' ></hidden>
+                            <input type='hidden' id='user' value='<%= user.color %>' ></hidden>
+                            <input id="field" autocomplete="off" >
+                        </div>
+                        <div class='send'>
+                            <button id='send' class='send' >Send</button>
+                        </div>
+                    </form>
+                </div>
+                -->
+               
+            </main> 
+        
+            <div class='connections'>
+                <div class='channels_parent'>Player</div> 
+                <video class='player' id='player' width='260' height='142' src='http://r6---sn-xjpm-4g5e.googlevideo.com/videoplayback?ms=au&mv=m&source=youtube&fexp=900718%2C927622%2C932404%2C9405802%2C941004%2C943917%2C947209%2C947218%2C948124%2C952302%2C952605%2C952901%2C953901%2C955301%2C957103%2C957105%2C957201&ip=176.9.145.80&key=yt5&initcwndbps=1836250&id=o-AIjAkEA9m5H_UmYqn8B8p_cCzZeJ5EdwKzFowSv0Bcq5&dur=418.864&upn=h1WwuRckVvY&signature=C39406B2F40D4E6A45E38AE6B0B45BC62867027E.E92ADFB794C8499A68CE631B2DA7C4DF1D6F787E&mm=31&mt=1419804412&itag=22&sver=3&expire=1419826054&ipbits=0&sparams=dur%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Cmm%2Cms%2Cmv%2Cratebypass%2Csource%2Cupn%2Cexpire&ratebypass=yes&signature=' controls></video>
+                <br/>
+                <div class='channels_parent'>Playlists</div> 
+                    <div class='navigationPlaylistBox'>
+                        <p class='navigationPlaylistTitle'>[01] Earth bombs the Moon</p>
+                        <img class='navigationPlaylistImage' src='http://img.youtube.com/vi/npRste0fgAI/mqdefault.jpg' width='100' />
+                        <div class='navigationPlaylistChannel'>Rap News</div>
+                        <div>00:00:00</div>
+                        <div class='navigationPlaylistBottom'>&nbsp;</div>
+                    </div>
+                    <div class='navigationPlaylistBox'>
+                        <p class='navigationPlaylistTitle'>The Singularity - feat. Ray Kurzweil & Alex Jones [RAP NEWS 28] </p>
+                        <img class='navigationPlaylistImage' src='http://img.youtube.com/vi/dHVtUw5wToA/mqdefault.jpg' width='100' />
+                        <div class='navigationPlaylistChannel'>Rap News</div>
+                        <div>00:00:00</div>
+                        <div class='navigationPlaylistBottom'>&nbsp;</div>
+                    </div>           
+            </div>
+        </div>
+        
+        <div class='chatBoxContainer'>
+            <div class='chatBox' id='lobby'>
+                <div class='chat_box_header'>
+                    <p class='chat_box_header_text'>
+                        Alexandria
+                        <img class='closeChatBoxIcon' src='images/icons/close.png' />
+                        <img class='maximizeChatBoxIcon' src='images/icons/maximize.png' />
+                        <img class='chatSettingsIcon' src='images/icons/settings.png' />
+                    </p>
+                </div>        
+                <div id='chatBoxAlexandria' class='chat_box_text'></div>        
+                <textarea type="text" class='chat_box_input'/></textarea>
+            </div>
+            <div class='chatBox' style='left:234px;'>
+                <div class='chat_box_header' style='height:22px;'>
+                    <p class='chat_box_header_text'>
+                        Bitcoin
+                        <img class='closeChatBoxIcon' src='images/icons/close.png' />
+                        <img class='maximizeChatBoxIcon' src='images/icons/maximize.png' />
+                        <img class='chatSettingsIcon' src='images/icons/settings.png' />
+                    </p>
+                </div> 
+                <div class='chat_box_text'></div>        
+                <textarea type="text" class='chat_box_input'/></textarea>
+            </div>
+        </div>
+        
+    </body>
+</html>
