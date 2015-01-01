@@ -80,7 +80,7 @@ chatSpace.on('chatMessage', function(msg){
     message += '<img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' width=\'40\' />'
     message += '</div>'
     if(msg.user == $('#user').val()){
-        message += '<div class=\'chatWindowPostMessage\' style=\'float:right;text-align:right;\' >'
+        message += '<div class=\'chatWindowPostMessage\' style=\'float:right;text-align:right;\'>'
 
     }else{
         message += '<div class=\'chatWindowPostMessage\' style=\'float:left;\'>'
@@ -127,14 +127,14 @@ chatSpace.on('getRoomHistory', function(roomHistory){
         var message = ''
         message += '<div class=\'chatWindowPost\' style=\'display:block;\'>'
         if(roomHistory[i]['user'] == $('#user').val()){
-            message += '<div class=\'chatWindowPostUser\' style=\'float:right;\' >'
+            message += '<div class=\'chatWindowPostUser\' style=\'float:right;\'>'
         }else{
             message += '<div class=\'chatWindowPostUser\' style=\'float:left;\'>'
         }
         message += '<img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' width=\'40\' />'
         message += '</div>'
         if(roomHistory[i]['user'] == $('#user').val()){
-            message += '<div class=\'chatWindowPostMessage\' style=\'float:right;text-align:right;\' >'
+            message += '<div class=\'chatWindowPostMessage\' style=\'float:right;text-align:right;\'>'
 
         }else{
             message += '<div class=\'chatWindowPostMessage\' style=\'float:left;\'>'

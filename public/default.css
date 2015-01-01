@@ -27,7 +27,7 @@ body{
 }
 
 h1{
-    font-size: 18px;
+    font-size: 20px;
     margin:0px;
     margin-bottom:8px;
     margin-left:2px;
@@ -469,7 +469,7 @@ main{
 .episodesList{
     position:absolute;
     display:block;
-    top:240px;
+    top:260px;
     bottom:10px;
     left:0px;
     right:0px;

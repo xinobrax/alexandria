@@ -8,9 +8,7 @@ $( document ).ready(function() {
     $(this).keypress(function(e) {
         if(e.which == 13) {
             if($('input[name=command]').last().val() == 'login'){
-                
                 $('#login_form').attr('action', '/login')
-                
                 if(!$('input[name=username]').length){
                     line = '<font style=\'font-weight:bold;color:#00FF00; \'>username: </font>'
                     line += '<input type=\'text\' name=\'username\' class=\'terminal_input\' autocomplete=\'off\' /><br/>'
@@ -19,7 +17,6 @@ $( document ).ready(function() {
                         $('input[name=username]').focus()
                     })                
                 }else{
-                    
                     if(!$('input[name=password]').length){
                         line = '<font style=\'font-weight:bold;color:#00FF00; \'>password: </font>'
                         line += '<input type=\'password\' name=\'password\' class=\'terminal_input\' /><br/>'
@@ -31,11 +28,8 @@ $( document ).ready(function() {
                         $( "#login_form" ).appendTo(document.body).submit()                       
                     }                    
                 }
-                
             }else if($('input[name=command]').last().val() == 'register'){
-                
-                $('#login_form').attr('action', '/register')
-                
+                $('#login_form').attr('action', '/register')                
                 if(!$('input[name=code]').length){
                     line = '<font style=\'font-weight:bold;color:#00FF00; \'>code: </font>'
                     line += '<input type=\'text\' name=\'code\' class=\'terminal_input\' autocomplete=\'off\' /><br/>'
@@ -43,8 +37,7 @@ $( document ).ready(function() {
                         $("input[name=command]").attr('readonly', true)
                         $('input[name=code]').focus()
                     })                
-                }else{
-                    
+                }else{                    
                     if(!$('input[name=username]').length){
                         line = '<font style=\'font-weight:bold;color:#00FF00; \'>username: </font>'
                         line += '<input type=\'text\' name=\'username\' class=\'terminal_input\' autocomplete=\'off\' /><br/>'
@@ -53,7 +46,6 @@ $( document ).ready(function() {
                             $('input[name=username]').focus()
                         })                
                     }else{
-
                         if(!$('input[name=password]').length){
                             line = '<font style=\'font-weight:bold;color:#00FF00; \'>password: </font>'
                             line += '<input type=\'password\' name=\'password\' class=\'terminal_input\' /><br/>'
@@ -62,7 +54,6 @@ $( document ).ready(function() {
                                 $('input[name=password]').focus()
                             })                
                         }else{
-
                             if(!$('input[name=password2]').length){
                                 line = '<font style=\'font-weight:bold;color:#00FF00; \'>repeat password: </font>'
                                 line += '<input type=\'password\' name=\'password2\' class=\'terminal_input\' /><br/>'
@@ -79,9 +70,9 @@ $( document ).ready(function() {
                     }                
                 }                                                
             }else{
-                e.preventDefault();
+                e.preventDefault()
                 line = ''
-                $("input[name=command]").attr('readonly', true);
+                $("input[name=command]").attr('readonly', true)
                 if($("input[name=command]").last().val() !== ''){
                     line += '<font style=\'font-weight:bold;\'>Command not found</font><br/>'
                 }
@@ -92,7 +83,7 @@ $( document ).ready(function() {
                     $("input[name=command]").last().attr('readonly', false)
                     $("input[name=command]").last().focus()
                 })                
-                return false;
+                return false
             }
         }
     })

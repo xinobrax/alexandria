@@ -6,14 +6,11 @@ function loadProfile(){
 
 settingsChannel.on('getUserProfile', function(userProfile){
     $('input[name=username]').val(userProfile.username)
-    
     $('#avatar').attr({ src:'images/users/' + userProfile._id + '.jpg' })
-    
     $('input[name=email]').val(userProfile.email)
     $('input[name=jabber]').val(userProfile.jabber)
     $('input[name=toxid]').val(userProfile.toxid)
     $('input[name=diaspora]').val(userProfile.diaspora)
-    
     $('input[name=bitcoin]').val(userProfile.bitcoin)
     $('input[name=litecoin]').val(userProfile.litecoin)
     $('input[name=dogecoin]').val(userProfile.dogecoin)
@@ -38,8 +35,6 @@ $( document ).ready(function() {
             darkcoin: $('input[name=darkcoin]').val(),
             namecoin: $('input[name=namecoin]').val()
         }
-
         settingsChannel.emit('setUserProfile', userId, user)
     })
-
 })

@@ -48,7 +48,10 @@ $( document ).ready(function() {
                     loadProfile()
                 })
                 break
-            case 'browseChannels':                
+            case 'browseChannels':   
+                $('.content_box').load('/pages/browseChannels.html', function(){
+                    loadChannelList()
+                })
                 break
             case 'browseRooms':                
                 break
@@ -72,7 +75,7 @@ $( document ).ready(function() {
     $('.navigationChannel').click(function(){
 
         $('.content_box').load('/pages/myChannels.html', function(){
-            loadChannelList()
+            //loadChannelList()
         })
     })
     
