@@ -123,7 +123,7 @@ $( document ).ready(function() {
         if($('#type').val() == 'video_youtube'){
             var backend = io('/backend')
             backend.emit('getYoutubeUrl', $(this).attr('id'))
-        }else if($('#type').val() == 'audio_podcast'){
+        }else if($('#type').val() == 'audio_podcast' || $('#type').val() == 'video_podcast'){
             $('#player').attr({ src:$(this).attr('id'), poster:$('#image').attr('src') }).append(function(){
                 var player = document.getElementById('player')
                 player.play()

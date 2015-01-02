@@ -141,15 +141,18 @@ settingsChannel.on('connection', function(socket){
     })
     
     socket.on('addChannel', function (channel) {
-
         // Fetch Channel Image, resize, save
         newChannel = new Channel(channel)
         var imgpath = './public/images/channels/' + newChannel._id
+        if(channel.image.substring(0,2) == '//'){
+            channel.image = 'http:' + channel.image
+        }
+        
+        console.log(channel.image)
         var request = http2.get(channel.image , function(response) {
             var imageMagick = gm.subClass({ imageMagick: true })
             imageMagick(response).resize(200, 200).write(imgpath + '.jpg', function(err, response){
                 imageMagick(imgpath + '.jpg').resize(40, 40).write('./public/images/channels/icons/' + newChannel._id + '.jpg', function(err){
-
                     feedParser.fetchFeeds(newChannel._id, newChannel.feed, newChannel.type, function(data){
                         if(err) console.error(err)
                     })
@@ -190,34 +193,33 @@ settingsChannel.on('connection', function(socket){
 
 backend = io.of('/backend')
 backend.on('connection', function(socket){
-    
-    socket.on('loadChannelList', function (settings) {        
+
+    socket.on('loadChannelList', function(settings){
         Channel.find(function(err, channelList){
             if(err) console.error(err)
-            socket.emit('loadChannelList', channelList)   
-        })     
+            socket.emit('loadChannelList', channelList)
+        })
     })
-    
-    socket.on('loadChannelDetails', function (channelId) {    
-        console.log(channelId)
+
+    socket.on('loadChannelDetails', function(channelId){
+        //console.log(channelId)
         Channel.findOne({ _id:channelId }, function(err, channelDetails){
             if(err) console.error(err)
-            socket.emit('loadChannelDetails', channelDetails)   
-        })     
-        
+            socket.emit('loadChannelDetails', channelDetails)
+        })
+
         Episode.find({ channel:channelId }).sort({ date:'desc' }).exec(function(err, channelEpisodes){
             if(err) console.error(err)
-            socket.emit('loadChannelEpisodes', channelEpisodes) 
+            socket.emit('loadChannelEpisodes', channelEpisodes)
         })
     })
-    
-    socket.on('getYoutubeUrl', function (ytid) {    
+
+    socket.on('getYoutubeUrl', function(ytid){
         feedParser.getYoutubeUrl(ytid, function(yturl){
-            socket.emit('getYoutubeUrl', yturl) 
+            socket.emit('getYoutubeUrl', yturl)
             console.log('Got ytid: ' + yturl)
         })
-    })    
-    
+    })
 })
 
 

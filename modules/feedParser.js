@@ -36,7 +36,7 @@ exports.fetchFeedMeta = function(url, callback){
          var item
          
          while (item = this.read()) {
-             console.log(item)
+             //console.log(item)
          }
     })
 
@@ -77,9 +77,10 @@ exports.fetchFeeds = function(channelId, feedUrl, type, callback){
         console.error(err)
     })
 
-    feedparser.on('readable', function(){
+    feedparser.on('readable', function(err){
+        if(err) console.error(err)
+            
         var item
-
         while (item = this.read()) {
             
             if(type == 'audio_podcast' || type == 'video_podcast'){
@@ -106,7 +107,6 @@ exports.fetchFeeds = function(channelId, feedUrl, type, callback){
                 })
             }
             
-            
             console.log(item)
 
             episode.save(function(err, episodes){
@@ -128,6 +128,5 @@ exports.getYoutubeUrl = function(ytid, callback){
         if(err) console.error(err)
         // Send back
         callback(info.url)
-        
     })
 }
