@@ -11,7 +11,8 @@
     "passport": "*",
     "passport-local-mongoose": "^1.0.0",
     "request": "*",
-    "socket.io": "latest"
+    "socket.io": "latest",
+    "youtube-dl": "^1.6.0"
   },
   "author": "Rave"
 }

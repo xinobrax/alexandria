@@ -6,6 +6,7 @@
 
 var FeedParser = require('feedparser')
 var request = require('request')
+var youtube = require('youtube-dl')
 
 exports.fetchFeedMeta = function(url, callback){
     
@@ -35,6 +36,7 @@ exports.fetchFeedMeta = function(url, callback){
          var item
          
          while (item = this.read()) {
+             console.log(item)
          }
     })
 
@@ -52,7 +54,7 @@ exports.fetchFeedMeta = function(url, callback){
 
 var Episode = require('../models/episode')
 
-exports.fetchFeeds = function(channelId, feedUrl, callback){
+exports.fetchFeeds = function(channelId, feedUrl, type, callback){
 
     var feedparser = new FeedParser()
     var fetch = request(feedUrl)
@@ -79,15 +81,33 @@ exports.fetchFeeds = function(channelId, feedUrl, callback){
         var item
 
         while (item = this.read()) {
-            var episode = new Episode({
-                title: item['title'],
-                description: item['description'],
-                url: item['enclosures'][0]['url'],
-                link: item['url'],
-                date: item['date'],
-                duration: item['enclosures'][0]['length'],
-                channel: channelId
-            })
+            
+            if(type == 'audio_podcast' || type == 'video_podcast'){
+                var episode = new Episode({
+                    title: item['title'],
+                    description: item['description'],
+                    url: item['enclosures'][0]['url'],
+                    link: item['url'],
+                    date: item['date'],
+                    duration: item['enclosures'][0]['length'],
+                    channel: channelId
+                })
+            }else if(type == 'video_youtube'){
+                var ytid = item['link']
+                ytid = ytid.substring(32, 43); 
+                var episode = new Episode({
+                    title: item['title'],
+                    description: item['description'],
+                    url: ytid,
+                    link: 'https://www.youtube.com/watch?v=' + ytid,
+                    date: item['date'],
+                    duration: 'xx',
+                    channel: channelId
+                })
+            }
+            
+            
+            console.log(item)
 
             episode.save(function(err, episodes){
                 if(err) console.error(err)
@@ -100,4 +120,14 @@ exports.fetchFeeds = function(channelId, feedUrl, callback){
         //callback(feed)
         // Eintrag in DB
     })    
+}
+
+exports.getYoutubeUrl = function(ytid, callback){
+    var url = 'https://www.youtube.com/watch?v=' + ytid
+    youtube.getInfo(url, function(err, info){
+        if(err) console.error(err)
+        // Send back
+        callback(info.url)
+        
+    })
 }

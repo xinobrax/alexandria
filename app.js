@@ -39,7 +39,7 @@ var userlist = {}
 mongoose.connect('mongodb://localhost/alexandria_dev')
 
 // App Use
-app.use(express.static("public"))
+app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
@@ -150,7 +150,7 @@ settingsChannel.on('connection', function(socket){
             imageMagick(response).resize(200, 200).write(imgpath + '.jpg', function(err, response){
                 imageMagick(imgpath + '.jpg').resize(40, 40).write('./public/images/channels/icons/' + newChannel._id + '.jpg', function(err){
 
-                    feedParser.fetchFeeds(newChannel._id, newChannel.feed, function(data){
+                    feedParser.fetchFeeds(newChannel._id, newChannel.feed, newChannel.type, function(data){
                         if(err) console.error(err)
                     })
                 })
@@ -210,6 +210,14 @@ backend.on('connection', function(socket){
             socket.emit('loadChannelEpisodes', channelEpisodes) 
         })
     })
+    
+    socket.on('getYoutubeUrl', function (ytid) {    
+        feedParser.getYoutubeUrl(ytid, function(yturl){
+            socket.emit('getYoutubeUrl', yturl) 
+            console.log('Got ytid: ' + yturl)
+        })
+    })    
+    
 })
 
 

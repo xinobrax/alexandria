@@ -120,10 +120,15 @@ $( document ).ready(function() {
     ////////////////////////////////////////////////////////////////////////////////    
     
     $('.content_box').on('click', '.episode_play_now', function(){
-        $('#player').attr({ src:$(this).attr('id'), poster:$('#image').attr('src') }).append(function(){
-            var player = document.getElementById('player')
-            player.play()
-        })
+        if($('#type').val() == 'video_youtube'){
+            var backend = io('/backend')
+            backend.emit('getYoutubeUrl', $(this).attr('id'))
+        }else if($('#type').val() == 'audio_podcast'){
+            $('#player').attr({ src:$(this).attr('id'), poster:$('#image').attr('src') }).append(function(){
+                var player = document.getElementById('player')
+                player.play()
+            })
+        }
     })
     
     $('.content_box').on('click', '.episode_download', function(){
@@ -137,8 +142,8 @@ $( document ).ready(function() {
     //
     ////////////////////////////////////////////////////////////////////////////////
     
-    //$('.content_box').load('/forms/addChannel.html')
-    $('.content_box').load('/pages/todo.html')
+    $('.content_box').load('/forms/addChannel.html')
+    //$('.content_box').load('/pages/todo.html')
     
     $('.content_box').on('click', 'button[name=fetchfeed]', function(){
         fetchNewFeed()
