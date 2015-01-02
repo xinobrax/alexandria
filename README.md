@@ -8,7 +8,6 @@ Media based Social Network
 
 ### Next
 - Edit Channel
-- Parse Youtube Feeds
 - Dynamic Site Fetcher
 - Connect Chat Box & Chat Window
 - Private Chats between Users
