@@ -153,7 +153,7 @@ settingsChannel.on('connection', function(socket){
             var imageMagick = gm.subClass({ imageMagick: true })
             imageMagick(response).resize(200, 200).write(imgpath + '.jpg', function(err, response){
                 imageMagick(imgpath + '.jpg').resize(40, 40).write('./public/images/channels/icons/' + newChannel._id + '.jpg', function(err){
-                    feedParser.fetchFeeds(newChannel._id, newChannel.feed, newChannel.type, function(data){
+                    feedParser.fetchFeeds(newChannel._id, newChannel.feed, newChannel.type, newChannel.filter, function(data){
                         if(err) console.error(err)
                     })
                 })

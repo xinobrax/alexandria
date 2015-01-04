@@ -16,7 +16,8 @@ var Episode = new Schema({
     },
     date: Date,
     channel: String,
-    duration: String
+    duration: String,
+    language: String
 })
 
 module.exports = mongoose.model('Episode', Episode)

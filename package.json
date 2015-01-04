@@ -1,7 +1,7 @@
 {
   "name": "Alexandria",
   "version": "0.0.1",
-  "description": "News Feed Chat",
+  "description": "News Feed Chat Network",
   "main": "app.js",
   "dependencies": {
     "browserify": "^8.0.1",

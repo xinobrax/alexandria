@@ -37,13 +37,49 @@ function addChannel(){
     settingsChannel.emit('addChannel', channel)
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Load Channel List
+//
+////////////////////////////////////////////////////////////////////////////////
+
 function loadChannelList(){
     backend.emit('loadChannelList', '')
 }
 
 backend.on('loadChannelList', function(channelList){    
    
-    var list = '<div class=\'main_list_box\'>'
+    var audiolist = ''
+    var videolist = ''
+
+    for(var i in channelList){
+        if(channelList[i]['type'] == 'audio_podcast' || channelList[i]['type'] == 'audio_soundcloud'){
+            audiolist += '<tr class=\'main_list_entry\' id=\'' + channelList[i]['_id'] + '\'>'
+            audiolist += '<td><img src=\'images/channels/icons/' + channelList[i]['_id'] + '.jpg\' width=\'30\' /></td>'
+            audiolist += '<td>' + channelList[i]['title'] + '</td>'
+            audiolist += '<td>' + channelList[i]['language'] + '</td>'
+            audiolist += '<td>' + channelList[i]['feeds'] + '</td>'
+            var date = new Date(channelList[i]['update_date'])
+            audiolist += '<td>' + date.getDay() + '.' + (date.getMonth()+1) + '.' + date.getFullYear() + '</td>'
+            audiolist += '<td><button style=\'height:30px;width:100px;color:#00FF00;border-color:#00FF00;\'>Subscribe</button></td>'
+            audiolist += '</tr>'
+        }else{
+            videolist += '<tr class=\'main_list_entry\' id=\'' + channelList[i]['_id'] + '\'>'
+            videolist += '<td><img src=\'images/channels/icons/' + channelList[i]['_id'] + '.jpg\' width=\'30\' /></td>'
+            videolist += '<td>' + channelList[i]['title'] + '</td>'
+            videolist += '<td>' + channelList[i]['language'] + '</td>'
+            videolist += '<td>' + channelList[i]['feeds'] + '</td>'
+            var date = new Date(channelList[i]['update_date'])
+            videolist += '<td>' + date.getDay() + '.' + (date.getMonth()+1) + '.' + date.getFullYear() + '</td>'
+            videolist += '<td><button style=\'height:30px;width:100px;color:#00FF00;border-color:#00FF00;\'>Subscribe</button></td>'
+            videolist += '</tr>'
+        }
+    }
+    
+    var list = ''
+    list += '<h2>Video Channels</h2>'
+    list += '<div class=\'main_list_box\'>'
     list += '<table width=\'100%\' cellspacing=\'0\' cellpadding=\'0\'>'
     list += '<tr>'
     list += '<td width=\'40\'><b>Icon</b></td>'
@@ -53,19 +89,22 @@ backend.on('loadChannelList', function(channelList){
     list += '<td width=\'100\'><b>Last Update</b></td>'
     list += '<td width=\'100\'><b>Subscription</b></td>'
     list += '</tr>'
-            
-    for(var i in channelList){            
-        list += '<tr class=\'main_list_entry\' id=\'' + channelList[i]['_id'] + '\'>'
-        list += '<td><img src=\'images/channels/icons/' + channelList[i]['_id'] + '.jpg\' width=\'30\' /></td>'
-        list += '<td>' + channelList[i]['title'] + '</td>'
-        list += '<td>' + channelList[i]['language'] + '</td>'
-        list += '<td>' + channelList[i]['feeds'] + '</td>'
-        var date = new Date(channelList[i]['update_date'])
-        list += '<td>' + date.getDay() + '.' + (date.getMonth()+1) + '.' + date.getFullYear() + '</td>'
-        list += '<td><button style=\'height:30px;width:100px;color:#00FF00;border-color:#00FF00;\'>Subscribe</button></td>'
-        list += '</tr>'
-    }  
-
+    list += videolist
+    list += '</table>'
+    list += '</div>'
+    
+    list += '<br/><h2>Audio Channels</h2>'
+    list += '<div class=\'main_list_box\'>'
+    list += '<table width=\'100%\' cellspacing=\'0\' cellpadding=\'0\'>'
+    list += '<tr>'
+    list += '<td width=\'40\'><b>Icon</b></td>'
+    list += '<td><b>Title</b></td>'
+    list += '<td width=\'90\'><b>Language</b></td>'
+    list += '<td width=\'80\'><b>Episodes</b></td>'
+    list += '<td width=\'100\'><b>Last Update</b></td>'
+    list += '<td width=\'100\'><b>Subscription</b></td>'
+    list += '</tr>'
+    list += audiolist
     list += '</table>'
     list += '</div>'
 
@@ -90,7 +129,7 @@ backend.on('loadChannelDetails', function(channelList){
     $('#website').append('<a href=\'' + channelList['website'] + '\'>' + channelList['website'] + '</a>')
     $('#language').append(channelList['language'])
     $('#feeds').append(channelList['feeds'])
-    $('#update').append(channelList['update_date'])
+    $('#update').append(new Date(channelList['update_date']))
     $('#type').val(channelList['type'])
 })
 
@@ -104,7 +143,7 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
         list += '<div class=\'episode_info_cell_left\' >'
         list += '<h3>' + channelEpisodes[i]['title'] + '</h3>'
         var date = new Date(channelEpisodes[i]['date'])
-        list += '<p class=\'episode_meta\'>' + date.getDay() + '.' + (date.getMonth()+1) + '.' + date.getFullYear() + ' | ' + channelEpisodes[i]['duration'] + '</p>'
+        list += '<p class=\'episode_meta\'>' + date + ' | ' + channelEpisodes[i]['duration'].toHHMMSS() + '</p>'
         list += '<p>' + channelEpisodes[i]['description'] + '</p>'        
         list += '</div>'
         list += '<div class=\'episode_info_cell_right\' ><br/>'
