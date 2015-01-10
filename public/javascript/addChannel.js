@@ -13,13 +13,6 @@ function fetchNewFeed(){
         settingsChannel.emit('fetchFeed', $('input[name=feedurl]').val())
 }
 
-settingsChannel.on('fetchFeed', function(feed){    
-    $('input[name=title]').val(feed.title)
-    $('textarea[name=description]').val(feed.description)
-    $('input[name=website]').val(feed.website)
-    $('input[name=image]').val(feed.image)
-})
-
 function addChannel(){
     var channel = {
             title: $('input[name=title]').val(),
@@ -36,6 +29,48 @@ function addChannel(){
     
     settingsChannel.emit('addChannel', channel)
 }
+
+
+
+$( document ).ready(function() {
+    
+    settingsChannel.on('fetchFeed', function(feed){    
+        $('input[name=title]').val(feed.title)
+        $('textarea[name=description]').val(feed.description)
+        $('input[name=website]').val(feed.website)
+        $('#addChannelImage').attr('src', feed.image)
+        
+        $('#3').show(400)
+    })
+    
+    $('.content_box').on('click', '.addChannelSourceButton', function(){
+        var channelSource = $(this).attr('id')
+        
+        switch(channelSource){
+            case 'rss':
+                $(this).parent('div').next().children('h3').html('2. Type in the URL of an RSS Feed')
+                break;
+            case 'youtube':
+                $(this).parent('div').next().children('h3').html('2. Type in the name of a Youtube channel')
+                break;
+            case 'soundcloud':
+                $(this).parent('div').next().children('h3').html('2. Type in the name of a Soundcloud profile')
+                break;
+            case 'twitter':
+                $(this).parent('div').next().children('h3').html('2. Type in a hashtag (#) or the name of a Twitter account (@)')
+                break;
+        }
+        
+        $('#2').show(400)
+    })
+    
+    $('.content_box').on('click', '#checkMeta', function(){
+        $('#4').show(400)
+        $('#5').show(400)
+    })
+    
+    
+})
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +168,13 @@ backend.on('loadChannelDetails', function(channelList){
     $('#type').val(channelList['type'])
 })
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Channels >  Load Episodes
+//
+////////////////////////////////////////////////////////////////////////////////
+
 backend.on('loadChannelEpisodes', function(channelEpisodes){  
 
     var list = '<div class=\'episodesList\'>'
@@ -144,12 +186,13 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
         list += '<h3>' + channelEpisodes[i]['title'] + '</h3>'
         var date = new Date(channelEpisodes[i]['date'])
         list += '<p class=\'episode_meta\'>' + date + ' | ' + channelEpisodes[i]['duration'].toHHMMSS() + '</p>'
-        list += '<p>' + channelEpisodes[i]['description'] + '</p>'        
+        list += '<p class=\'episodeDescription\'>' + channelEpisodes[i]['description'] + '</p>'        
         list += '</div>'
-        list += '<div class=\'episode_info_cell_right\' ><br/>'
-        list += '<font class=\'episode_play_now\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</font><br/>'
-        list += '<font class=\'episode_play_later\'><img src=\'images/icons/play_later.png\' height=\'14\' /> Play later</font><br/>'
-        list += '<font class=\'episode_download\' id=\'' + channelEpisodes[i]['url'] + '\' ><img src=\'images/icons/download.png\' height=\'14\' /> Download</font>'
+        list += '<div class=\'episode_info_cell_right\' >'
+        //list += '<font class=\'episode_play_now\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</font><br/>'
+        list += '<button class=\'episode_play_now\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</button><br/>'
+        list += '<button class=\'episode_play_later\'><img src=\'images/icons/play_later.png\' height=\'14\' /> Play later</button><br/>'
+        list += '<button class=\'episode_download\' id=\'' + channelEpisodes[i]['url'] + '\' ><img src=\'images/icons/download.png\' height=\'14\' /> Download</button>'
         list += '</div>'
         list += '</div>'
     }  
