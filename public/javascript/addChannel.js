@@ -9,38 +9,59 @@ var backend = io('/backend')
 ////////////////////////////////////////////////////////////////////////////////
 
 function fetchNewFeed(){
-    if($('input[name=feedurl]').val())
+    if($('input[name=feedurl]').val()){
         settingsChannel.emit('fetchFeed', $('input[name=feedurl]').val())
+    }else{
+        $('.loading').hide()
+        $('input[name=feedurl]').css('background-color', 'rgba(255,0,0,0.2)')            
+        $('#1').show()
+        $('#2').show()
+    }       
 }
 
 function addChannel(){
     var channel = {
-            title: $('input[name=title]').val(),
-            type: $('select[name=type]').val(),
-            description: $('textarea[name=description]').val(),
-            website: $('input[name=website]').val(),
-            feed: $('input[name=feedurl]').val(),
-            image: $('input[name=image]').val(),
-            feeds: 0,
-            filter: $('input[name=filter]').val(),
-            language: $('select[name=language]').val(),
-            update_date: new Date(),        
+        title: $('input[name=title]').val(),
+        type: $('select[name=type]').val(),
+        description: $('textarea[name=description]').val(),
+        website: $('input[name=website]').val(),
+        feed: $('input[name=feedurl]').val(),
+        image: $('#addChannelImage').attr('src'),
+        feeds: 0,
+        filter: $('input[name=filter]').val(),
+        language: $('select[name=language]').val(),
+        update_date: new Date(),        
     }
-    
     settingsChannel.emit('addChannel', channel)
 }
 
 
-
 $( document ).ready(function() {
     
-    settingsChannel.on('fetchFeed', function(feed){    
-        $('input[name=title]').val(feed.title)
-        $('textarea[name=description]').val(feed.description)
-        $('input[name=website]').val(feed.website)
-        $('#addChannelImage').attr('src', feed.image)
+    $('.content_box').on('click', 'button[name=fetchfeed]', function(){
+        $('#1').hide()
+        $('#2').hide()
+        $('.loading').show()        
+        fetchNewFeed()
+    })
+    
+    settingsChannel.on('fetchFeed', function(feed){   
         
-        $('#3').show(400)
+        $('.loading').hide()
+        
+        if(feed !== 'error'){
+            $('input[name=title]').val(feed.title)
+            $('textarea[name=description]').val(feed.description)
+            $('input[name=website]').val(feed.website)
+            $('#addChannelImage').attr('src', feed.image)
+            $('#3').show(400)
+            $('#4').show(400)
+            $('#5').show(400)
+        }else{
+            $('input[name=feedurl]').css('background-color', 'rgba(255,0,0,0.2)')            
+            $('#1').show()
+            $('#2').show()
+        }        
     })
     
     $('.content_box').on('click', '.addChannelSourceButton', function(){
@@ -48,27 +69,21 @@ $( document ).ready(function() {
         
         switch(channelSource){
             case 'rss':
-                $(this).parent('div').next().children('h3').html('2. Type in the URL of an RSS Feed')
+                $(this).parent('div').next().children('h2').html('2. Type in the URL of an RSS Feed')
                 break;
             case 'youtube':
-                $(this).parent('div').next().children('h3').html('2. Type in the name of a Youtube channel')
+                $(this).parent('div').next().children('h2').html('2. Type in the name of a Youtube channel')
                 break;
             case 'soundcloud':
-                $(this).parent('div').next().children('h3').html('2. Type in the name of a Soundcloud profile')
+                $(this).parent('div').next().children('h2').html('2. Type in the name of a Soundcloud profile')
                 break;
             case 'twitter':
-                $(this).parent('div').next().children('h3').html('2. Type in a hashtag (#) or the name of a Twitter account (@)')
+                $(this).parent('div').next().children('h2').html('2. Type in a hashtag (#) or the name of a Twitter account (@)')
                 break;
         }
         
         $('#2').show(400)
     })
-    
-    $('.content_box').on('click', '#checkMeta', function(){
-        $('#4').show(400)
-        $('#5').show(400)
-    })
-    
     
 })
 

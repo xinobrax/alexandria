@@ -101,6 +101,14 @@ main{
     overflow:hidden;
 }
 
+.loading{
+    position:relative;
+    display:none;
+    width:100%;
+    text-align:center;
+    margin-top:80px;
+}
+
 
 /*##############################################################################
 ##
@@ -494,10 +502,25 @@ main{
     vertical-align:top;
 }
 
+.addChannelContentBox option{
+    background:#000;
+}
+
+.addChannelContentBox b{
+    color:#ffc438;
+}
+
 .addChannelMetaTransparent{
-    background-color:rgba(0,0,0,0);
+    background-color:rgba(255,255,255,0.3);
+    margin:0px;
+    padding:4px;
+    color:#FFF;
+    resize:none;
     border:none;
-    
+}
+
+.addChannelMetaTransparent:focus{
+    outline: 0;
 }
 
 .addChannelSourceButton{
@@ -505,15 +528,17 @@ main{
     width:160px;
     height:40px;
     margin-right:10px;
-    background:#FFF;
+    background-color:rgba(255,255,255,0.3);
     border-radius: 9px;
     box-shadow: 1px 1px 1px #000;
     text-align:center;
+    vertical-align:middle;
     float:left;
 }
 
 .addChannelSourceButton img{
-    width:80px;
+    width:80%;
+    margin-top:4px;
 }
 
 .addChannelSourceButton:hover{

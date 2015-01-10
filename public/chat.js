@@ -145,9 +145,7 @@ $( document ).ready(function() {
     $('.content_box').load('/forms/addChannel.html')
     //$('.content_box').load('/pages/todo.html')
     
-    $('.content_box').on('click', 'button[name=fetchfeed]', function(){
-        fetchNewFeed()
-    })
+    
     
     $('.content_box').on('click', 'button[name=addChannel]', function(){
         addChannel()

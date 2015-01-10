@@ -11,38 +11,48 @@ var youtube = require('youtube-dl')
 exports.fetchFeedMeta = function(url, callback){
     
     var feedparser = new FeedParser()
-    var fetch = request(url)
-    var feed = {}
+    console.log('1')
+    
+    try {
+        fetch = request(url)
+        
+        console.log('2')
+        var feed = {}
 
-    fetch.on('error', function(err){
+        fetch.on('error', function(err){
+            console.error(err)
+        })
+
+        fetch.on('response', function(res){
+            var stream = this
+
+            if(res.statusCode != 200)
+                return this.emit('error', new Error('Bad status code'))
+
+            stream.pipe(feedparser)
+        })
+
+        feedparser.on('error', function(err){
+            console.error(err)
+        })
+
+        feedparser.on('readable', function(){
+             feed = { title: this.meta['title'], description: this.meta['description'], website: this.meta['link'], image: this.meta['image']['url']  }
+             var item
+
+             while (item = this.read()) {
+                 //console.log(item['media:group']['yt:duration']['@']['seconds'])
+             }
+        })
+
+        feedparser.on('end', function(){
+            callback(feed)
+        })  
+    } catch (err) {
         console.error(err)
-    })
-
-    fetch.on('response', function(res){
-        var stream = this
-
-        if(res.statusCode != 200)
-            return this.emit('error', new Error('Bad status code'))
-            
-        stream.pipe(feedparser)
-    })
-
-    feedparser.on('error', function(err){
-        console.error(err)
-    })
-
-    feedparser.on('readable', function(){
-         feed = { title: this.meta['title'], description: this.meta['description'], website: this.meta['link'], image: this.meta['image']['url']  }
-         var item
-         
-         while (item = this.read()) {
-             //console.log(item['media:group']['yt:duration']['@']['seconds'])
-         }
-    })
-
-    feedparser.on('end', function(){
-        callback(feed)
-    })    
+        callback('error')
+    }
+  
 }
 
 

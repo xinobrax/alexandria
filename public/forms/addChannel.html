@@ -1,7 +1,9 @@
 <h1>Add a new Channel</h1>
 
-<div class='addChannelContentBox'>
-    <h3>1. Select a Channel source</h3>
+<div class='loading'><img src='images/icons/loading.gif' /></div>
+
+<div id='1' class='addChannelContentBox'>
+    <h2>1. Select a Channel source</h2>
     <div id='rss' class='addChannelSourceButton'><img src='images/icons/rss.png'></div>
     <div id='youtube' class='addChannelSourceButton'><img src='images/icons/youtube.png'></div>
     <div id='soundcloud' class='addChannelSourceButton'><img src='images/icons/soundcloud.png'></div>
@@ -9,51 +11,54 @@
 </div>
 
 <div id='2' class='addChannelContentBox' style='display:none;'>
-    <h3></h3>
-    <input type='text' name='feedurl'> <button name='fetchfeed'>Check Source</button>
+    <h2></h2>
+    <input type='text' name='feedurl' class='addChannelMetaTransparent'> 
+    
+    <br/><br/><br/><button name='fetchfeed'style='color:#00FF00;border:1px solid #00FF00;padding:6px;height:40px;width:100px;'>Next step</button>
 </div>
 
 <div id='3' class='addChannelContentBox' style='display:none;'>
-    <h3>3. Check and edit the Channel details</h3>
-    <div style='border-radius:9px;border:2px solid #ffc438;'>
-        <table>
-            <tr>
-                <td width='150'><img id='addChannelImage' src='' width='150' height='150'/></td>
-                <td>
-                    <input type='text' name='title' class='addChannelMetaTransparent' style='width:96%;color:#ffc438;font-weight:bold;'><br/>
-                    <textarea type='text' name='description' class='addChannelMetaTransparent' style='width:96%;height:120px;color:#FFF;'></textarea>
-                </td>
-                <td width='200'>
-                    <b>Website</b>
-                    <input type='text' name='website' style='width:200px;'><br/>  
-                    <br/><b>Type</b>
-                    <select name='type' size='1' style='width:200px;'>
-                        <option value='audio_podcast'>Audio (Podcast)</option>
-                        <option value='audio_soundcloud'>Audio (Soundcloud)</option>
-                        <option value='video_podcast'>Video (Podcast)</option>
-                        <option value='video_youtube'>Video (Youtube)</option>
-                    </select><br/>
-                    <br/><b>Language</b>
-                    <select name='language' size='1' style='width:200px;'>
-                        <option value='english'>English</option>
-                        <option value='german'>German</option>
-                        <option value='swissgerman'>Swissgerman</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <br/><button id='checkMeta'>Everything looks fine</button>
+    <h2>1. Edit Channel details</h2>
+    <table>
+        <tr>
+            <td width='158'><img id='addChannelImage' src='' width='154' height='154'/></td>
+            <td>
+                <b>Title</b><br/>
+                <input type='text' name='title' class='addChannelMetaTransparent' style='width:98%;'><br/><br/>
+                
+                <b>Description</b><br/>
+                <textarea type='text' name='description' class='addChannelMetaTransparent' style='width:98%;height:72px;'></textarea>
+                
+            </td>
+            <td width='220'>
+                <b>Website</b>
+                <input type='text' name='website' class='addChannelMetaTransparent' style='width:200px;'><br/>
+                <br/><b>Type</b>
+                <select name='type' size='1' style='width:200px;' class='addChannelMetaTransparent'>
+                    <option value='audio_podcast'>Audio (Podcast)</option>
+                    <option value='audio_soundcloud'>Audio (Soundcloud)</option>
+                    <option value='video_podcast'>Video (Podcast)</option>
+                    <option value='video_youtube'>Video (Youtube)</option>
+                </select><br/>
+                <br/><b>Language</b>
+                <select name='language' size='1' style='width:200px;' class='addChannelMetaTransparent'>
+                    <option value='english'>English</option>
+                    <option value='german'>German</option>
+                    <option value='swissgerman'>Swissgerman</option>
+                </select>
+            </td>
+        </tr>
+    </table>
 </div>
 
 <div id='4' class='addChannelContentBox' style='display:none;'>
-    <h3>4. Only add episodes containing the following term in the title (optional)</h3>
-    <input type='text' name='filter'>
+    <h2>2. Episode filter (optional)</h2>
+    <input type='text' name='filter' class='addChannelMetaTransparent'> (Only episodes which contain this filter in the title will be added to the Channel)
+    <br/><br/><br/><button name='addChannel' style='color:#00FF00;border:1px solid #00FF00;padding:6px;height:40px;width:100px;'>Add Channel</button>
 </div>
 
 <div id='5' class='addChannelContentBox' style='display:none;'>
-    <h3>5. Add Channel</h3>
-    <button name='addChannel' style='color:#00FF00;border:1px solid #00FF00;padding:6px;height:40px;width:100px;'>Add Channel</button>
+    
 </div>
 
 <!--
