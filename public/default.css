@@ -741,6 +741,7 @@ main{
 ##
 ##############################################################################*/
 
+
 .chatWindowMessages{
     position:absolute;
     display:block;
@@ -805,18 +806,70 @@ main{
     outline: 0;
 }
 
-.chatWindowPost{
-    position:block;
-    margin-top:4px;
+.chatWindowTable{
+    display:table;
     width:100%;
-    min-height:70px;
-    display:none;
+}
+
+.chatWindowPost{
+    margin-top:4px;
+    display:table-row;
     text-shadow: 1px 1px 1px black;
-    clear:right;
-    
+}
+
+.chatWindowPostUserBox{
+    display:table-cell;
+    width:100px;
+    font-weight:bold;
+    padding:4px;
 }
 
 .chatWindowPostUser{
+    width:50px;
+    height:50px;
+    padding-left:6px;
+    padding-right:6px;
+    text-align:center;
+}
+
+.chatWindowPostUser img{
+    width:50px;
+    height:50px;
+    border-radius:25px;
+    box-shadow:1px 1px 1px 1px #000;
+}
+
+.chatWindowPostMessageBox{
+    display:table-cell;
+    vertical-align:top;
+    width:100%;
+    padding:4px;
+    margin:0px;
+}
+
+.chatWindowPostMessage{
+    display:inline-block;
+    padding:10px;
+    border-radius:18px;
+    background-image:url('images/box_bg.png');
+    box-shadow:1px 1px 1px 1px #000;
+}
+
+/*
+.chatWindowPost{
+    position:relative;
+    
+    margin-top:4px;
+    width:100%;
+    display:none;
+    display:table-row;
+    text-shadow: 1px 1px 1px black;
+    background:#FF0000;
+    clear:right;
+}
+
+.chatWindowPostUser{
+    display:table-cell;
     margin-right:10px;
     margin-left:10px;
     margin-top:2px;
@@ -830,9 +883,11 @@ main{
 }
 
 .chatWindowPostMessage{
+    display:table-cell;
     margin-top:4px;
     padding:10px;
     border-radius: 18px;
     background-image:url('images/box_bg.png');
     box-shadow:1px 1px 1px 1px #000;
 }
+*/
