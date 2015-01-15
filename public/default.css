@@ -468,6 +468,51 @@ main{
     width:130px;
 }
 
+.roomTreeEntry{
+    width:130px;
+    padding:4px;
+    padding-left:8px;
+    margin-bottom:4px;
+    background-color:rgba(255,255,255,0.3);
+    border-radius: 9px;
+    box-shadow: 1px 1px 1px #000;
+}
+
+
+/*##############################################################################
+##
+## Room > Add
+##
+##############################################################################*/
+
+.addRoomContentBox{
+    position:relative;
+    display: inline-block;
+    width:100%;
+    clear:left;
+    margin-top:6px;
+    margin-bottom:10px;
+}
+
+/*##############################################################################
+##
+## Room > Browse
+##
+##############################################################################*/
+
+.browseRoomsListRow{
+    display:table-row;
+    width:100%;
+    height:30px;
+}
+
+.browseRoomsListEntry{
+    display:table-cell;
+    border-bottom:1px solid #4b4b4b;
+    padding-top:6px;
+    padding-bottom:2px;
+}
+
 
 /*##############################################################################
 ##
@@ -537,7 +582,7 @@ main{
 }
 
 .addChannelSourceButton img{
-    width:80%;
+    width:126px;
     margin-top:4px;
 }
 
@@ -545,6 +590,37 @@ main{
     background:#c68b01;
     cursor:pointer;
 }
+
+/*##############################################################################
+##
+## Channel > Browse
+##
+##############################################################################*/
+
+.browseChannelsChannelRow{
+    position:relative;
+    width:100%;
+}
+
+.browseChannelsChannelBox{
+    position:relative;
+    display:block;
+    width:140px;
+    height:160px;
+    margin-right:10px;
+    text-align:center;
+    float:left;
+}
+
+.browseChannelsChannelBox:hover{
+    cursor:pointer;
+}
+
+.browseChannelsChannelBox img{
+    border-radius:9px;
+    box-shadow:1px 1px 1px 1px #000;
+}
+
 
 /*##############################################################################
 ##
@@ -578,6 +654,13 @@ main{
     text-overflow:ellipsis;
 }
 
+.episode_info_cell_left img{
+    height:100px;
+    margin-top:10px;
+    padding-right:10px;
+    float:left;
+}
+
 .episode_info_cell_right{
     display:table-cell;
     width:130px;
@@ -593,10 +676,10 @@ main{
     display: block;
     display: -webkit-box;
     max-width: 100%;
-    max-height: 78px;
+    max-height: 90px;
     margin-right:40px;
     line-height: 1;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 7;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

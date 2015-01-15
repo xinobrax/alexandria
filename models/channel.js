@@ -11,13 +11,13 @@ var Channel = new Schema({
     website: String,
     feed: { 
         type: String, 
-        required:true,
-        unique:true
+        required:true
     },
     feeds: Number,
     filter: String,
     language: String,
-    update_date: Date
+    update_date: Date,
+    rooms: []
 })
 
 module.exports = mongoose.model('Channel', Channel)

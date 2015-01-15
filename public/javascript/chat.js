@@ -78,7 +78,7 @@ chatSpace.on('chatMessage', function(msg){
         message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'
         message += '<div class=\'chatWindowPostMessage\'>'
         message += '<font style=\'color:#' + msg.color + ';font-weight:bold;\'>'
-        message += '[' + msg.timestamp + '] ' + msg.user
+        message += msg.user + ' [' + msg.timestamp + ']'
         message += '</font><br/>'
         message += msg.message
         message += '</div>'
@@ -156,7 +156,7 @@ chatSpace.on('getRoomHistory', function(roomHistory){
             message += '<font style=\'color:#' + roomHistory[i]['color'] + ';font-weight:bold;\'>'
             var date = new Date(roomHistory[i]['date'])
             date = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2)
-            message += '[' + date + '] ' + roomHistory[i]['user']
+            message += roomHistory[i]['user'] + ' [' + date + ']'
             message += '</font><br/>'
             message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory[i]['message'] + '</p>'
             message += '</div>'
@@ -192,38 +192,3 @@ chatSpace.on('getRoomHistory', function(roomHistory){
     }   
     $(".chatWindowMessages").scrollTop($(".chatWindowMessages")[0].scrollHeight)
 })
-
-/*
-chatSpace.on('getRoomHistory', function(roomHistory){
-    
-    for(var i in roomHistory){            
-
-        var message = ''
-        message += '<div class=\'chatWindowPost\' style=\'display:block;\'>'
-        if(roomHistory[i]['user'] == $('#user').val()){
-            message += '<div class=\'chatWindowPostUser\' style=\'float:right;\'>'
-        }else{
-            message += '<div class=\'chatWindowPostUser\' style=\'float:left;\'>'
-        }
-        message += '<img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' width=\'40\' />'
-        message += '</div>'
-        if(roomHistory[i]['user'] == $('#user').val()){
-            message += '<div class=\'chatWindowPostMessage\' style=\'float:right;text-align:right;\'>'
-
-        }else{
-            message += '<div class=\'chatWindowPostMessage\' style=\'float:left;\'>'
-        }
-        message += '<font style=\'color:#' + roomHistory[i]['color'] + ';font-weight:bold;\'>'
-        var date = new Date(roomHistory[i]['date'])
-        date = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2)
-        message += '[' + date + '] ' + roomHistory[i]['user']
-        message += '</font><br/>'
-        message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory[i]['message'] + '</p>'
-        message += '</div>'
-        message += '</div>'
-
-        $('.chatWindowTable').append(message)        
-    }   
-    $(".chatWindowMessages").scrollTop($(".chatWindowMessages")[0].scrollHeight)
-})
-*/

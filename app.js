@@ -30,6 +30,7 @@ var User = require('./models/user')
 var Channel = require('./models/channel')
 var Episode = require('./models/episode')
 var Message = require('./models/message')
+var Room = require('./models/room')
 
 // Globals
 var username = ''
@@ -139,7 +140,7 @@ settingsChannel.on('connection', function(socket){
             socket.emit('fetchFeed', data)    
         })
     })
-    
+
     socket.on('addChannel', function (channel) {
         // Fetch Channel Image, resize, save
         newChannel = new Channel(channel)
@@ -193,6 +194,28 @@ settingsChannel.on('connection', function(socket){
 
 backend = io.of('/backend')
 backend.on('connection', function(socket){
+    
+    socket.on('addRoom', function (room) {
+        newRoom = new Room(room)
+        console.log(newRoom)
+        newRoom.save(function(err, newRoom){
+            if(err) console.error(err)
+        })
+    })
+        
+    socket.on('getRoomTree', function () {        
+        Room.find(function(err, rooms){
+            if(err) console.error(err)
+            socket.emit('getRoomTree', rooms) 
+        })   
+    })
+    
+    socket.on('getRoomList', function () {        
+        Room.find(function(err, rooms){
+            if(err) console.error(err)
+            socket.emit('getRoomList', rooms) 
+        })   
+    })
 
     socket.on('loadChannelList', function(settings){
         Channel.find(function(err, channelList){
@@ -202,7 +225,6 @@ backend.on('connection', function(socket){
     })
 
     socket.on('loadChannelDetails', function(channelId){
-        //console.log(channelId)
         Channel.findOne({ _id:channelId }, function(err, channelDetails){
             if(err) console.error(err)
             socket.emit('loadChannelDetails', channelDetails)

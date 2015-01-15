@@ -53,7 +53,10 @@ $( document ).ready(function() {
                     loadChannelList()
                 })
                 break
-            case 'browseRooms':                
+            case 'browseRooms':   
+                $('.content_box').load('/pages/browseRooms.html', function(){
+                    loadRoomList()
+                })
                 break
             case 'logout':                
                 break
@@ -97,7 +100,7 @@ $( document ).ready(function() {
             $('.chatWindowMessages').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.6', background:'#584b2e', cursorborder:'0px'})
         })
     })    
-    
+        
     
     ////////////////////////////////////////////////////////////////////////////////
     //
@@ -105,7 +108,7 @@ $( document ).ready(function() {
     //
     //////////////////////////////////////////////////////////////////////////////// 
     
-    $('.content_box').on('click', '.main_list_entry', function() {
+    $('.content_box').on('click', '.browseChannelsChannelBox', function() {
     var channelId = $(this).attr('id')
         $('.content_box').load('/pages/channelDetails.html', function(){
             loadChannelDetails(channelId)
@@ -144,6 +147,13 @@ $( document ).ready(function() {
     
     $('.content_box').load('/forms/addChannel.html')
     //$('.content_box').load('/pages/todo.html')
+    //$('.content_box').load('/pages/browseChannels.html')
+    /*
+    $('.content_box').load('/forms/addRoom.html', function(){
+        var backend = io('/backend')
+        backend.emit('getRoomTree')
+    })
+    */
     
     
     

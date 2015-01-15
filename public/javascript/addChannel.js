@@ -99,6 +99,26 @@ function loadChannelList(){
 }
 
 backend.on('loadChannelList', function(channelList){    
+
+    var list = ''
+    list += '<div class=\'browseChannelsChannelRow\'>'
+    list += '<h2>Technology</h2>'
+    for(var i in channelList){
+
+            list += '<div class=\'browseChannelsChannelBox\' id=\'' + channelList[i]['_id'] + '\'>'
+                        
+            list += '<img src=\'images/channels/' + channelList[i]['_id'] + '.jpg\' width=\'120\' height=\'120\' />'
+            list += '<b>' + channelList[i]['title'] + ' <img src=\'images/icons/languages/' + channelList[i]['language'] + '.gif\' height=\'12\' /></b>'
+            //list += '<button style=\'height:30px;width:120px;color:#00FF00;border-color:#00FF00;\'>Subscribe</button>'
+            list += '</div>'
+    }
+    list += '</div>'
+
+    $('.content_box').append(list)
+})
+
+/*
+backend.on('loadChannelList', function(channelList){    
    
     var audiolist = ''
     var videolist = ''
@@ -160,7 +180,7 @@ backend.on('loadChannelList', function(channelList){
 
     $('.content_box').append(list)
 })
-
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -201,10 +221,14 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
         list += '<h3>' + channelEpisodes[i]['title'] + '</h3>'
         var date = new Date(channelEpisodes[i]['date'])
         list += '<p class=\'episode_meta\'>' + date + ' | ' + channelEpisodes[i]['duration'].toHHMMSS() + '</p>'
+        
+        if($('#type').val() == 'video_youtube'){
+            list += '<img src=\'http://img.youtube.com/vi/' + channelEpisodes[i]['url'] + '/mqdefault.jpg\' />'    
+        }
+        
         list += '<p class=\'episodeDescription\'>' + channelEpisodes[i]['description'] + '</p>'        
         list += '</div>'
         list += '<div class=\'episode_info_cell_right\' >'
-        //list += '<font class=\'episode_play_now\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</font><br/>'
         list += '<button class=\'episode_play_now\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</button><br/>'
         list += '<button class=\'episode_play_later\'><img src=\'images/icons/play_later.png\' height=\'14\' /> Play later</button><br/>'
         list += '<button class=\'episode_download\' id=\'' + channelEpisodes[i]['url'] + '\' ><img src=\'images/icons/download.png\' height=\'14\' /> Download</button>'
