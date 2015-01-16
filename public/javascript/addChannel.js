@@ -107,9 +107,16 @@ backend.on('loadChannelList', function(channelList){
 
             list += '<div class=\'browseChannelsChannelBox\' id=\'' + channelList[i]['_id'] + '\'>'
                         
-            list += '<img src=\'images/channels/' + channelList[i]['_id'] + '.jpg\' width=\'120\' height=\'120\' />'
-            list += '<b>' + channelList[i]['title'] + ' <img src=\'images/icons/languages/' + channelList[i]['language'] + '.gif\' height=\'12\' /></b>'
-            //list += '<button style=\'height:30px;width:120px;color:#00FF00;border-color:#00FF00;\'>Subscribe</button>'
+            list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['_id'] + '.jpg\' width=\'120\' height=\'120\' />'
+            if(channelList[i]['type'] == 'video_youtube' || channelList[i]['type'] == 'video_podcast'){
+                list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'18\' style=\'position:absolute;top:-1px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            }else{
+                list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'18\' style=\'position:absolute;top:-1px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            }
+            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'18\' style=\'position:absolute;top:102px;right:15px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+            list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language'] + '.gif\' height=\'18\' style=\'position:absolute;top:102px;left:15px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
+            
+            list += '<br/>' + channelList[i]['title']
             list += '</div>'
     }
     list += '</div>'
@@ -117,70 +124,45 @@ backend.on('loadChannelList', function(channelList){
     $('.content_box').append(list)
 })
 
-/*
-backend.on('loadChannelList', function(channelList){    
-   
-    var audiolist = ''
-    var videolist = ''
-
-    for(var i in channelList){
-        if(channelList[i]['type'] == 'audio_podcast' || channelList[i]['type'] == 'audio_soundcloud'){
-            audiolist += '<tr class=\'main_list_entry\' id=\'' + channelList[i]['_id'] + '\'>'
-            audiolist += '<td><img src=\'images/channels/icons/' + channelList[i]['_id'] + '.jpg\' width=\'30\' /></td>'
-            audiolist += '<td>' + channelList[i]['title'] + '</td>'
-            audiolist += '<td>' + channelList[i]['language'] + '</td>'
-            audiolist += '<td>' + channelList[i]['feeds'] + '</td>'
-            var date = new Date(channelList[i]['update_date'])
-            audiolist += '<td>' + date.getDay() + '.' + (date.getMonth()+1) + '.' + date.getFullYear() + '</td>'
-            audiolist += '<td><button style=\'height:30px;width:100px;color:#00FF00;border-color:#00FF00;\'>Subscribe</button></td>'
-            audiolist += '</tr>'
-        }else{
-            videolist += '<tr class=\'main_list_entry\' id=\'' + channelList[i]['_id'] + '\'>'
-            videolist += '<td><img src=\'images/channels/icons/' + channelList[i]['_id'] + '.jpg\' width=\'30\' /></td>'
-            videolist += '<td>' + channelList[i]['title'] + '</td>'
-            videolist += '<td>' + channelList[i]['language'] + '</td>'
-            videolist += '<td>' + channelList[i]['feeds'] + '</td>'
-            var date = new Date(channelList[i]['update_date'])
-            videolist += '<td>' + date.getDay() + '.' + (date.getMonth()+1) + '.' + date.getFullYear() + '</td>'
-            videolist += '<td><button style=\'height:30px;width:100px;color:#00FF00;border-color:#00FF00;\'>Subscribe</button></td>'
-            videolist += '</tr>'
+$( document ).ready(function() {
+    
+    $('.content_box').on('click', '.browseChannelsFilterEntry', function(){
+        
+        $(this).parent('.browseChannelsFilterBox').children('.browseChannelsFilterEntry').css({ 'background':'rgba(255,255,255,0.3)'  })
+        $(this).css({ 'background':'#c68b01'  })
+        
+        
+        if($(this).attr('id') == 'subscription_all' || $(this).attr('id') == 'subscribed' || $(this).attr('id') == 'unsubscribed'){
+            $(this).parent('.browseChannelsFilterBox').children('.filter_subscription').attr('id', $(this).attr('id'))
+        }else if($(this).attr('id') == 'type_all' || $(this).attr('id') == 'video' || $(this).attr('id') == 'audio'){
+            $(this).parent('.browseChannelsFilterBox').children('.filter_type').attr('id', $(this).attr('id'))
+        }else if($(this).attr('id') == 'language_all' || $(this).attr('id') == 'english' || $(this).attr('id') == 'german'){
+            $(this).parent('.browseChannelsFilterBox').children('.filter_language').attr('id', $(this).attr('id'))
         }
-    }
-    
-    var list = ''
-    list += '<h2>Video Channels</h2>'
-    list += '<div class=\'main_list_box\'>'
-    list += '<table width=\'100%\' cellspacing=\'0\' cellpadding=\'0\'>'
-    list += '<tr>'
-    list += '<td width=\'40\'><b>Icon</b></td>'
-    list += '<td><b>Title</b></td>'
-    list += '<td width=\'90\'><b>Language</b></td>'
-    list += '<td width=\'80\'><b>Episodes</b></td>'
-    list += '<td width=\'100\'><b>Last Update</b></td>'
-    list += '<td width=\'100\'><b>Subscription</b></td>'
-    list += '</tr>'
-    list += videolist
-    list += '</table>'
-    list += '</div>'
-    
-    list += '<br/><h2>Audio Channels</h2>'
-    list += '<div class=\'main_list_box\'>'
-    list += '<table width=\'100%\' cellspacing=\'0\' cellpadding=\'0\'>'
-    list += '<tr>'
-    list += '<td width=\'40\'><b>Icon</b></td>'
-    list += '<td><b>Title</b></td>'
-    list += '<td width=\'90\'><b>Language</b></td>'
-    list += '<td width=\'80\'><b>Episodes</b></td>'
-    list += '<td width=\'100\'><b>Last Update</b></td>'
-    list += '<td width=\'100\'><b>Subscription</b></td>'
-    list += '</tr>'
-    list += audiolist
-    list += '</table>'
-    list += '</div>'
-
-    $('.content_box').append(list)
+        
+        var subscription = $('.filter_subscription').attr('id')
+        var type = $('.filter_type').attr('id')
+        var language = $('.filter_language').attr('id')
+        
+        $('.browseChannelsChannelBox').each(function(){
+            if($(this).children('#subscription').attr('src') == 'images/icons/' + subscription + '.gif' || subscription == 'subscription_all'){
+                if($(this).children('#type').attr('src') == 'images/icons/' + type + '.gif' || type == 'type_all'){
+                    if($(this).children('#language').attr('src') == 'images/icons/languages/' + language + '.gif' || language == 'language_all'){
+                        $(this).show('slow')
+                    }else{
+                        $(this).hide('slow')
+                    }
+                }else{
+                    $(this).hide('slow')
+                }
+            }else{
+                $(this).hide('slow')
+            }
+        })      
+    })
 })
-*/
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //

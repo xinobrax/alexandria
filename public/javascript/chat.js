@@ -105,20 +105,10 @@ chatSpace.on('chatMessage', function(msg){
         message += '</div>'
         message += '</div>'
     }
-    
-    
-    if(msg.user == $('#user').val()){
-        
-
-    }else{
-        
-    }
-    
-    
     message += '</div>'
 
     if(msg.room == $('#room').val()){
-        $('.chatWindowMessages').append(message).each(function(){
+        $('.chatWindowTable').append(message).each(function(){
             $('.chatWindowPost').show(400)
         })
 
@@ -148,7 +138,7 @@ chatSpace.on('getRoomHistory', function(roomHistory){
     for(var i in roomHistory){            
 
         var message = ''
-        message += '<div class=\'chatWindowPost\' style=\'display:block;\'>'
+        message += '<div class=\'chatWindowPost\'>'
         if(roomHistory[i]['user'] == $('#user').val()){
             
             message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'

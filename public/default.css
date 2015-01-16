@@ -41,7 +41,7 @@ h1:first-letter{
 h2{
     font-size: 16px;
     margin:0px;
-    margin-top:12px;
+    margin-top:16px;
     margin-bottom:8px;
     margin-left:2px;
     color:#ffc438;
@@ -591,11 +591,54 @@ main{
     cursor:pointer;
 }
 
+
 /*##############################################################################
 ##
 ## Channel > Browse
 ##
 ##############################################################################*/
+
+.browseChannelsFilterBox{
+    position:relative;
+    display:block;
+    height:28px;
+    clear:left;
+}
+
+.browseChannelsFilterBox p{
+    display:table-cell;
+    width:100px;
+    height:12px;
+    padding:6px;
+    padding-left:8px;   
+    margin:0px;
+    font-weight:bold;
+    vertical-align:middle;
+    float:left;
+}
+
+.browseChannelsFilterEntry{
+    display:table-cell;
+    width:90px;
+    height:12px;
+    padding:6px;
+    padding-left:8px;
+    margin-right:6px;
+    vertical-align:middle;
+    box-shadow:1px 1px 1px 1px #000;
+    background:rgba(255,255,255,0.3);
+    border-radius:9px;
+    float:left;
+}
+
+.browseChannelsFilterEntry img{
+    height:12px;
+}
+
+.browseChannelsFilterEntry:hover{
+    background:#c68b01;
+    cursor:pointer;
+}
 
 .browseChannelsChannelRow{
     position:relative;
@@ -605,7 +648,7 @@ main{
 .browseChannelsChannelBox{
     position:relative;
     display:block;
-    width:140px;
+    width:150px;
     height:160px;
     margin-right:10px;
     text-align:center;
@@ -616,7 +659,7 @@ main{
     cursor:pointer;
 }
 
-.browseChannelsChannelBox img{
+.browseChannelsChannelImage{
     border-radius:9px;
     box-shadow:1px 1px 1px 1px #000;
 }
@@ -896,7 +939,7 @@ main{
 
 .chatWindowPost{
     margin-top:4px;
-    display:table-row;
+    display:block;
     text-shadow: 1px 1px 1px black;
 }
 
