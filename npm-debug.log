@@ -1,0 +1,115 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'git@github.com:manjeshpv/node-express-passport-mysql.git',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose node symlink /usr/bin/node
+5 warn package.json Alexandria@0.0.1 No repository field.
+6 warn package.json util@0.10.3 util is also the name of a node core module.
+7 verbose readDependencies using package.json deps
+8 verbose cache add [ 'git@github.com:manjeshpv/node-express-passport-mysql.git',
+8 verbose cache add   null ]
+9 verbose cache add name=undefined spec="git@github.com:manjeshpv/node-express-passport-mysql.git" args=["git@github.com:manjeshpv/node-express-passport-mysql.git",null]
+10 verbose parsed url { protocol: null,
+10 verbose parsed url   slashes: null,
+10 verbose parsed url   auth: null,
+10 verbose parsed url   host: null,
+10 verbose parsed url   port: null,
+10 verbose parsed url   hostname: null,
+10 verbose parsed url   hash: null,
+10 verbose parsed url   search: null,
+10 verbose parsed url   query: null,
+10 verbose parsed url   pathname: 'git@github.com:manjeshpv/node-express-passport-mysql.git',
+10 verbose parsed url   path: 'git@github.com:manjeshpv/node-express-passport-mysql.git',
+10 verbose parsed url   href: 'git@github.com:manjeshpv/node-express-passport-mysql.git' }
+11 verbose cache add name="git" spec="github.com:manjeshpv/node-express-passport-mysql.git" args=["git","github.com:manjeshpv/node-express-passport-mysql.git"]
+12 verbose parsed url { protocol: 'github.com:',
+12 verbose parsed url   slashes: null,
+12 verbose parsed url   auth: null,
+12 verbose parsed url   host: 'manjeshpv',
+12 verbose parsed url   port: null,
+12 verbose parsed url   hostname: 'manjeshpv',
+12 verbose parsed url   hash: null,
+12 verbose parsed url   search: null,
+12 verbose parsed url   query: null,
+12 verbose parsed url   pathname: '/node-express-passport-mysql.git',
+12 verbose parsed url   path: '/node-express-passport-mysql.git',
+12 verbose parsed url   href: 'github.com:manjeshpv/node-express-passport-mysql.git' }
+13 verbose addNamed [ 'git',
+13 verbose addNamed   'github.com:manjeshpv/node-express-passport-mysql.git' ]
+14 verbose addNamed [ null, null ]
+15 silly lockFile 7ae66864--node-express-passport-mysql-git git@github.com:manjeshpv/node-express-passport-mysql.git
+16 verbose lock git@github.com:manjeshpv/node-express-passport-mysql.git /home/rave/.npm/7ae66864--node-express-passport-mysql-git.lock
+17 info addNameTag [ 'git',
+17 info addNameTag   'github.com:manjeshpv/node-express-passport-mysql.git' ]
+18 verbose request where is /git
+19 verbose request registry https://registry.npmjs.org/
+20 verbose request id c707e6714f99bdb5
+21 verbose url raw /git
+22 verbose url resolving [ 'https://registry.npmjs.org/', './git' ]
+23 verbose url resolved https://registry.npmjs.org/git
+24 verbose request where is https://registry.npmjs.org/git
+25 info trying registry request attempt 1 at 16:40:31
+26 verbose etag "7R5AE0WXV7FOHU13UTFNMU94L"
+27 http GET https://registry.npmjs.org/git
+28 http 304 https://registry.npmjs.org/git
+29 silly registry.get cb [ 304,
+29 silly registry.get   { date: 'Sat, 17 Jan 2015 15:40:31 GMT',
+29 silly registry.get     server: 'Apache',
+29 silly registry.get     via: '1.1 varnish',
+29 silly registry.get     'last-modified': 'Sat, 17 Jan 2015 15:40:31 GMT',
+29 silly registry.get     'cache-control': 'max-age=60',
+29 silly registry.get     etag: '"7R5AE0WXV7FOHU13UTFNMU94L"',
+29 silly registry.get     age: '0',
+29 silly registry.get     'x-served-by': 'cache-ams4129-AMS',
+29 silly registry.get     'x-cache': 'HIT',
+29 silly registry.get     'x-cache-hits': '1',
+29 silly registry.get     'x-timer': 'S1421509231.384755,VS0,VE91',
+29 silly registry.get     vary: 'Accept',
+29 silly registry.get     'content-length': '0',
+29 silly registry.get     'keep-alive': 'timeout=10, max=50',
+29 silly registry.get     connection: 'Keep-Alive' } ]
+30 verbose etag https://registry.npmjs.org/git from cache
+31 info maybeGithub Attempting github.com:manjeshpv/node-express-passport-mysql.git from git://github.com/github.com:manjeshpv/node-express-passport-mysql.git
+32 silly lockFile 5818eaf5--node-express-passport-mysql-git git://github.com/github.com:manjeshpv/node-express-passport-mysql.git
+33 verbose lock git://github.com/github.com:manjeshpv/node-express-passport-mysql.git /home/rave/.npm/5818eaf5--node-express-passport-mysql-git.lock
+34 verbose addRemoteGit [ 'git://github.com/github.com:manjeshpv/node-express-passport-mysql.git',
+34 verbose addRemoteGit   'master' ]
+35 verbose git clone git://github.com/github.com:manjeshpv/node-express-passport-mysql.git Klone in Bare-Repository '/home/rave/.npm/_git-remotes/git-github-com-github-com-manjeshpv-node-express-passport-mysql-git-5818eaf5'...
+35 verbose git clone git://github.com/github.com:manjeshpv/node-express-passport-mysql.git fatal: remote error:
+35 verbose git clone git://github.com/github.com:manjeshpv/node-express-passport-mysql.git   github.com:manjeshpv/node-express-passport-mysql is not a valid repository name
+35 verbose git clone git://github.com/github.com:manjeshpv/node-express-passport-mysql.git   Email support@github.com for help
+36 silly lockFile 5818eaf5--node-express-passport-mysql-git git://github.com/github.com:manjeshpv/node-express-passport-mysql.git
+37 silly lockFile 5818eaf5--node-express-passport-mysql-git git://github.com/github.com:manjeshpv/node-express-passport-mysql.git
+38 info maybeGithub Attempting github.com:manjeshpv/node-express-passport-mysql.git from git+ssh://git@github.com:github.com:manjeshpv/node-express-passport-mysql.git
+39 silly lockFile bfa339ff--node-express-passport-mysql-git git@github.com:github.com:manjeshpv/node-express-passport-mysql.git
+40 verbose lock git@github.com:github.com:manjeshpv/node-express-passport-mysql.git /home/rave/.npm/bfa339ff--node-express-passport-mysql-git.lock
+41 verbose addRemoteGit [ 'git@github.com:github.com:manjeshpv/node-express-passport-mysql.git',
+41 verbose addRemoteGit   'master' ]
+42 error git clone git@github.com:github.com:manjeshpv/node-express-passport-mysql.git Klone in Bare-Repository '/home/rave/.npm/_git-remotes/git-github-com-github-com-manjeshpv-node-express-passport-mysql-git-bfa339ff'...
+42 error git clone git@github.com:github.com:manjeshpv/node-express-passport-mysql.git Permission denied (publickey).
+42 error git clone git@github.com:github.com:manjeshpv/node-express-passport-mysql.git fatal: Could not read from remote repository.
+42 error git clone git@github.com:github.com:manjeshpv/node-express-passport-mysql.git
+42 error git clone git@github.com:github.com:manjeshpv/node-express-passport-mysql.git Please make sure you have the correct access rights
+42 error git clone git@github.com:github.com:manjeshpv/node-express-passport-mysql.git and the repository exists.
+43 silly lockFile bfa339ff--node-express-passport-mysql-git git@github.com:github.com:manjeshpv/node-express-passport-mysql.git
+44 silly lockFile bfa339ff--node-express-passport-mysql-git git@github.com:github.com:manjeshpv/node-express-passport-mysql.git
+45 silly lockFile 7ae66864--node-express-passport-mysql-git git@github.com:manjeshpv/node-express-passport-mysql.git
+46 silly lockFile 7ae66864--node-express-passport-mysql-git git@github.com:manjeshpv/node-express-passport-mysql.git
+47 error notarget No compatible version found: git@'github.com:manjeshpv/node-express-passport-mysql.git'
+47 error notarget Valid install targets:
+47 error notarget ["0.1.0","0.1.1","0.1.2","0.1.3","0.1.4","0.1.5"]
+47 error notarget
+47 error notarget This is most likely not a problem with npm itself.
+47 error notarget In most cases you or one of your dependencies are requesting
+47 error notarget a package version that doesn't exist.
+48 error System Linux 3.13.0-37-generic
+49 error command "/usr/bin/node" "/usr/bin/npm" "install" "git@github.com:manjeshpv/node-express-passport-mysql.git" "--save"
+50 error cwd /home/rave/Dokumente/Dev/nodejs/alexandria
+51 error node -v v0.10.33
+52 error npm -v 1.4.28
+53 error code ETARGET
+54 verbose exit [ 1, true ]

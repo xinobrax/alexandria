@@ -10,7 +10,7 @@ var backend = io('/backend')
 
 function fetchNewFeed(){
     if($('input[name=feedurl]').val()){
-        settingsChannel.emit('fetchFeed', $('input[name=feedurl]').val())
+        settingsChannel.emit('fetchFeed', $('input[name=feedurl]').val(), $('#type').val())
     }else{
         $('.loading').hide()
         $('input[name=feedurl]').css('background-color', 'rgba(255,0,0,0.2)')            
@@ -66,10 +66,11 @@ $( document ).ready(function() {
     
     $('.content_box').on('click', '.addChannelSourceButton', function(){
         var channelSource = $(this).attr('id')
+        $('#type').val(channelSource)
         
         switch(channelSource){
             case 'rss':
-                $(this).parent('div').next().children('h2').html('2. Type in the URL of an RSS Feed')
+                $(this).parent('div').next().children('h2').html('2. Type in the URL of an RSS Feed')                
                 break;
             case 'youtube':
                 $(this).parent('div').next().children('h2').html('2. Type in the name of a Youtube channel')
@@ -109,12 +110,14 @@ backend.on('loadChannelList', function(channelList){
                         
             list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['_id'] + '.jpg\' width=\'120\' height=\'120\' />'
             if(channelList[i]['type'] == 'video_youtube' || channelList[i]['type'] == 'video_podcast'){
-                list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'18\' style=\'position:absolute;top:-1px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+                list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
             }else{
-                list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'18\' style=\'position:absolute;top:-1px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+                list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
             }
-            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'18\' style=\'position:absolute;top:102px;right:15px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
-            list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language'] + '.gif\' height=\'18\' style=\'position:absolute;top:102px;left:15px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
+            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:15px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+            list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language'] + '.gif\' height=\'16\' style=\'position:absolute;top:104px;left:15px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
+            
+            list += '<div id=\'feeds\' style=\'position:absolute;top:-6px;right:9px;background:#ffc438;border-radius:12px;border:4px solid #000;width:36px;color:#000;text-shadow:none;\'><b>' + channelList[i]['feeds'] + '</b></div>'
             
             list += '<br/>' + channelList[i]['title']
             list += '</div>'

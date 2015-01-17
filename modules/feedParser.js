@@ -7,16 +7,25 @@
 var FeedParser = require('feedparser')
 var request = require('request')
 var youtube = require('youtube-dl')
+var http = require('http')
 
-exports.fetchFeedMeta = function(url, callback){
+exports.fetchFeedMeta = function(type, url, callback){
     
     var feedparser = new FeedParser()
-    console.log('1')
     
     try {
-        fetch = request(url)
+        if(type == 'rss'){
+            fetch = request(url)
+        }else if(type == 'youtube'){
+            fetch = request('https://gdata.youtube.com/feeds/api/users/' + url + '/uploads')
+            var img = request({url: 'http://gdata.youtube.com/feeds/api/users/' + url + '?fields=media:thumbnail&alt=json', json: true}, function(err, response, body) {
+                if (!err && response.statusCode === 200) {
+                    img = body['entry']['media$thumbnail']['url']
+                }
+            })
+                
+        }
         
-        console.log('2')
         var feed = {}
 
         fetch.on('error', function(err){
@@ -37,12 +46,13 @@ exports.fetchFeedMeta = function(url, callback){
         })
 
         feedparser.on('readable', function(){
-             feed = { title: this.meta['title'], description: this.meta['description'], website: this.meta['link'], image: this.meta['image']['url']  }
-             var item
+            if(type == 'rss'){
+                feed = { title: this.meta['title'], description: this.meta['description'], website: this.meta['link'], image: this.meta['image']['url']  }
+            }else if(type == 'youtube'){
+                feed = { title: this.meta['title'], description: this.meta['description'], website: this.meta['link'], image:img  }
+            }
 
-             while (item = this.read()) {
-                 //console.log(item['media:group']['yt:duration']['@']['seconds'])
-             }
+            this.read()
         })
 
         feedparser.on('end', function(){
@@ -119,7 +129,7 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
                 }                    
                 
                 episode.save(function(err, episodes){
-                    if(err) console.error(err)
+                    //if(err) console.error(err)
                 })
             }
          }
@@ -127,7 +137,7 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
 
     feedparser.on('end', function(){
         //console.log(feed)
-        //callback(feed)
+        callback()
         // Eintrag in DB
     })    
 }

@@ -8,6 +8,7 @@
     "ejs": "*",
     "express": "latest",
     "feedparser": "*",
+    "mysql": "^2.5.4",
     "passport": "*",
     "passport-local-mongoose": "^1.0.0",
     "request": "*",

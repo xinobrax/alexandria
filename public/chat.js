@@ -77,8 +77,8 @@ $( document ).ready(function() {
     
     $('.navigationChannel').click(function(){
 
-        $('.content_box').load('/pages/myChannels.html', function(){
-            //loadChannelList()
+        $('.content_box').load('/pages/browseChannels.html', function(){
+            loadChannelList()
         })
     })
     

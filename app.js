@@ -12,6 +12,13 @@ var LocalStrategy = require('passport-local').Strategy
 var mongoose = require('mongoose')
 var bodyParser = require('body-parser')
 var session = require('express-session')
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'alexandria',
+    password : '',
+    database : 'alexandria'
+})
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +45,13 @@ var userlist = {}
 
 // Connect to Database
 mongoose.connect('mongodb://localhost/alexandria_dev')
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack)
+    return
+  }
+  console.log('connected as id ' + connection.threadId)
+})
 
 // App Use
 app.use(express.static('public'))
@@ -135,8 +149,8 @@ root.on('connection', function(socket){
 settingsChannel = io.of('/settings')
 settingsChannel.on('connection', function(socket){
         
-    socket.on('fetchFeed', function (feedurl) {        
-        feedParser.fetchFeedMeta(feedurl, function(data){
+    socket.on('fetchFeed', function (feedurl, type) {        
+        feedParser.fetchFeedMeta(type, feedurl, function(data){
             socket.emit('fetchFeed', data)    
         })
     })
@@ -243,6 +257,37 @@ backend.on('connection', function(socket){
         })
     })
 })
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Update Feeds
+//
+////////////////////////////////////////////////////////////////////////////////
+
+var interval = 10 // Minutes
+
+setInterval(function() {
+
+    Channel.find(function(err, channelList){
+        if(err) console.error(err)
+
+        channelList.forEach(function(channel){
+            
+            feedParser.fetchFeeds(channel['_id'], channel['feed'], channel['type'], channel['filter'], function(data){
+                if(err) console.error(err)          
+                
+                Episode.count({ channel:channel['_id'] }, function(err, count){
+                    if(err) console.error(err)
+
+                    Channel.update({ _id:channel['_id'] }, { feeds:count }, function(err){
+                        if(err) console.error(err)
+                    })
+                })
+            })  
+        })
+    })
+}, 60000 * interval);
 
 
 ////////////////////////////////////////////////////////////////////////////////
