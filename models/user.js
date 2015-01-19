@@ -1,30 +1,57 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-var passportLocalMongoose = require('passport-local-mongoose')
+var DB = require('../db').DB
 
-var User = new Schema({
-    username: { 
-        type: String, 
-        unique: true
-    },
-    password: String,
-    status: String,
-    registration: Date,
-    last_login: Date,
-    email: String,
-    email_privacy: String,
-    jabber: String,
-    jabber_privacy: String,
-    toxid: String,
-    toxid_privacy: String,
-    diaspora: String,
-    diaspora_privacy: String,
-    bitcoin: String,
-    bitcoin_privacy: String,
-    channels: [],
-    rooms: [],
-    friends: []
+var User = DB.Model.extend({
+    tableName: 'users',
+    idAttribute: 'user_id',
+    
+    messages: function() {
+        return this.belongsTo(Message, 'user_id')
+    }
 })
 
-User.plugin(passportLocalMongoose)
-module.exports = mongoose.model('User', User)
+var Channel = DB.Model.extend({
+    tableName: 'channels',
+    idAttribute: 'channel_id',
+})
+
+var Episode = DB.Model.extend({
+    tableName: 'episodes',
+    idAttribute: 'episode_id',
+    
+    count: function (channel, cb) {
+        DB.knex('episodes')
+        .count('*')
+        .where({ channel_idfs:channel})
+        .then(function (count) {
+            cb(null, count)
+        })
+        .catch(function (err) {
+            cb(err)
+        })
+    }
+})
+
+var Room = DB.Model.extend({
+    tableName: 'rooms',
+    idAttribute: 'room_id',
+    
+    messages: function() {
+        return this.hasMany(Message, 'room_idfs')
+    }
+})
+
+var Message = DB.Model.extend({
+    tableName: 'messages',
+    
+    user: function() {
+        return this.belongsTo(User, 'user_idfs')
+    }
+})
+
+module.exports = {
+    User: User,
+    Channel: Channel,
+    Episode: Episode,
+    Room: Room,
+    Message: Message
+}

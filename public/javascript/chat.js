@@ -29,7 +29,7 @@ $( document ).ready(function() {
     $('.content_box').on('keyup', '.chatWindowInputField', function(e) {
         if(e.keyCode == 13) {            
             var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
-            var message = { timestamp:date, user:$('#user').val(), room:$('#room').val(), message:$('.chatWindowInputField').val(), color:'00ff00' }
+            var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
 
             chatSpace.emit('chatMessage', message)
 
@@ -49,7 +49,7 @@ $( document ).ready(function() {
     $('.content_box').on('click', '.chatWindowSendButton', function(){
         
         var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
-        var message = { timestamp:date, user:$('#user').val(), room:$('#room').val(), message:$('.chatWindowInputField').val(), color:'00ff00' }
+        var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
         
         $(this).parent().prev().children().focus()
         
@@ -73,12 +73,12 @@ chatSpace.on('chatMessage', function(msg){
 
     var message = ''
     message += '<div class=\'chatWindowPost\'>'
-    if(msg.user == $('#user').val()){
+    if(msg.user_idfs == $('#userId').val()){
         
         message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'
         message += '<div class=\'chatWindowPostMessage\'>'
-        message += '<font style=\'color:#' + msg.color + ';font-weight:bold;\'>'
-        message += msg.user + ' [' + msg.timestamp + ']'
+        message += '<font style=\'font-weight:bold;\'>'
+        message += msg.username + ' [' + msg.timestamp + ']'
         message += '</font><br/>'
         message += msg.message
         message += '</div>'
@@ -98,8 +98,8 @@ chatSpace.on('chatMessage', function(msg){
         
         message += '<div class=\'chatWindowPostMessageBox\'>'
         message += '<div class=\'chatWindowPostMessage\'>'
-        message += '<font style=\'color:#' + msg.color + ';font-weight:bold;\'>'
-        message += '[' + msg.timestamp + '] ' + msg.user
+        message += '<font style=\';font-weight:bold;\'>'
+        message += '[' + msg.timestamp + '] ' + msg.user_idfs
         message += '</font><br/>'
         message += msg.message
         message += '</div>'
@@ -107,7 +107,7 @@ chatSpace.on('chatMessage', function(msg){
     }
     message += '</div>'
 
-    if(msg.room == $('#room').val()){
+    if(msg.room_idfs == $('#room').val()){
         $('.chatWindowTable').append(message).each(function(){
             $('.chatWindowPost').show(400)
         })
@@ -115,12 +115,12 @@ chatSpace.on('chatMessage', function(msg){
         $('.chatWindowMessages').perfectScrollbar('update')        
         $(".chatWindowMessages").animate({ scrollTop: $(".chatWindowMessages")[0].scrollHeight}, 400)
     }else{
-        var messageCounter = $('#' + msg.room + '.navigationMessageCounter').html()
+        var messageCounter = $('#' + msg.room_idfs + '.navigationMessageCounter').html()
         messageCounter++
         if(messageCounter == '1'){
-            $('#' + msg.room + '.navigationMessageCounter').fadeIn('slow')
+            $('#' + msg.room_idfs + '.navigationMessageCounter').fadeIn('slow')
         }
-        $('#' + msg.room + '.navigationMessageCounter').html(messageCounter)
+        $('#' + msg.room_idfs + '.navigationMessageCounter').html(messageCounter)
         
         // TODO Chat Box Highlight
     }    
@@ -135,20 +135,19 @@ chatSpace.on('chatMessage', function(msg){
 
 chatSpace.on('getRoomHistory', function(roomHistory){
     
-    for(var i in roomHistory){            
-
+    roomHistory = JSON.parse(roomHistory)
+    for(var i in roomHistory.messages){
+        
         var message = ''
         message += '<div class=\'chatWindowPost\'>'
-        if(roomHistory[i]['user'] == $('#user').val()){
+        if(roomHistory.messages[i]['user_idfs'] == $('#userId').val()){
             
             message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'
             message += '<div class=\'chatWindowPostMessage\'>'
-            message += '<font style=\'color:#' + roomHistory[i]['color'] + ';font-weight:bold;\'>'
-            var date = new Date(roomHistory[i]['date'])
-            date = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2)
-            message += roomHistory[i]['user'] + ' [' + date + ']'
+            message += '<font style=\'font-weight:bold;\'>'
+            message += roomHistory.messages[i]['user_idfs'] + ' [' + roomHistory.messages[i]['timestamp'] + ']'
             message += '</font><br/>'
-            message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory[i]['message'] + '</p>'
+            message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory.messages[i]['message'] + '</p>'
             message += '</div>'
             message += '</div>'
             
@@ -166,18 +165,14 @@ chatSpace.on('getRoomHistory', function(roomHistory){
             
             message += '<div class=\'chatWindowPostMessageBox\'>'
             message += '<div class=\'chatWindowPostMessage\'>'
-            message += '<font style=\'color:#' + roomHistory[i]['color'] + ';font-weight:bold;\'>'
-            var date = new Date(roomHistory[i]['date'])
-            date = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2)
-            message += '[' + date + '] ' + roomHistory[i]['user']
+            message += '<font style=\';font-weight:bold;\'>'
+            message += '[' + roomHistory.messages[i]['timestamp'] + '] ' + roomHistory.messages[i].user['username']
             message += '</font><br/>'
-            message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory[i]['message'] + '</p>'
+            message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory.messages[i]['message'] + '</p>'
             message += '</div>'
-            message += '</div>'
-            
+            message += '</div>'            
         }
         message += '</div>'
-        
         $('.chatWindowTable').append(message)        
     }   
     $(".chatWindowMessages").scrollTop($(".chatWindowMessages")[0].scrollHeight)

@@ -4,6 +4,8 @@
   "description": "News Feed Chat Network",
   "main": "app.js",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bookshelf": "^0.7.9",
     "browserify": "^8.0.1",
     "ejs": "*",
     "express": "latest",

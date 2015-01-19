@@ -3,16 +3,16 @@ var express = require('express')
 var app = express()
 var http2 = require('http')
 var http = require('http').Server(app)
-var fs = require('fs');
+var fs = require('fs')
 var gm = require('gm')  // Resize Image
 var ejs = require('ejs')
 var io = require('socket.io')(http)
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
-var mongoose = require('mongoose')
 var bodyParser = require('body-parser')
 var session = require('express-session')
-var mysql      = require('mysql');
+var bcrypt = require('bcrypt-nodejs')
+var mysql      = require('mysql')
 var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'alexandria',
@@ -31,9 +31,8 @@ var connection = mysql.createConnection({
 var feedParser = require('./modules/feedParser.js')
 var formatChatMessage = require('./modules/formatChatMessage.js')
 
-
 // Mongoose Models
-var User = require('./models/user')
+var DB = require('./models/user')
 var Channel = require('./models/channel')
 var Episode = require('./models/episode')
 var Message = require('./models/message')
@@ -43,14 +42,31 @@ var Room = require('./models/room')
 var username = ''
 var userlist = {}
 
-// Connect to Database
-mongoose.connect('mongodb://localhost/alexandria_dev')
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack)
-    return
-  }
-  console.log('connected as id ' + connection.threadId)
+// Passport Config
+passport.use(new LocalStrategy(function(username, password, done) {
+    new DB.User({username:username}).fetch().then(function(data) {
+        var user = data
+        if(user === null) {
+            return done(null, false, {message: 'Invalid username or password'})
+        }else{
+            user = data.toJSON()
+            if(!bcrypt.compareSync(password, user.password)) {
+                return done(null, false, {message: 'Invalid username or password'})
+            }else{
+                return done(null, user)
+            }
+        }
+    })
+}))
+
+passport.serializeUser(function(user, done) {
+    done(null, user.username)
+})
+
+passport.deserializeUser(function(username, done) {
+    new DB.User({username: username}).fetch().then(function(user) {
+        done(null, user)
+    })
 })
 
 // App Use
@@ -67,11 +83,6 @@ app.use(passport.session())
 
 // App Set
 app.set('view engine', 'ejs')
-
-// Passport Config
-passport.use(new LocalStrategy(User.authenticate()))
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
 
 // Routes
 require('./routes')(app)
@@ -94,8 +105,8 @@ root.on('connection', function(socket){
     console.log('connected')
     
     // Temp Auto Join
-    socket.join('alexandria')
-    socket.join('bitcoin')
+    socket.join('1') // Alexandria
+    socket.join('2') // Bitcoin
                 
     socket.emit('setUserlist', userlist)    
  
@@ -103,29 +114,22 @@ root.on('connection', function(socket){
        
         msg.message = formatChatMessage.formatChatMessage(msg.message)
         
-        if(msg.message.search('/color') !== -1){
-            msg.color = msg.message.substring(7)
-        }
-        
-        msg.username = socket.username
     
-        newMessage = new Message(msg)
-        newMessage.save(function(err, newMessage){
-            if(err) console.error(err)
-        })
-        
-        root.to(msg.room).emit('chatMessage', msg)
-        console.log(msg.room + ': (' + msg.user + ') ' + msg.message)
+        new DB.Message(msg).save().then(function(){})
+        msg.username = socket.username
+        root.to(msg.room_idfs).emit('chatMessage', msg)
     })
     
-    socket.on('joinRoom', function(room){
-        socket.join(room)
-        console.log('User joined ' + room)
+    socket.on('joinRoom', function(room_idfs){
+        socket.join(room_idfs)
+        console.log('User joined ' + room_idfs)
     }) 
     
     socket.on('getRoomHistory', function(room){
-        Message.find({ room:room }).sort({ date:'asc' }).exec(function(err, roomHistory){
-            if(err) console.error(err)
+        new DB.Room().where({ room_id:room }).fetch({ withRelated:['messages.user'] }).then(function(roomHistory){
+            roomHistory = JSON.stringify(roomHistory)
+            
+            console.log(roomHistory)
             socket.emit('getRoomHistory', roomHistory) 
         })    
     })         
@@ -155,33 +159,31 @@ settingsChannel.on('connection', function(socket){
         })
     })
 
-    socket.on('addChannel', function (channel) {
+    socket.on('addChannel', function (channel, img) {
         // Fetch Channel Image, resize, save
-        newChannel = new Channel(channel)
-        var imgpath = './public/images/channels/' + newChannel._id
-        if(channel.image.substring(0,2) == '//'){
-            channel.image = 'http:' + channel.image
-        }
-        
-        console.log(channel.image)
-        var request = http2.get(channel.image , function(response) {
-            var imageMagick = gm.subClass({ imageMagick: true })
-            imageMagick(response).resize(200, 200).write(imgpath + '.jpg', function(err, response){
-                imageMagick(imgpath + '.jpg').resize(40, 40).write('./public/images/channels/icons/' + newChannel._id + '.jpg', function(err){
-                    feedParser.fetchFeeds(newChannel._id, newChannel.feed, newChannel.type, newChannel.filter, function(data){
-                        if(err) console.error(err)
+        new DB.Channel(channel).save().then(function(model){
+            
+            var imgpath = './public/images/channels/' + model['id']
+            if(img.substring(0,2) == '//'){
+                img = 'http:' + img
+            }
+            
+            var request = http2.get(img , function(response) {
+                var imageMagick = gm.subClass({ imageMagick: true })
+                imageMagick(response).resize(200, 200).write(imgpath + '.jpg', function(err, response){
+                    imageMagick(imgpath + '.jpg').resize(40, 40).write('./public/images/channels/icons/' + model['id'] + '.jpg', function(err){
+                        feedParser.fetchFeeds(model['id'], model['attributes']['feed'], model['attributes']['type_idfs'], model['attributes']['filter'], function(data){
+                            if(err) console.error(err)
+                        })
                     })
-                })
-            })              
+                })              
+            })
         })
 
-        newChannel.save(function(err, newChannel){
-            if(err) console.error(err)
-        })
     })
     
     socket.on('getUserProfile', function (userId) {
-        User.findOne({ _id:userId }, function(err, userProfile){
+        DB.User({ user_id:userId }).fetch().then(function(userProfile){
             if(err) console.error(err)
             socket.emit('getUserProfile', userProfile) 
         })              
@@ -232,28 +234,26 @@ backend.on('connection', function(socket){
     })
 
     socket.on('loadChannelList', function(settings){
-        Channel.find(function(err, channelList){
-            if(err) console.error(err)
+        new DB.Channel().fetchAll({require: true}).then(function(channelList){
             socket.emit('loadChannelList', channelList)
         })
     })
 
     socket.on('loadChannelDetails', function(channelId){
-        Channel.findOne({ _id:channelId }, function(err, channelDetails){
-            if(err) console.error(err)
+        new DB.Channel({ channel_id:channelId }).fetch().then(function(channelDetails){
             socket.emit('loadChannelDetails', channelDetails)
+            
+            new DB.Episode().query().where({channel_idfs:channelId}).select().then(function(channelEpisodes){
+                socket.emit('loadChannelEpisodes', channelEpisodes)    
+            })
         })
 
-        Episode.find({ channel:channelId }).sort({ date:'desc' }).exec(function(err, channelEpisodes){
-            if(err) console.error(err)
-            socket.emit('loadChannelEpisodes', channelEpisodes)
-        })
     })
 
     socket.on('getYoutubeUrl', function(ytid){
         feedParser.getYoutubeUrl(ytid, function(yturl){
             socket.emit('getYoutubeUrl', yturl)
-            console.log('Got ytid: ' + yturl)
+            //console.log('Got ytid: ' + yturl)
         })
     })
 })
@@ -269,22 +269,22 @@ var interval = 10 // Minutes
 
 setInterval(function() {
 
-    Channel.find(function(err, channelList){
-        if(err) console.error(err)
+    new DB.Channel().query().then(function(channelList){
 
         channelList.forEach(function(channel){
             
-            feedParser.fetchFeeds(channel['_id'], channel['feed'], channel['type'], channel['filter'], function(data){
+            feedParser.fetchFeeds(channel['channel_id'], channel['feed'], channel['type_idfs'], channel['filter'], function(err, data){
                 if(err) console.error(err)          
-                
-                Episode.count({ channel:channel['_id'] }, function(err, count){
+            
+                new DB.Episode().count(channel['channel_id'], function(err, count){
                     if(err) console.error(err)
-
-                    Channel.update({ _id:channel['_id'] }, { feeds:count }, function(err){
-                        if(err) console.error(err)
+                    
+                    count = count[0]['count(*)']
+                    new DB.Channel({ channel_id:channel['channel_id'] }).save({ feeds:count }).then(function(model){
                     })
                 })
             })  
+            
         })
     })
 }, 60000 * interval);

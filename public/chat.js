@@ -90,12 +90,12 @@ $( document ).ready(function() {
     //////////////////////////////////////////////////////////////////////////////// 
     
     $('.navigationRoom').click(function(){
-        var room = $(this).attr('id')
+        var room_idfs = $(this).attr('id')
         $('.content_box').load('/pages/chatWindow.html', function(){            
-            loadChatWindow(room)
+            loadChatWindow(room_idfs)
             $('.chatWindowInputField').focus()
-            $('#' + room + '.navigationMessageCounter').fadeOut('slow', function(){
-                $('#' + room + '.navigationMessageCounter').html('0')
+            $('#' + room_idfs + '.navigationMessageCounter').fadeOut('slow', function(){
+                $('#' + room_idfs + '.navigationMessageCounter').html('0')
             })
             $('.chatWindowMessages').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.6', background:'#584b2e', cursorborder:'0px'})
         })
@@ -123,10 +123,10 @@ $( document ).ready(function() {
     ////////////////////////////////////////////////////////////////////////////////    
     
     $('.content_box').on('click', '.episode_play_now', function(){
-        if($('#type').val() == 'video_youtube'){
+        if($('#type').val() == '4'){
             var backend = io('/backend')
             backend.emit('getYoutubeUrl', $(this).attr('id'))
-        }else if($('#type').val() == 'audio_podcast' || $('#type').val() == 'video_podcast'){
+        }else if($('#type').val() == '1' || $('#type').val() == '2'){
             $('#player').attr({ src:$(this).attr('id'), poster:$('#image').attr('src') }).append(function(){
                 var player = document.getElementById('player')
                 player.play()
@@ -235,19 +235,3 @@ $( document ).ready(function() {
     })
     
 })
-
-
-
-
-String.prototype.toHHMMSS = function () {
-    var sec_num = parseInt(this, 10); // don't forget the second param
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    var time    = hours+':'+minutes+':'+seconds;
-    return time;
-}

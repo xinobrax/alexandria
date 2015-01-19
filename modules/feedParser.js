@@ -4,6 +4,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+var DB = require('../models/user')
 var FeedParser = require('feedparser')
 var request = require('request')
 var youtube = require('youtube-dl')
@@ -77,7 +78,12 @@ var Episode = require('../models/episode')
 exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
 
     var feedparser = new FeedParser()
-    var fetch = request(feedUrl)
+    if(type == '1' || type == '2' || type == '3'){
+        var fetch = request(feedUrl)
+    }else if(type == '4'){
+        var fetch = request('https://gdata.youtube.com/feeds/api/users/' + feedUrl + '/uploads')
+    }
+    
     var feeds = {}
 
     fetch.on('error', function(err){
@@ -104,48 +110,57 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
         while (item = this.read()) {
             
             if(item['title'].search(filter) !== -1){
-                if(type == 'audio_podcast' || type == 'video_podcast'){
-                    var episode = new Episode({
+                if(type == '1' || type == '2'){
+                    var episode = {
                         title: item['title'],
                         description: item['description'],
                         url: item['enclosures'][0]['url'],
                         link: item['url'],
                         date: item['date'],
                         duration: item['enclosures'][0]['length'],
-                        channel: channelId
-                    })
-                }else if(type == 'video_youtube'){
+                        channel_idfs: channelId
+                    }
+                }else if(type == '4'){
                     var ytid = item['link']
                     ytid = ytid.substring(32, 43); 
-                    var episode = new Episode({
+                    var episode = {
                         title: item['title'],
                         description: item['description'],
                         url: ytid,
                         link: 'https://www.youtube.com/watch?v=' + ytid,
                         date: item['pubDate'],
                         duration: item['media:group']['yt:duration']['@']['seconds'],
-                        channel: channelId
-                    })
+                        channel_idfs: channelId
+                    }
                 }                    
                 
-                episode.save(function(err, episodes){
-                    //if(err) console.error(err)
+                new DB.Episode(episode).save().then(function(err, model){
+                    if(err) console.error(err)
+                }).catch(function(err){
+                    //console.error(err)
                 })
             }
          }
     })
 
     feedparser.on('end', function(){
-        //console.log(feed)
         callback()
-        // Eintrag in DB
     })    
 }
 
 exports.getYoutubeUrl = function(ytid, callback){
     var url = 'https://www.youtube.com/watch?v=' + ytid
-    youtube.getInfo(url, function(err, info){
+    youtube.getInfo(url, ['--format=webm'], ['--max-quality=247'], function(err, info){
         if(err) console.error(err)
+        
+        youtube.getFormats(url, function(err, formats) {
+            if (err) throw err
+
+                formats.forEach(function(format) {
+                    console.log(format)
+                })
+            })
+        
         // Send back
         callback(info.url)
     })
