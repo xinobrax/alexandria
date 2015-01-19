@@ -96,7 +96,7 @@ $( document ).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
 
 function loadChannelList(){
-    backend.emit('loadChannelList', '')
+    backend.emit('loadChannelList', $('#userId').val())
 }
 
 backend.on('loadChannelList', function(channelList){    
@@ -104,23 +104,30 @@ backend.on('loadChannelList', function(channelList){
     var list = ''
     list += '<div class=\'browseChannelsChannelRow\'>'
     list += '<h2>Technology</h2>'
+
+    channelList = JSON.parse(channelList)
     for(var i in channelList){
 
-            list += '<div class=\'browseChannelsChannelBox\' id=\'' + channelList[i]['channel_id'] + '\'>'
-                        
-            list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['channel_id'] + '.jpg\' width=\'120\' height=\'120\' />'
-            if(channelList[i]['type_idfs'] == '4' || channelList[i]['type_idfs'] == '1'){
-                list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
-            }else{
-                list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
-            }
+        list += '<div class=\'browseChannelsChannelBox\' id=\'' + channelList[i]['channel_id'] + '\'>'
+
+        list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['channel_id'] + '.jpg\' width=\'120\' height=\'120\' />'
+        if(channelList[i]['type_idfs'] == '4' || channelList[i]['type_idfs'] == '1'){
+            list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+        }else{
+            list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+        }
+        if(channelList[i]['user_idfs'] == $('#userId').val()){
+            list += '<img id=\'subscription\' src=\'images/icons/subscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:15px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+        }else{
             list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:15px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
-            list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'16\' style=\'position:absolute;top:104px;left:15px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
-            
-            list += '<div id=\'feeds\' style=\'position:absolute;top:-6px;right:9px;background:#ffc438;border-radius:12px;border:4px solid #000;width:36px;color:#000;text-shadow:none;\'><b>' + channelList[i]['feeds'] + '</b></div>'
-            
-            list += '<br/>' + channelList[i]['title']
-            list += '</div>'
+        }
+
+        list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'16\' style=\'position:absolute;top:104px;left:15px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
+
+        list += '<div id=\'feeds\' style=\'position:absolute;top:-6px;right:9px;background:#ffc438;border-radius:12px;border:4px solid #000;width:36px;color:#000;text-shadow:none;\'><b>' + channelList[i]['feeds'] + '</b></div>'
+
+        list += '<br/>' + channelList[i]['title']
+        list += '</div>'
     }
     list += '</div>'
 

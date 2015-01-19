@@ -11,7 +11,7 @@ function loadChatWindow(room){
     chatSpace.emit('joinRoom', room)
     chatSpace.emit('getRoomHistory', room)
     
-    $('.content_box').children('h1').html(room)
+    
     $('#room').val(room)
 }
 
@@ -77,9 +77,9 @@ chatSpace.on('chatMessage', function(msg){
         
         message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'
         message += '<div class=\'chatWindowPostMessage\'>'
-        message += '<font style=\'font-weight:bold;\'>'
-        message += msg.username + ' [' + msg.timestamp + ']'
-        message += '</font><br/>'
+        //message += '<font style=\'font-weight:bold;\'>'
+        //message += msg.username + ' [' + msg.timestamp + ']'
+        //message += '</font><br/>'
         message += msg.message
         message += '</div>'
         message += '</div>'
@@ -135,7 +135,10 @@ chatSpace.on('chatMessage', function(msg){
 
 chatSpace.on('getRoomHistory', function(roomHistory){
     
+    
     roomHistory = JSON.parse(roomHistory)
+    $('.content_box').children('h1').html(roomHistory.title)
+    $('.content_box').children('#chatWindowRoomIcon').attr({ src:'images/rooms/icons/' + roomHistory.room_id + '.gif' })
     for(var i in roomHistory.messages){
         
         var message = ''
@@ -144,9 +147,9 @@ chatSpace.on('getRoomHistory', function(roomHistory){
             
             message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'
             message += '<div class=\'chatWindowPostMessage\'>'
-            message += '<font style=\'font-weight:bold;\'>'
-            message += roomHistory.messages[i]['user_idfs'] + ' [' + roomHistory.messages[i]['timestamp'] + ']'
-            message += '</font><br/>'
+            //message += '<font style=\'font-weight:bold;\'>'
+            //message += roomHistory.messages[i].user['username'] + ' [' + roomHistory.messages[i]['timestamp'] + ']'
+            //message += '</font><br/>'
             message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory.messages[i]['message'] + '</p>'
             message += '</div>'
             message += '</div>'

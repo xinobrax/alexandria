@@ -128,8 +128,6 @@ root.on('connection', function(socket){
     socket.on('getRoomHistory', function(room){
         new DB.Room().where({ room_id:room }).fetch({ withRelated:['messages.user'] }).then(function(roomHistory){
             roomHistory = JSON.stringify(roomHistory)
-            
-            console.log(roomHistory)
             socket.emit('getRoomHistory', roomHistory) 
         })    
     })         
@@ -233,9 +231,11 @@ backend.on('connection', function(socket){
         })   
     })
 
-    socket.on('loadChannelList', function(settings){
-        new DB.Channel().fetchAll({require: true}).then(function(channelList){
-            socket.emit('loadChannelList', channelList)
+    socket.on('loadChannelList', function(userId){
+        var query = 'SELECT * FROM channels LEFT JOIN (x_user_channel) ON (channels.channel_id = x_user_channel.channel_idfs AND x_user_channel.user_idfs = ' + userId + ')'
+        new DB.Query.knex.raw(query, [1]).then(function(channelList){
+            channelList = JSON.stringify(channelList[0])
+            socket.emit('loadChannelList', channelList)            
         })
     })
 

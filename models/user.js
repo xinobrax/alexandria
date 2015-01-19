@@ -6,12 +6,24 @@ var User = DB.Model.extend({
     
     messages: function() {
         return this.belongsTo(Message, 'user_id')
+    },
+    
+    channelSubscriptions: function() {
+        return this.hasMany(UserChannel, 'user_idfs')
     }
 })
 
 var Channel = DB.Model.extend({
     tableName: 'channels',
     idAttribute: 'channel_id',
+    
+    subscriptions: function() {
+        return this.hasMany(UserChannel, 'channel_idfs')
+    },
+    
+    userSubscriptions: function() {
+        return this.hasMany(User, 'user_idfs')
+    }
 })
 
 var Episode = DB.Model.extend({
@@ -48,7 +60,12 @@ var Message = DB.Model.extend({
     }
 })
 
+var UserChannel = DB.Model.extend({
+    tableName: 'x_user_channel',
+})
+
 module.exports = {
+    Query: DB,
     User: User,
     Channel: Channel,
     Episode: Episode,

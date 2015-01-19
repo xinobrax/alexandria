@@ -1,6 +1,6 @@
 alexandria
 ==========
-Media based Social Network
+Social Media Network
 
 
 ## Todo...
@@ -17,6 +17,9 @@ Media based Social Network
 
 
 ### Later
+- Decentralization
+- Posts
+- Comments
 - Rating System
 - Text Chat Encryption
 - Audio Chat
