@@ -65,7 +65,7 @@ var UserChannel = DB.Model.extend({
 })
 
 module.exports = {
-    Query: DB,
+    Query: DB.knex,
     User: User,
     Channel: Channel,
     Episode: Episode,

@@ -17,7 +17,10 @@
                     <div class='channels_parent'>Channels</div>     
 
                     <br/>
-                    <li class='navigationChannel'><img src='images/icons/play.png' /><p>Browse Channels</p></li>
+                    <div class='navigationLeftUserChannels'>
+                        <li id ='0' class='navigationChannel'><img src='images/icons/play.png' /><p>Browse Channels</p></li>
+                    </div>
+                    
                     
                     <br/>
                     <div class='channels_parent'>Friends</div>
@@ -40,6 +43,7 @@
 
                     <input type='hidden' id='user' value='<%= user.username %>'>
                     <input type='hidden' id='userId' value='<%= user.user_id %>'>
+                    <input type='hidden' id='channel' value='empty'>
                     <input type='hidden' id='room' value='empty'>
                 </div>
                 <div class='topNavigation'>

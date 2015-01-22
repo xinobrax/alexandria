@@ -65,6 +65,7 @@ module.exports = function(app){
         if(!req.user) return res.redirect('/')     
         //console.log(req.user.attributes['user_id'])
         module.exports.username = req.user.attributes['username']
+        module.exports.userId = req.user.attributes['user_id']
         res.render('pages/index', {user:req.user.attributes})
     })
     

@@ -10,8 +10,6 @@ var chatSpace = io('/root')
 function loadChatWindow(room){
     chatSpace.emit('joinRoom', room)
     chatSpace.emit('getRoomHistory', room)
-    
-    
     $('#room').val(room)
 }
 
@@ -27,15 +25,20 @@ $( document ).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
     
     $('.content_box').on('keyup', '.chatWindowInputField', function(e) {
+                
         if(e.keyCode == 13) {            
-            var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
-            var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
+            var value = $(this).val()
+            value = value.length + value.replace(/[^\n]/g, '').length
+            if(value > 2){
+                var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
+                var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
 
-            chatSpace.emit('chatMessage', message)
+                chatSpace.emit('chatMessage', message)
 
+                $(this).val('')
+                //$('.chatWindowMessages').animate({ scrollTop: $('.chatWindowMessages')[0].scrollHeight}, 400)            
+            }
             $(this).val('')
-            $('.chatWindowMessages').perfectScrollbar('update')
-            $(".chatWindowMessages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 400)            
         }
     })
 
@@ -48,17 +51,16 @@ $( document ).ready(function() {
     
     $('.content_box').on('click', '.chatWindowSendButton', function(){
         
-        var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
-        var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
-        
-        $(this).parent().prev().children().focus()
-        
-        chatSpace.emit('chatMessage', message)
-        
-        $(this).parent('.chatWindowSendButtonDiv').parent('.chatWindowInput').children('.chatWindowInputFieldDiv').children('.chatWindowInputField').val('')
-        $('.chatWindowMessages').perfectScrollbar('update')
-        $(".chatWindowMessages").animate({ scrollTop: $("#messages")[0].scrollHeight}, 400)
+        if($('.chatWindowInputField').val() !== ''){
+            var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
+            var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
 
+            chatSpace.emit('chatMessage', message)
+
+            $(this).parent('.chatWindowSendButtonDiv').parent('.chatWindowInput').children('.chatWindowInputFieldDiv').children('.chatWindowInputField').val('')
+            //$('.chatWindowMessages').animate({ scrollTop: $('.chatWindowMessages')[0].scrollHeight}, 400)
+        }
+        $(this).parent().prev().children().focus()
     })
 })
 
@@ -86,20 +88,20 @@ chatSpace.on('chatMessage', function(msg){
         
         message += '<div class=\'chatWindowPostUserBox\'>'
         message += '<div class=\'chatWindowPostUser\'>'
-        message += '<img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' />'
+        message += '<img src=\'images/users/avatars/' + msg.user_idfs + '.jpg\' />'
         message += '</div>'
         message += '</div>'
     }else{
         message += '<div class=\'chatWindowPostUserBox\'>'
         message += '<div class=\'chatWindowPostUser\'>'
-        message += '<img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' />'
+        message += '<img src=\'images/users/avatars/' + msg.user_idfs + '.jpg\' />'
         message += '</div>'
         message += '</div>'
         
         message += '<div class=\'chatWindowPostMessageBox\'>'
         message += '<div class=\'chatWindowPostMessage\'>'
         message += '<font style=\';font-weight:bold;\'>'
-        message += '[' + msg.timestamp + '] ' + msg.user_idfs
+        message += '[' + msg.timestamp + '] ' + msg.username
         message += '</font><br/>'
         message += msg.message
         message += '</div>'
@@ -110,10 +112,11 @@ chatSpace.on('chatMessage', function(msg){
     if(msg.room_idfs == $('#room').val()){
         $('.chatWindowTable').append(message).each(function(){
             $('.chatWindowPost').show(400)
+            
         })
-
-        $('.chatWindowMessages').perfectScrollbar('update')        
-        $(".chatWindowMessages").animate({ scrollTop: $(".chatWindowMessages")[0].scrollHeight}, 400)
+        $('.chatWindowMessages').getNiceScroll().doScrollPos(0,$('.chatWindowMessages').last().position().bottom)
+        $('.chatWindowMessages').animate({ scrollTop: $('.chatWindowMessages')[0].scrollHeight}, 400)
+        
     }else{
         var messageCounter = $('#' + msg.room_idfs + '.navigationMessageCounter').html()
         messageCounter++
@@ -156,13 +159,13 @@ chatSpace.on('getRoomHistory', function(roomHistory){
             
             message += '<div class=\'chatWindowPostUserBox\'>'
             message += '<div class=\'chatWindowPostUser\'>'
-            message += '<img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' />'
+            message += '<img src=\'images/users/avatars/' + roomHistory.messages[i]['user_idfs'] + '.jpg\' />'
             message += '</div>'
             message += '</div>'
         }else{
             message += '<div class=\'chatWindowPostUserBox\'>'
             message += '<div class=\'chatWindowPostUser\'>'
-            message += '<img src=\'http://0.gravatar.com/avatar/c555b3f0b5564bde0eb15bf95f9c6b81?s=64&d=blank&r=X\' />'
+            message += '<img src=\'images/users/avatars/' + roomHistory.messages[i]['user_idfs'] + '.jpg\' />'
             message += '</div>'
             message += '</div>'
             

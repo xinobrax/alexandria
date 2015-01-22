@@ -124,8 +124,11 @@ backend.on('loadChannelList', function(channelList){
 
         list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'16\' style=\'position:absolute;top:104px;left:15px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
 
-        list += '<div id=\'feeds\' style=\'position:absolute;top:-6px;right:9px;background:#ffc438;border-radius:12px;border:4px solid #000;width:36px;color:#000;text-shadow:none;\'><b>' + channelList[i]['feeds'] + '</b></div>'
-
+        var newEpisodes = channelList[i]['feeds'] - channelList[i]['c']
+        if(newEpisodes !== 0){
+            list += '<div id=\'feeds\' style=\'position:absolute;top:-6px;right:9px;background:#ffc438;border-radius:12px;border:4px solid #000;width:36px;color:#000;text-shadow:none;\'><b>' + newEpisodes + '</b></div>'
+        }
+        
         list += '<br/>' + channelList[i]['title']
         list += '</div>'
     }
@@ -180,19 +183,49 @@ $( document ).ready(function() {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-function loadChannelDetails(channelId){
-    backend.emit('loadChannelDetails', channelId)
+function loadChannelDetails(channelId, userId){
+    backend.emit('loadChannelDetails', channelId, userId)
 }
 
-backend.on('loadChannelDetails', function(channelList){       
-    $('#title').append(channelList['title'])
-    $('#image').attr({ src:'/images/channels/' + channelList['channel_id'] + '.jpg' })
-    $('#description').append(channelList['description'])
-    $('#website').append('<a href=\'' + channelList['website'] + '\'>' + channelList['website'] + '</a>')
-    $('#language').attr('src','/images/icons/languages/' + channelList['language_idfs'] + '.gif')
-    $('#feeds').append(channelList['feeds'])
-    $('#update').append(new Date(channelList['update_date']))
-    $('#type').val(channelList['type_idfs'])
+backend.on('loadChannelDetails', function(channelDetails){       
+    
+    channelDetails = JSON.parse(channelDetails)
+    channelDetails = channelDetails[0]
+    
+    if(channelDetails['user_idfs']){
+        $('.subscribe').css({ 'border-color':'#FF0000', 'color':'#FF0000' })
+        $('.subscribe').html('Unsubscribe')
+        $('.subscribe').attr('class', 'unsubscribe')
+    }
+    
+    $('#channel').val(channelDetails['channel_id'])
+    $('#title').append(channelDetails['title'])
+    $('#image').attr({ src:'/images/channels/' + channelDetails['channel_id'] + '.jpg' })
+    $('#description').append(channelDetails['description'])
+    $('#website').append('<a href=\'' + channelDetails['website'] + '\'>' + channelDetails['website'] + '</a>')
+    $('#channelDetailsLanguageIcon').attr('src','/images/icons/languages/' + channelDetails['language_idfs'] + '.gif')
+    $('#channelDetailsLanguage').append(channelDetails['language'])
+    
+    var newFeeds = channelDetails['feeds'] - channelDetails['c']
+    
+    if(newFeeds == channelDetails['feeds']){
+        $('.flagAllNew').css({ 'border-color':'#000000', 'color':'#000000' })
+        $('.flagAllNew').attr('disabled', 'disabled')
+    }else if(newFeeds == '0'){
+        $('.flagAllDone').css({ 'border-color':'#000000', 'color':'#000000' })
+        $('.flagAllDone').attr('disabled', 'disabled')    
+    }
+    
+    $('#newFeeds').append(newFeeds)
+    $('#feeds').append(channelDetails['feeds'])
+    if(channelDetails['type_idfs'] == 1 || channelDetails['type_idfs'] == 4){
+        $('#channelDetailsTypeIcon').attr('src','/images/icons/video.gif')
+        $('#channelDetailsType').append('Video')
+    }else{
+        $('#channelDetailsTypeIcon').attr('src','/images/icons/audio.gif')
+        $('#channelDetailsType').append('Audio')
+    }
+    $('#type').val(channelDetails['type_idfs'])
 })
 
 
@@ -207,14 +240,11 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
     var list = '<div class=\'episodesList\'>'
     list += '<div class=\'episode_info_table\'>'
 
-    for(var i in channelEpisodes){            
-        
-        
+    channelEpisodes = JSON.parse(channelEpisodes)
+    for(var i in channelEpisodes){             
         list += '<div class=\'episode_info_row\' >'
         list += '<div class=\'episode_info_cell_left\' >'
         list += '<h3>' + channelEpisodes[i]['title'] + '</h3>'
-        //var date = new Date(channelEpisodes[i]['date'])
-        //alert(channelEpisodes[i]['title'])
         var duration = channelEpisodes[i]['duration']
         list += '<p class=\'episode_meta\'>' + channelEpisodes[i]['date'] + ' | ' + duration.toHHMMSS + '</p>'
 
@@ -222,7 +252,11 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
             list += '<img src=\'http://img.youtube.com/vi/' + channelEpisodes[i]['url'] + '/mqdefault.jpg\' />'    
         }
         
-        list += '<p class=\'episodeDescription\'>' + channelEpisodes[i]['description'] + '</p>'        
+        if(channelEpisodes[i]['description']){
+            list += '<p class=\'episodeDescription\'>' + channelEpisodes[i]['description'] + '</p>'
+        }else{
+            list += '<p class=\'episodeDescription\'>No descripion available...</p>'
+        }
         list += '</div>'
         list += '<div class=\'episode_info_cell_right\' >'
         list += '<button class=\'episode_play_now\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</button><br/>'
@@ -238,6 +272,69 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
         $('.episodesList').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.6', background:'#584b2e', cursorborder:'0px'})
     })
 })
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Channels >  Channel Details > Buttons
+//
+////////////////////////////////////////////////////////////////////////////////
+
+$( document ).ready(function() {
+    
+    $('.content_box').on('click', '.subscribe', function(){
+        $(this).css({ 'border-color':'#FF0000', 'color':'#FF0000' })
+        $(this).attr('class', 'unsubscribe')
+        $(this).html('Unsubscribe')
+        backend.emit('subscribeChannel', $('#channel').val(), $('#userId').val())
+
+        var channel = '<li id=\'' + $('#channel').val() + '\' class=\'navigationChannel\' >'
+        channel += '<img src=\'images/channels/icons/' + $('#channel').val() + '.jpg\' />'
+        channel += '<p>' + $('#title').html() + '</p>'
+        
+        var newFeeds = $('#newFeeds').html()
+        if(newFeeds !== '0'){
+            channel += '<p id=\'' + $('#channel').val() + '\' class=\'navigationEpisodeCounter\'>' + newFeeds + '</p>'
+        }
+        
+        channel += '</li>'
+        $('.navigationLeftUserChannels').append(channel).each(function(){
+            $('#' + $('#channel').val() + '.navigationChannel').show(400)
+        })
+    })
+    
+    $('.content_box').on('click', '.unsubscribe', function(){
+        $(this).css({ 'border-color':'#00FF00', 'color':'#00FF00' })
+        $(this).attr('class', 'subscribe')
+        $(this).html('Subscribe')
+        backend.emit('unsubscribeChannel', $('#channel').val(), $('#userId').val())
+        $('#' + $('#channel').val() + '.navigationChannel').hide(400, function(){
+            $(this).remove()
+        })
+    })
+    
+    $('.content_box').on('click', '.flagAllDone', function(){
+        $(this).css({ 'border-color':'#000000', 'color':'#000000' })
+        $(this).attr('disabled', 'disabled')
+        $('#' + $('#channel').val() + '.navigationEpisodeCounter').fadeOut('slow')
+        backend.emit('flagAllDone', $('#channel').val(), $('#userId').val())
+        $('.flagAllNew').css({ 'border-color':'#ffc438', 'color':'#ffc438' })
+        $('.flagAllNew').removeAttr('disabled');
+    })
+    
+    $('.content_box').on('click', '.flagAllNew', function(){
+        $(this).css({ 'border-color':'#000000', 'color':'#000000' })
+        $(this).attr('disabled', 'disabled')
+        $('#' + $('#channel').val() + '.navigationEpisodeCounter').fadeIn('slow')
+        backend.emit('flagAllNew', $('#channel').val(), $('#userId').val())   
+        $('.flagAllDone').css({ 'border-color':'#ffc438', 'color':'#ffc438' })
+        $('.flagAllDone').removeAttr('disabled');
+    })
+})
+
+
+
+
+
 
 backend.on('getYoutubeUrl', function(yturl){       
     $('#player').attr({ src:yturl }).append(function(){

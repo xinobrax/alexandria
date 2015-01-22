@@ -2,6 +2,24 @@ $( document ).ready(function() {
         
     //$('.content_box').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.2', cursorborder:'0px'})
     
+    backend.emit('getUserChannels', $('#userId').val())
+    backend.on('getUserChannels', function(userChannels){
+        userChannels = JSON.parse(userChannels)
+        for(var i in userChannels){
+            var channel = '<li id=\'' + userChannels[i]['channel_id'] + '\' class=\'navigationChannel\' >'
+            channel += '<img src=\'images/channels/icons/' + userChannels[i]['channel_id'] + '.jpg\' />'
+            channel += '<p>' + userChannels[i]['title'] + '</p>'
+            var newFeeds = userChannels[i]['feeds'] - userChannels[i]['c']
+            if(newFeeds !== 0){
+                channel += '<p id=\'' + userChannels[i]['channel_id'] + '\' class=\'navigationEpisodeCounter\'>' + newFeeds + '</p>'
+            }
+            channel += '</li>'
+            $('.navigationLeftUserChannels').append(channel)
+        }
+    })
+    
+        
+    
     $('#field').focus()
     $('.content_box').fadeIn(1400)       
     $('.channels').animate({ width: 260}, 1000)
@@ -19,7 +37,6 @@ $( document ).ready(function() {
         $('.chatBoxContainer').animate({ height: 30}, 1000)
     })
 
-    //$('.chat_box_text').perfectScrollbar()
     
     ////////////////////////////////////////////////////////////////////////////////
     //
@@ -71,15 +88,23 @@ $( document ).ready(function() {
     
     ////////////////////////////////////////////////////////////////////////////////
     //
-    // Navigation > Channels > My Channels
+    // Navigation > Channels
     //
     //////////////////////////////////////////////////////////////////////////////// 
     
-    $('.navigationChannel').click(function(){
-
-        $('.content_box').load('/pages/browseChannels.html', function(){
-            loadChannelList()
-        })
+    $('.navigationLeftUserChannels').on('click', '.navigationChannel', function() {
+        var channelId = $(this).attr('id')
+        var userId = $('#userId').val()
+        if(channelId == '0'){
+            $('.content_box').load('/pages/browseChannels.html', function(){
+                loadChannelList()
+            })
+        }else{
+            $('.content_box').load('/pages/channelDetails.html', function(){
+                loadChannelDetails(channelId, userId)
+            })
+        }
+        
     })
     
     
@@ -109,9 +134,10 @@ $( document ).ready(function() {
     //////////////////////////////////////////////////////////////////////////////// 
     
     $('.content_box').on('click', '.browseChannelsChannelBox', function() {
-    var channelId = $(this).attr('id')
+        var channelId = $(this).attr('id')
+        var userId = $('#userId').val()
         $('.content_box').load('/pages/channelDetails.html', function(){
-            loadChannelDetails(channelId)
+            loadChannelDetails(channelId, userId)
         })
     })    
     
@@ -173,7 +199,7 @@ $( document ).ready(function() {
     socket.on('setUserlist', function(userlist){              
         var list = ''
         for(username in userlist){            
-            list += '<li class=\'navigationChannel\' ><img src=\'http://cropfm.at/cropfm_icons/cropfm_rss_channel_logo.jpg\' /><p>' + userlist[username] + '</p></li>'  
+            list += '<li class=\'navigationChannel\' ><img src=\'images/users/avatars/' + userlist[username].userId + '.jpg\' /><p>' + userlist[username].username + '</p></li>'  
         }   
         $('.left_space').html(list).append(function(){
             //$('.left_space').children('.navigationChannel').fadeIn(400)

@@ -9,6 +9,14 @@ var FeedParser = require('feedparser')
 var request = require('request')
 var youtube = require('youtube-dl')
 var http = require('http')
+var html_strip = require('htmlstrip-native')
+
+var options = {
+    include_script : false,
+    include_style : false,
+    compact_whitespace : true,
+    include_attributes : false
+}
 
 exports.fetchFeedMeta = function(type, url, callback){
     
@@ -110,10 +118,16 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
         while (item = this.read()) {
             
             if(item['title'].search(filter) !== -1){
+                
+                var description = item['description']
+                if(description){
+                    description = html_strip.html_strip(description, options)
+                }
+                
                 if(type == '1' || type == '2'){
                     var episode = {
                         title: item['title'],
-                        description: item['description'],
+                        description: description,
                         url: item['enclosures'][0]['url'],
                         link: item['url'],
                         date: item['date'],
@@ -122,10 +136,10 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
                     }
                 }else if(type == '4'){
                     var ytid = item['link']
-                    ytid = ytid.substring(32, 43); 
+                    ytid = ytid.substring(32, 43)
                     var episode = {
                         title: item['title'],
-                        description: item['description'],
+                        description: description,
                         url: ytid,
                         link: 'https://www.youtube.com/watch?v=' + ytid,
                         date: item['pubDate'],
@@ -150,14 +164,14 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
 
 exports.getYoutubeUrl = function(ytid, callback){
     var url = 'https://www.youtube.com/watch?v=' + ytid
-    youtube.getInfo(url, ['--format=webm'], ['--max-quality=247'], function(err, info){
+    youtube.getInfo(url, ['--max-quality=247'], function(err, info){
         if(err) console.error(err)
         
         youtube.getFormats(url, function(err, formats) {
             if (err) throw err
 
                 formats.forEach(function(format) {
-                    console.log(format)
+                    //console.log(format)
                 })
             })
         

@@ -29,11 +29,7 @@ $( document ).ready(function() {
             toxid: $('input[name=toxid]').val(),
             diaspora: $('input[name=diaspora]').val(),
 
-            bitcoin: $('input[name=bitcoin]').val(),
-            litecoin: $('input[name=litecoin]').val(),
-            dogecoin: $('input[name=dogecoin]').val(),
-            darkcoin: $('input[name=darkcoin]').val(),
-            namecoin: $('input[name=namecoin]').val()
+            bitcoin: $('input[name=bitcoin]').val()
         }
         settingsChannel.emit('setUserProfile', userId, user)
     })

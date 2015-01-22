@@ -5,13 +5,26 @@
         <td width='170'><img id='image' src='' width='170' /></td>
         <td>
             <p style='margin:0px;margin-left:10px;margin-right:10px;padding:0px;' id='description'></p>
-            <p style='position:absolute;margin:0px;margin-left:10px;margin-right:10px;padding:0px;top:190px;'><b>Website:</b> <font id='website'></font></p>
+            <div class='channelDetailsInfoBox'>
+                <p>Infos</p>
+                <div id='channelDetailsType' class='channelDetailsInfoEntry'><img id='channelDetailsTypeIcon' src='video' height='12' /> </div>
+                <div id='channelDetailsLanguage' class='channelDetailsInfoEntry'><img id='channelDetailsLanguageIcon' src='' height='12' /> </div>
+            </div>
+            <div class='channelDetailsInfoBox' style='top:186px;'>
+                <p>Links</p>
+                <div class='channelDetailsInfoEntry'><img src='images/icons/website.gif' /> Website</div>
+                <div class='channelDetailsInfoEntry'><img src='images/icons/youtube.gif' /> Youtube</div>
+            </div>
         </td>
-        <td width='300'>
-            <b>Language:</b> <img id='language' src='' /><br/>
-            <b>Feeds:</b> <font id='feeds'></font><br/>
-            <b>Last Update:</b> <font id='update'></font><br/>
-            <button class='subscribe' style='color:#00FF00;border-color:#00FF00;'>Subscribe</button>
+        <td width='210'>
+            <button class='subscribe' style='color:#00FF00;border-color:#00FF00;width:204px;'>Subscribe</button><br/><br/>
+        
+            <button class='flagAllDone' style='width:100px;'>Flag all done</button>
+            <button class='flagAllNew' style='width:100px;'>Flag all new</button>
+            
+            <div class='channelDetailsInfoEntry' style='width:85px;margin-top:49px;text-align:center'>New: <font id='newFeeds'></font></div>
+            <div class='channelDetailsInfoEntry' style='width:85px;margin-top:49px;text-align:center'>Total: <font id='feeds'></font></div>
+
         </td>
     </tr>
 </table>

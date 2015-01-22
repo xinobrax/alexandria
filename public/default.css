@@ -240,6 +240,19 @@ main{
     float:left;
 }
 
+.navigationEpisodeCounter{
+    position:absolute;
+    right:4px;
+    padding-right:6px;
+    padding-left:6px;
+    padding-top:2px;
+    padding-bottom:2px;
+    border-radius:9px;
+    background-color:#ffc438;
+    font-weight:bold;    
+    text-shadow: 0 -1px #000, 1px 0 #000, 0 1px #000, -1px 0 #000;
+}
+
 .navigationChannel:hover{
     height:28px;
     color:#fff;
@@ -673,6 +686,48 @@ main{
 ##
 ##############################################################################*/
 
+.channelDetailsInfoBox{
+    position:absolute;
+    width:100%;
+    height:28px;
+    top:158px;
+    display:block;
+    clear:left;
+}
+
+.channelDetailsInfoBox p{
+    display:table-cell;
+    width:60px;
+    height:12px;
+    padding:6px;
+    padding-left:8px;   
+    margin:0px;
+    font-weight:bold;
+    vertical-align:middle;
+    float:left;
+}
+
+.channelDetailsInfoEntry{
+    display:table-cell;
+    width:100px;
+    height:12px;
+    top:146px;
+    padding:6px;
+    padding-left:8px;
+    margin-right:6px;
+    vertical-align:middle;
+    font-weight:bold;
+    text-shadow: 0 -1px #000, 1px 0 #000, 0 1px #000, -1px 0 #000;
+    box-shadow:1px 1px 1px 1px #000;
+    background:rgba(255,255,255,0.3);
+    border-radius:9px;
+    float:left;
+}
+
+.channelDetailsInfoEntry img{
+    height:12px;
+}
+
 .episodesList{
     position:absolute;
     display:block;
@@ -686,10 +741,12 @@ main{
 .episode_info_table{
     position:absolute;
     display:table;
+    width:100%;
 }
 
 .episode_info_row{
     display:table-row;
+    width:100%;
 }
 
 .episode_info_cell_left{
