@@ -13,10 +13,8 @@
     "htmlstrip-native": "0.0.6",
     "mysql": "^2.5.4",
     "passport": "*",
-    "passport-local-mongoose": "^1.0.0",
     "request": "*",
     "socket.io": "latest",
-    "string": "^3.0.0",
     "youtube-dl": "^1.6.0"
   },
   "author": "Rave"

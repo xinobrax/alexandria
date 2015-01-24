@@ -225,9 +225,9 @@ main{
 }
 
 .navigationChannel img{
-    width:20px;
-    height:20px;
-    margin-left:4px;
+    width:24px;
+    height:24px;
+    margin-left:8px;
     margin-top: 3px;
     margin-bottom: 3px;
     margin-right:6px;
@@ -235,7 +235,7 @@ main{
 }
 
 .navigationChannel p{
-    margin-top:6px;
+    margin-top:8px;
     margin-left:0px;
     float:left;
 }
@@ -285,9 +285,9 @@ main{
 }
 
 .navigationRoom img{
-    width:20px;
-    height:20px;
-    margin-left:4px;
+    width:24px;
+    height:24px;
+    margin-left:8px;
     margin-top: 3px;
     margin-bottom: 3px;
     margin-right:6px;
@@ -295,7 +295,7 @@ main{
 }
 
 .navigationRoom p{
-    margin-top:4px;
+    margin-top:8px;
     margin-left:0px;
     float:left;
 }
@@ -425,8 +425,8 @@ main{
 .content_box{
     position:fixed;
     display:none;
-    right:270px;
-    left:270px;
+    right:290px;
+    left:290px;
     bottom:40px;
     top:50px;
     padding:10px;
@@ -632,7 +632,7 @@ main{
 
 .browseChannelsFilterEntry{
     display:table-cell;
-    width:90px;
+    width:120px;
     height:12px;
     padding:6px;
     padding-left:8px;
@@ -655,6 +655,21 @@ main{
     cursor:pointer;
 }
 
+.browseChannelsChannels{
+    position:absolute;
+    display:block;
+    padding:10px;
+    top:150px;
+    bottom:10px;
+    left:0px;
+    right:0px;
+    overflow:auto;
+}
+
+.browseChannelsChannels:focus{
+    outline: 0;
+}
+
 .browseChannelsChannelRow{
     position:relative;
     width:100%;
@@ -663,8 +678,9 @@ main{
 .browseChannelsChannelBox{
     position:relative;
     display:block;
-    width:150px;
-    height:160px;
+    width:144px;
+    height:150px;
+    margin-top:10px;
     margin-right:10px;
     text-align:center;
     float:left;
@@ -736,6 +752,10 @@ main{
     left:0px;
     right:0px;
     overflow:auto;
+}
+
+.episodesList:focus{
+    outline:0;
 }
 
 .episode_info_table{
@@ -838,8 +858,8 @@ main{
 .chatBoxContainer{
     position:absolute;
     height:0px;
-    right:270px;
-    left:270px;
+    right:290px;
+    left:290px;
     bottom:0px;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
@@ -937,6 +957,10 @@ main{
     margin-top:4px;
     padding:10px;
     overflow:auto;
+}
+
+.chatWindowMessages:focus{
+    outline:0;
 }
 
 .chatWindowInput{

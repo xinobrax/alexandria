@@ -21,7 +21,7 @@ var options = {
 exports.fetchFeedMeta = function(type, url, callback){
     
     var feedparser = new FeedParser()
-    
+    console.log(type)
     try {
         if(type == 'rss'){
             fetch = request(url)
@@ -32,7 +32,6 @@ exports.fetchFeedMeta = function(type, url, callback){
                     img = body['entry']['media$thumbnail']['url']
                 }
             })
-                
         }
         
         var feed = {}
@@ -69,7 +68,7 @@ exports.fetchFeedMeta = function(type, url, callback){
         })  
     } catch (err) {
         console.error(err)
-        callback('error')
+        //callback('error')
     }
   
 }
@@ -83,7 +82,7 @@ exports.fetchFeedMeta = function(type, url, callback){
 
 var Episode = require('../models/episode')
 
-exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
+exports.fetchFeeds = function(channelId, feedUrl, type, filter, date, callback){
 
     var feedparser = new FeedParser()
     if(type == '1' || type == '2' || type == '3'){
@@ -117,7 +116,14 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
         var item
         while (item = this.read()) {
             
-            if(item['title'].search(filter) !== -1){
+            var dateLatest = Number(new Date(date))           
+            if(type == '4'){
+                var dateEpisode = Number(new Date(item['pubDate']))
+            }else{
+                var dateEpisode = Number(new Date(item['date']))
+            }
+
+            if(item['title'].search(filter) !== -1 && dateEpisode > dateLatest){
                 
                 var description = item['description']
                 if(description){
@@ -148,31 +154,37 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, callback){
                     }
                 }                    
                 
-                new DB.Episode(episode).save().then(function(err, model){
+                new DB.Episode(episode).save().then(function(err, newEpisode){
                     if(err) console.error(err)
+                    console.log('Neue Episode: ' + newEpisode)
+                    console.log('Add to Playlist')
                 }).catch(function(err){
-                    //console.error(err)
+                    console.error(err)
                 })
             }
          }
     })
 
     feedparser.on('end', function(){
-        callback()
+        callback('ok')
     })    
 }
 
 exports.getYoutubeUrl = function(ytid, callback){
     var url = 'https://www.youtube.com/watch?v=' + ytid
-    youtube.getInfo(url, ['--max-quality=247'], function(err, info){
+    youtube.getInfo(url, function(err, info){
+    //youtube.getInfo(url, ['--max-quality=247'], function(err, info){
+    //youtube.getInfo(url, ['--format=mp4'], function(err, info){
         if(err) console.error(err)
         
         youtube.getFormats(url, function(err, formats) {
             if (err) throw err
 
+                /*
                 formats.forEach(function(format) {
-                    //console.log(format)
+                    console.log(format)
                 })
+                */
             })
         
         // Send back

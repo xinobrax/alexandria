@@ -2,9 +2,38 @@
 <html>
     <head>
         <%= include ../partials/head %>
+        <script>
+            function createCookie(name,value,days) {
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime()+(days*24*60*60*1000));
+                    var expires = "; expires="+date.toGMTString();
+                }
+                else var expires = "";
+                document.cookie = name+"="+value+expires+"; path=/";
+            }
+
+            function readCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            }
+
+            function eraseCookie(name) {
+                createCookie(name,"",-1);
+            }
+            
+            createCookie('username', '<%= user.username %>', 1)
+            createCookie('userId', '<%= user.user_id %>', 1)
+        </script>
     </head>
     <body>
-        <div class='display'>               
+        <div class='display'>
             
             <main>
                 
@@ -28,7 +57,7 @@
                     <div class='left_space'></div>
                     <br/>
                     
-                    <div class='channels_parent'>Rooms</div>
+                    <div class='channels_parent'>Chat Rooms</div>
                     <br/>
                     <li id='1' class='navigationRoom'>
                         <img src='images/icons/upload.png' />
@@ -57,7 +86,7 @@
         
             <div class='connections'>
                 <div class='channels_parent'>Player</div> 
-                <video class='player' id='player' width='260' height='142' src='' preload='auto' controls></video>
+                <video class='player' id='player' width='280' height='158' src='' preload='auto' controls></video>
                 <br/>
                 <div class='channels_parent'>Playlists</div> 
                     <div class='navigationPlaylistBox'>

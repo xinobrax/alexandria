@@ -40,15 +40,15 @@ module.exports = function(app){
     app.post('/login', function(req, res, next){
         passport.authenticate('local', { successRedirect: '/', failureRedirect: '/signin'}, function(err, user, info) {
             if(err) {
-                return res.render('signin', {title: 'Sign In', errorMessage: err.message})
+                return res.render('pages/login', {title: 'Sign In', errorMessage: err.message})
             } 
 
             if(!user) {
-                return res.render('signin', {title: 'Sign In', errorMessage: info.message})
+                return res.render('pages/login', {title: 'Sign In', errorMessage: info.message})
             }
             return req.logIn(user, function(err) {
                 if(err) {
-                    return res.render('signin', {title: 'Sign In', errorMessage: err.message})
+                    return res.render('pages/login', {title: 'Sign In', errorMessage: err.message})
                 } else {
                     return res.redirect('/index')
                 }

@@ -96,14 +96,14 @@ $( document ).ready(function() {
 ////////////////////////////////////////////////////////////////////////////////
 
 function loadChannelList(){
-    backend.emit('loadChannelList', $('#userId').val())
+    backend.emit('loadChannelList', readCookie('userId'))
 }
 
 backend.on('loadChannelList', function(channelList){    
 
     var list = ''
     list += '<div class=\'browseChannelsChannelRow\'>'
-    list += '<h2>Technology</h2>'
+    //list += '<h2>Technology</h2>'
 
     channelList = JSON.parse(channelList)
     for(var i in channelList){
@@ -112,17 +112,17 @@ backend.on('loadChannelList', function(channelList){
 
         list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['channel_id'] + '.jpg\' width=\'120\' height=\'120\' />'
         if(channelList[i]['type_idfs'] == '4' || channelList[i]['type_idfs'] == '1'){
-            list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:12px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
         }else{
-            list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:15px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:12px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
         }
-        if(channelList[i]['user_idfs'] == $('#userId').val()){
-            list += '<img id=\'subscription\' src=\'images/icons/subscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:15px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+        if(channelList[i]['user_idfs'] == readCookie('userId')){
+            list += '<img id=\'subscription\' src=\'images/icons/subscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:12px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
         }else{
-            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:15px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:12px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
         }
 
-        list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'16\' style=\'position:absolute;top:104px;left:15px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
+        list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'16\' style=\'position:absolute;top:104px;left:12px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
 
         var newEpisodes = channelList[i]['feeds'] - channelList[i]['c']
         if(newEpisodes !== 0){
@@ -134,7 +134,9 @@ backend.on('loadChannelList', function(channelList){
     }
     list += '</div>'
 
-    $('.content_box').append(list)
+    $('.browseChannelsChannels').append(list).each(function(){
+        $('.browseChannelsChannels').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.6', background:'#584b2e', cursorborder:'0px'})
+    })
 })
 
 $( document ).ready(function() {
@@ -161,17 +163,28 @@ $( document ).ready(function() {
             if($(this).children('#subscription').attr('src') == 'images/icons/' + subscription + '.gif' || subscription == 'subscription_all'){
                 if($(this).children('#type').attr('src') == 'images/icons/' + type + '.gif' || type == 'type_all'){
                     if($(this).children('#language').attr('src') == 'images/icons/languages/' + language + '.gif' || language == 'language_all'){
-                        $(this).show('slow')
+                        $(this).show('slow', function(){
+                            $('.browseChannelsChannels').getNiceScroll().resize();
+                        })
+
                     }else{
-                        $(this).hide('slow')
+                        $(this).hide('slow', function(){
+                            $('.browseChannelsChannels').getNiceScroll().resize();
+                        })
+
                     }
                 }else{
-                    $(this).hide('slow')
+                    $(this).hide('slow', function(){
+                        $('.browseChannelsChannels').getNiceScroll().resize();
+                    })
                 }
             }else{
-                $(this).hide('slow')
+                $(this).hide('slow', function(){
+                    $('.browseChannelsChannels').getNiceScroll().resize();
+                })
             }
-        })      
+        })   
+        
     })
 })
 
@@ -198,7 +211,8 @@ backend.on('loadChannelDetails', function(channelDetails){
         $('.subscribe').attr('class', 'unsubscribe')
     }
     
-    $('#channel').val(channelDetails['channel_id'])
+    createCookie('channel', channelDetails['channel_id'], 1)
+    //$('#channel').val(channelDetails['channel_id'])
     $('#title').append(channelDetails['title'])
     $('#image').attr({ src:'/images/channels/' + channelDetails['channel_id'] + '.jpg' })
     $('#description').append(channelDetails['description'])
@@ -245,8 +259,9 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
         list += '<div class=\'episode_info_row\' >'
         list += '<div class=\'episode_info_cell_left\' >'
         list += '<h3>' + channelEpisodes[i]['title'] + '</h3>'
-        var duration = channelEpisodes[i]['duration']
-        list += '<p class=\'episode_meta\'>' + channelEpisodes[i]['date'] + ' | ' + duration.toHHMMSS + '</p>'
+        var date = new Date(channelEpisodes[i]['date'])
+        date = ('0' + date.getDate()).slice(-2) + '.' + date.getMonth()+1 + '.' + date.getFullYear() + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2)
+        list += '<p class=\'episode_meta\'>' + date + ' | ' + channelEpisodes[i]['duration'].toString().toHHMMSS() + '</p>'
 
         if($('#type').val() == '4'){            
             list += '<img src=\'http://img.youtube.com/vi/' + channelEpisodes[i]['url'] + '/mqdefault.jpg\' />'    
@@ -285,20 +300,20 @@ $( document ).ready(function() {
         $(this).css({ 'border-color':'#FF0000', 'color':'#FF0000' })
         $(this).attr('class', 'unsubscribe')
         $(this).html('Unsubscribe')
-        backend.emit('subscribeChannel', $('#channel').val(), $('#userId').val())
+        backend.emit('subscribeChannel', readCookie('channel'), readCookie('userId'))
 
-        var channel = '<li id=\'' + $('#channel').val() + '\' class=\'navigationChannel\' >'
-        channel += '<img src=\'images/channels/icons/' + $('#channel').val() + '.jpg\' />'
+        var channel = '<li id=\'' + readCookie('channel') + '\' class=\'navigationChannel\' >'
+        channel += '<img src=\'images/channels/icons/' + readCookie('channel') + '.jpg\' />'
         channel += '<p>' + $('#title').html() + '</p>'
         
         var newFeeds = $('#newFeeds').html()
         if(newFeeds !== '0'){
-            channel += '<p id=\'' + $('#channel').val() + '\' class=\'navigationEpisodeCounter\'>' + newFeeds + '</p>'
+            channel += '<p id=\'' + readCookie('channel') + '\' class=\'navigationEpisodeCounter\'>' + newFeeds + '</p>'
         }
         
         channel += '</li>'
         $('.navigationLeftUserChannels').append(channel).each(function(){
-            $('#' + $('#channel').val() + '.navigationChannel').show(400)
+            $('#' + readCookie('channel') + '.navigationChannel').show(400)
         })
     })
     
@@ -306,8 +321,8 @@ $( document ).ready(function() {
         $(this).css({ 'border-color':'#00FF00', 'color':'#00FF00' })
         $(this).attr('class', 'subscribe')
         $(this).html('Subscribe')
-        backend.emit('unsubscribeChannel', $('#channel').val(), $('#userId').val())
-        $('#' + $('#channel').val() + '.navigationChannel').hide(400, function(){
+        backend.emit('unsubscribeChannel', readCookie('channel'), readCookie('userId'))
+        $('#' + readCookie('channel') + '.navigationChannel').hide(400, function(){
             $(this).remove()
         })
     })
@@ -315,8 +330,8 @@ $( document ).ready(function() {
     $('.content_box').on('click', '.flagAllDone', function(){
         $(this).css({ 'border-color':'#000000', 'color':'#000000' })
         $(this).attr('disabled', 'disabled')
-        $('#' + $('#channel').val() + '.navigationEpisodeCounter').fadeOut('slow')
-        backend.emit('flagAllDone', $('#channel').val(), $('#userId').val())
+        $('#' + readCookie('channel') + '.navigationEpisodeCounter').fadeOut('slow')
+        backend.emit('flagAllDone', readCookie('channel'), readCookie('userId'))
         $('.flagAllNew').css({ 'border-color':'#ffc438', 'color':'#ffc438' })
         $('.flagAllNew').removeAttr('disabled');
     })
@@ -324,8 +339,8 @@ $( document ).ready(function() {
     $('.content_box').on('click', '.flagAllNew', function(){
         $(this).css({ 'border-color':'#000000', 'color':'#000000' })
         $(this).attr('disabled', 'disabled')
-        $('#' + $('#channel').val() + '.navigationEpisodeCounter').fadeIn('slow')
-        backend.emit('flagAllNew', $('#channel').val(), $('#userId').val())   
+        $('#' + readCookie('channel') + '.navigationEpisodeCounter').fadeIn('slow')
+        backend.emit('flagAllNew', readCookie('channel'), readCookie('userId'))   
         $('.flagAllDone').css({ 'border-color':'#ffc438', 'color':'#ffc438' })
         $('.flagAllDone').removeAttr('disabled');
     })
@@ -344,14 +359,18 @@ backend.on('getYoutubeUrl', function(yturl){
 })
 
 String.prototype.toHHMMSS = function () {
-    var sec_num = parseInt(this, 10); // don't forget the second param
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    var sec_num = parseInt(this, 10)
+    if(sec_num > '1000000'){
+        sec_num = parseInt(this / 6000, 10)
+    }    
+    //sec_num = sec_num / 6000
+    var hours   = Math.floor(sec_num / 3600)
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60)
+    var seconds = sec_num - (hours * 3600) - (minutes * 60)
 
     if (hours   < 10) {hours   = "0"+hours;}
     if (minutes < 10) {minutes = "0"+minutes;}
     if (seconds < 10) {seconds = "0"+seconds;}
-    var time    = hours+':'+minutes+':'+seconds;
-    return time;
+    var time    = hours+':'+minutes+':'+seconds
+    return time
 }

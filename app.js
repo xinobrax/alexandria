@@ -32,7 +32,7 @@ var feedParser = require('./modules/feedParser.js')
 var formatChatMessage = require('./modules/formatChatMessage.js')
 
 // DB
-var DB = require('./models/user')
+var DB = require('./models/user.js')
 
 // Globals
 var username = ''
@@ -109,18 +109,22 @@ root.on('connection', function(socket){
     socket.emit('setUserlist', userlist)    
  
     socket.on('chatMessage', function (msg) {
-       
-        msg.message = formatChatMessage.formatChatMessage(msg.message)
-        
-    
-        new DB.Message(msg).save().then(function(){})
-        msg.username = socket.username
-        root.to(msg.room_idfs).emit('chatMessage', msg)
+        console.log(msg.message)
+        if(msg.message.indexOf('/addChannel') != -1){
+            socket.emit('chatCommandAddChannel', socket.userId)
+        }else{
+            msg.message = formatChatMessage.formatChatMessage(msg.message)
+
+
+            new DB.Message(msg).save().then(function(){})
+            msg.username = socket.username
+            root.to(msg.room_idfs).emit('chatMessage', msg)
+        }
     })
     
     socket.on('joinRoom', function(room_idfs){
         socket.join(room_idfs)
-        console.log('User joined ' + room_idfs)
+        console.log(socket.username + ' joined ' + room_idfs)
     }) 
     
     socket.on('getRoomHistory', function(room){
@@ -131,11 +135,11 @@ root.on('connection', function(socket){
     })         
     
     socket.on('disconnect', function(){
-        console.log('User disconnected')
+        console.log(socket.username + ' disconnected')
         delete userlist[socket.username]
     })           
     
-    console.log('New user connected')
+    console.log(socket.username + ' connected')
     
 })
 
@@ -168,7 +172,7 @@ settingsChannel.on('connection', function(socket){
                 var imageMagick = gm.subClass({ imageMagick: true })
                 imageMagick(response).resize(200, 200).write(imgpath + '.jpg', function(err, response){
                     imageMagick(imgpath + '.jpg').resize(40, 40).write('./public/images/channels/icons/' + model['id'] + '.jpg', function(err){
-                        feedParser.fetchFeeds(model['id'], model['attributes']['feed'], model['attributes']['type_idfs'], model['attributes']['filter'], function(data){
+                        feedParser.fetchFeeds(model['id'], model['attributes']['feed'], model['attributes']['type_idfs'], model['attributes']['filter'], '0',  function(data){
                             if(err) console.error(err)
                         })
                     })
@@ -235,6 +239,15 @@ backend.on('connection', function(socket){
         })
     })
     
+    socket.on('getUserPlaylist', function (userId) {
+        /*
+        var query = ''
+        new DB.Query.raw(query, [1]).then(function(userPlaylist){
+            userPlaylist = JSON.stringify(userPlaylist[0])
+            socket.emit('getUserPlaylist', userPlaylist)            
+        })
+        */
+    })
     
     socket.on('addRoom', function (room) {
         newRoom = new Room(room)
@@ -263,7 +276,8 @@ backend.on('connection', function(socket){
         query += 'SELECT '
         query += '    channel_id, '
         query += '    channels.title, '
-        query += '    type_idfs, feeds, '
+        query += '    type_idfs, '
+        query += '    feeds, '
         query += '    channels.language_idfs, '
         query += '    x_user_channel.user_idfs,'
         query += '    COUNT(episode_idfs) AS c '
@@ -275,15 +289,18 @@ backend.on('connection', function(socket){
         query += '    (channels.channel_id = x_user_channel.channel_idfs '
         query += '    AND x_user_channel.user_idfs = ' + userId + ') '
         query += 'LEFT JOIN '
-        query += '    (x_user_episode, episodes)'
+        query += '    (episodes) '
+        query += 'ON '
+        query += '    (episodes.channel_idfs = channel_id) '        
+        query += 'LEFT JOIN '
+        query += '    (x_user_episode)'
         query += 'ON'
-        query += '    (episodes.channel_idfs = channel_id '
-        query += '    AND episode_id = x_user_episode.episode_idfs '
+        query += '    (episode_id = x_user_episode.episode_idfs '
         query += '    AND x_user_episode.user_idfs = ' + userId + ') '
         query += '    AND x_user_episode.status = 1 '
         query += 'GROUP BY'
         query += '    update_date desc'
-
+        //console.log(query)
         new DB.Query.raw(query, [1]).then(function(channelList){
             channelList = JSON.stringify(channelList[0])
             socket.emit('loadChannelList', channelList)            
@@ -328,7 +345,7 @@ backend.on('connection', function(socket){
             channelDetails = JSON.stringify(channelDetails[0])
             socket.emit('loadChannelDetails', channelDetails)
         
-            var query2 = 'SELECT * FROM episodes LEFT JOIN (x_user_episode) ON (episode_id = episode_idfs) WHERE channel_idfs = ' + channelId + ' ORDER BY date desc'
+            var query2 = 'SELECT * FROM episodes LEFT JOIN (x_user_episode) ON (episode_id = episode_idfs) WHERE channel_idfs = ' + channelId + ' AND active = 1 ORDER BY date desc'
             new DB.Query.raw(query2, [1]).then(function(channelEpisodes){
                 channelEpisodes = JSON.stringify(channelEpisodes[0])
                 socket.emit('loadChannelEpisodes', channelEpisodes)    
@@ -389,17 +406,24 @@ backend.on('connection', function(socket){
 ////////////////////////////////////////////////////////////////////////////////
 
 function updateFeeds(){
-    new DB.Channel().query().then(function(channelList){
+    
+
+    new DB.Query.raw(DB.getChannelsByLatestEpisode(), [1]).then(function(channelList){
+        channelList = JSON.stringify(channelList[0])
+        channelList = JSON.parse(channelList)
 
         channelList.forEach(function(channel){
 
-            feedParser.fetchFeeds(channel['channel_id'], channel['feed'], channel['type_idfs'], channel['filter'], function(err, data){
-                if(err) console.error(err)          
+            //console.log(channel['feed'])
+            feedParser.fetchFeeds(channel['channel_id'], channel['feed'], channel['type_idfs'], channel['filter'], channel['date'], function(err, data){
+                //if(err) console.error(err)          
             
-                new DB.Episode().count(channel['channel_id'], function(err, count){
-                    if(err) console.error(err)
-                    
-                    count = count[0]['count(*)']
+                var query2 = 'SELECT COUNT(episode_id) FROM episodes WHERE channel_idfs = ' + channel['channel_id']
+                new DB.Query.raw(query2, [1]).then(function(count){
+                    //if(err) console.error(err)
+                    count = JSON.stringify(count[0])
+                    count = JSON.parse(count)
+                    count = count[0]['COUNT(episode_id)']
                     var query = 'SELECT date FROM episodes WHERE channel_idfs = ' + channel['channel_id'] + ' ORDER BY date desc LIMIT 1'
                     new DB.Query.raw(query, [1]).then(function(lastUpdate){
                     

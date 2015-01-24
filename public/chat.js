@@ -18,12 +18,20 @@ $( document ).ready(function() {
         }
     })
     
+    backend.emit('getUserPlaylist', readCookie('userId'))
+    backend.on('getUserPlaylist', function(userPlaylist){
+        userPlaylist = JSON.parse(userPlaylist)
+        for(var i in userPlaylist){
+
+        }
+    })
+    
         
     
     $('#field').focus()
     $('.content_box').fadeIn(1400)       
-    $('.channels').animate({ width: 260}, 1000)
-    $('.connections').animate({ width: 260}, 1000, function(){        
+    $('.channels').animate({ width: 280}, 1000)
+    $('.connections').animate({ width: 280}, 1000, function(){        
         $('.channels_parent').fadeIn(1000)   
         $('.navigationChannel').fadeIn(1000, function(){
             $('header img').show(1000)
@@ -44,7 +52,8 @@ $( document ).ready(function() {
     //
     //////////////////////////////////////////////////////////////////////////////// 
     
-    $('header img').click(function(){        
+    $('header img').click(function(){      
+        
         if($('.topNavigation').css('height') < '10'){
             $('.topNavigation').show()
             $('.topNavigation').animate({ height:'128' })
@@ -62,7 +71,7 @@ $( document ).ready(function() {
         switch(site){
             case 'profileSettings':                
                 $('.content_box').load('/forms/editProfile.html', function(){
-                    loadProfile()
+                    //loadProfile()
                 })
                 break
             case 'browseChannels':   
@@ -94,7 +103,7 @@ $( document ).ready(function() {
     
     $('.navigationLeftUserChannels').on('click', '.navigationChannel', function() {
         var channelId = $(this).attr('id')
-        var userId = $('#userId').val()
+        var userId = readCookie('userId')
         if(channelId == '0'){
             $('.content_box').load('/pages/browseChannels.html', function(){
                 loadChannelList()
@@ -104,7 +113,6 @@ $( document ).ready(function() {
                 loadChannelDetails(channelId, userId)
             })
         }
-        
     })
     
     
@@ -135,7 +143,7 @@ $( document ).ready(function() {
     
     $('.content_box').on('click', '.browseChannelsChannelBox', function() {
         var channelId = $(this).attr('id')
-        var userId = $('#userId').val()
+        var userId = readCookie('userId')
         $('.content_box').load('/pages/channelDetails.html', function(){
             loadChannelDetails(channelId, userId)
         })
@@ -171,9 +179,20 @@ $( document ).ready(function() {
     //
     ////////////////////////////////////////////////////////////////////////////////
     
-    $('.content_box').load('/forms/addChannel.html')
+    var root = io('/root')
+    root.on('chatCommandAddChannel', function(userId){
+        if(userId == readCookie('userId')){
+            $('.content_box').load('/forms/addChannel.html')
+        }
+    })
+    
+    
+    //$('.content_box').load('/forms/addChannel.html')
     //$('.content_box').load('/pages/todo.html')
     //$('.content_box').load('/pages/browseChannels.html')
+    $('.content_box').load('/pages/browseChannels.html', function(){
+        loadChannelList()
+    })
     /*
     $('.content_box').load('/forms/addRoom.html', function(){
         var backend = io('/backend')

@@ -10,7 +10,7 @@ var chatSpace = io('/root')
 function loadChatWindow(room){
     chatSpace.emit('joinRoom', room)
     chatSpace.emit('getRoomHistory', room)
-    $('#room').val(room)
+    createCookie('room', room, 1)
 }
 
 
@@ -31,7 +31,7 @@ $( document ).ready(function() {
             value = value.length + value.replace(/[^\n]/g, '').length
             if(value > 2){
                 var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
-                var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
+                var message = { timestamp:date, user_idfs:readCookie('userId'), room_idfs:readCookie('room'), message:$('.chatWindowInputField').val() }
 
                 chatSpace.emit('chatMessage', message)
 
@@ -53,7 +53,7 @@ $( document ).ready(function() {
         
         if($('.chatWindowInputField').val() !== ''){
             var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
-            var message = { timestamp:date, user_idfs:$('#userId').val(), room_idfs:$('#room').val(), message:$('.chatWindowInputField').val() }
+            var message = { timestamp:date, user_idfs:readCookie('userId'), room_idfs:readCookie('room'), message:$('.chatWindowInputField').val() }
 
             chatSpace.emit('chatMessage', message)
 
@@ -75,13 +75,10 @@ chatSpace.on('chatMessage', function(msg){
 
     var message = ''
     message += '<div class=\'chatWindowPost\'>'
-    if(msg.user_idfs == $('#userId').val()){
+    if(msg.user_idfs == readCookie('userId')){
         
         message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'
         message += '<div class=\'chatWindowPostMessage\'>'
-        //message += '<font style=\'font-weight:bold;\'>'
-        //message += msg.username + ' [' + msg.timestamp + ']'
-        //message += '</font><br/>'
         message += msg.message
         message += '</div>'
         message += '</div>'
@@ -109,7 +106,7 @@ chatSpace.on('chatMessage', function(msg){
     }
     message += '</div>'
 
-    if(msg.room_idfs == $('#room').val()){
+    if(msg.room_idfs == readCookie('room')){
         $('.chatWindowTable').append(message).each(function(){
             $('.chatWindowPost').show(400)
             
@@ -146,13 +143,10 @@ chatSpace.on('getRoomHistory', function(roomHistory){
         
         var message = ''
         message += '<div class=\'chatWindowPost\'>'
-        if(roomHistory.messages[i]['user_idfs'] == $('#userId').val()){
+        if(roomHistory.messages[i]['user_idfs'] == readCookie('userId')){
             
             message += '<div class=\'chatWindowPostMessageBox\' style=\'text-align:right;\'>'
             message += '<div class=\'chatWindowPostMessage\'>'
-            //message += '<font style=\'font-weight:bold;\'>'
-            //message += roomHistory.messages[i].user['username'] + ' [' + roomHistory.messages[i]['timestamp'] + ']'
-            //message += '</font><br/>'
             message += '<p style=\'margin:0px;margin-top:4px;\'>' + roomHistory.messages[i]['message'] + '</p>'
             message += '</div>'
             message += '</div>'

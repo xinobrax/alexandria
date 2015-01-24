@@ -64,6 +64,7 @@ var UserChannel = DB.Model.extend({
     tableName: 'x_user_channel',
 })
 
+    
 module.exports = {
     Query: DB.knex,
     User: User,
@@ -71,4 +72,24 @@ module.exports = {
     Episode: Episode,
     Room: Room,
     Message: Message
+}
+
+module.exports.getChannelsByLatestEpisode = function(){
+    var query= ''
+    query += 'SELECT '
+    query += '  channel_id, '
+    query += '  channels.title, '
+    query += '  channels.feed, '
+    query += '  type_idfs, '
+    query += '  filter, '
+    query += '  MAX(date) as date '
+    query += 'FROM '
+    query += '  channels '
+    query += 'LEFT JOIN '
+    query += '  episodes '
+    query += 'ON '
+    query += '  (channel_id = channel_idfs) '
+    query += 'GROUP BY '
+    query += 'channel_idfs '
+    return query
 }
