@@ -240,13 +240,41 @@ backend.on('connection', function(socket){
     })
     
     socket.on('getUserPlaylist', function (userId) {
-        /*
+        
         var query = ''
+        query += 'SELECT '
+        query += '    episodes.title, '
+        query += '    channels.title as channel, '
+        query += '    channels.channel_id, '
+        query += '    type_idfs as type, '
+        query += '    url, '
+        query += '    duration, '
+        query += '    x_user_episode.status '
+        query += 'FROM '
+        query += '    episodes '
+        query += 'LEFT JOIN '  
+        query += '    (x_user_episode) '
+        query += 'ON '
+	   query += '    (episode_id = episode_idfs '
+        query += '    AND x_user_episode.user_idfs = ' + userId + ') '
+        query += 'RIGHT JOIN '
+        query += '    (x_user_channel, channels) '
+        query += 'ON '
+        query += '    (episodes.channel_idfs = x_user_channel.channel_idfs '
+        query += '    AND x_user_channel.user_idfs = ' + userId + ' '
+        query += '    AND x_user_channel.channel_idfs = channel_id '
+        query += '    AND episodes.active = 1) '
+        query += 'WHERE '
+        query += '    episodes.title IS NOT NULL '
+        query += '    AND (status IS NULL OR status = 0) '
+        query += 'ORDER BY '
+        query += '    date DESC '
+        //console.log(query)
         new DB.Query.raw(query, [1]).then(function(userPlaylist){
             userPlaylist = JSON.stringify(userPlaylist[0])
             socket.emit('getUserPlaylist', userPlaylist)            
         })
-        */
+        
     })
     
     socket.on('addRoom', function (room) {
@@ -367,7 +395,7 @@ backend.on('connection', function(socket){
     socket.on('flagAllDone', function(channelId, userId){        
         
         // Get all Episodes from Channel
-        var query = 'SELECT episode_id FROM episodes WHERE channel_idfs = ' + channelId
+        var query = 'SELECT episode_id FROM episodes WHERE active = 1 AND channel_idfs = ' + channelId
         new DB.Query.raw(query, [1]).then(function(channelEpisodes){
             channelEpisodes = JSON.stringify(channelEpisodes[0])
             channelEpisodes = JSON.parse(channelEpisodes)
@@ -406,8 +434,6 @@ backend.on('connection', function(socket){
 ////////////////////////////////////////////////////////////////////////////////
 
 function updateFeeds(){
-    
-
     new DB.Query.raw(DB.getChannelsByLatestEpisode(), [1]).then(function(channelList){
         channelList = JSON.stringify(channelList[0])
         channelList = JSON.parse(channelList)
@@ -418,7 +444,7 @@ function updateFeeds(){
             feedParser.fetchFeeds(channel['channel_id'], channel['feed'], channel['type_idfs'], channel['filter'], channel['date'], function(err, data){
                 //if(err) console.error(err)          
             
-                var query2 = 'SELECT COUNT(episode_id) FROM episodes WHERE channel_idfs = ' + channel['channel_id']
+                var query2 = 'SELECT COUNT(episode_id) FROM episodes WHERE active = 1 AND channel_idfs = ' + channel['channel_id']
                 new DB.Query.raw(query2, [1]).then(function(count){
                     //if(err) console.error(err)
                     count = JSON.stringify(count[0])

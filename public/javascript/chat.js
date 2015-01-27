@@ -24,7 +24,7 @@ $( document ).ready(function() {
 //
 ////////////////////////////////////////////////////////////////////////////////
     
-    $('.content_box').on('keyup', '.chatWindowInputField', function(e) {
+    $('.contentBox').on('keyup', '.chatWindowInputField', function(e) {
                 
         if(e.keyCode == 13) {            
             var value = $(this).val()
@@ -49,7 +49,7 @@ $( document ).ready(function() {
 //
 ////////////////////////////////////////////////////////////////////////////////
     
-    $('.content_box').on('click', '.chatWindowSendButton', function(){
+    $('.contentBox').on('click', '.chatWindowSendButton', function(){
         
         if($('.chatWindowInputField').val() !== ''){
             var date = ("0" + new Date().getHours()).slice(-2) + ':' + ("0" + new Date().getMinutes()).slice(-2) + ':' + ("0" + new Date().getSeconds()).slice(-2)
@@ -137,8 +137,8 @@ chatSpace.on('getRoomHistory', function(roomHistory){
     
     
     roomHistory = JSON.parse(roomHistory)
-    $('.content_box').children('h1').html(roomHistory.title)
-    $('.content_box').children('#chatWindowRoomIcon').attr({ src:'images/rooms/icons/' + roomHistory.room_id + '.gif' })
+    $('.contentBox').children('h1').html(roomHistory.title)
+    $('.contentBox').children('#chatWindowRoomIcon').attr({ src:'images/rooms/icons/' + roomHistory.room_id + '.gif' })
     for(var i in roomHistory.messages){
         
         var message = ''

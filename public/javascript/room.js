@@ -66,7 +66,7 @@ $(document).ready(function() {
         })
     })
         
-    $('.content_box').on('click', 'button[name=addRoom]', function(){
+    $('.contentBox').on('click', 'button[name=addRoom]', function(){
         
         var parents = []
         $('input[name=parents]:checked').each(function(){

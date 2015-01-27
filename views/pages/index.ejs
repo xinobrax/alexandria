@@ -33,47 +33,53 @@
         </script>
     </head>
     <body>
+        <header><img src='images/header.png' /></header>
         <div class='display'>
+            
             
             <main>
                 
-                <header><img src='images/header.png' /></header>
                 
-                <div class='content_box'>&nbsp;</div>
+                <div class='contentContainer'>
+                    <div class='contentBoxOpen'>&nbsp;</div>
+                    <div class='contentBox'>&nbsp;</div>
+                </div>
+                
+                
                 
                 <div class='channels'>
+                    
+                    <div class='userLink'>
+                        <img src='images/users/avatars/<%= user.user_id %>.jpg' /> 
+                        <p class='userLinkUsername'><%= user.username %></p>
+                        <p class='userLinkEditProfile'>Edit Profile</p>
+                    </div>
 
-                    <div class='channels_parent'>Channels</div>     
+                    <div class='navigationTitle'>Channels</div>
 
-                    <br/>
                     <div class='navigationLeftUserChannels'>
                         <li id ='0' class='navigationChannel'><img src='images/icons/play.png' /><p>Browse Channels</p></li>
                     </div>
                     
                     
                     <br/>
-                    <div class='channels_parent'>Friends</div>
-                    <br/>
-                    <div class='left_space'></div>
-                    <br/>
-                    
-                    <div class='channels_parent'>Chat Rooms</div>
-                    <br/>
+                    <div class='navigationTitle'>Chat Rooms</div>
                     <li id='1' class='navigationRoom'>
                         <img src='images/icons/upload.png' />
                         <p>Alexandria</p>
-                        <p id='1' class='navigationMessageCounter'>0</p>
+                        <div id='1' class='navigationMessageCounter'>0</div>
                     </li>
                     <li id='2' class='navigationRoom'>
                         <img src='http://coinmarketcap.com/static/img/coins/16x16/bitcoin.png' />
                         <p>Bitcoin</p>
                         <p id='2' class='navigationMessageCounter'>0</p>
                     </li>
+                    
+                    <br/>
+                    <div class='navigationTitle'>Online Users</div>
 
-                    <input type='hidden' id='user' value='<%= user.username %>'>
-                    <input type='hidden' id='userId' value='<%= user.user_id %>'>
-                    <input type='hidden' id='channel' value='empty'>
-                    <input type='hidden' id='room' value='empty'>
+                    <div class='left_space'></div>
+
                 </div>
                 <div class='topNavigation'>
                     <div id='profileSettings' class='topNavigationEntry'>Profile Settings</div>
@@ -85,24 +91,10 @@
             </main> 
         
             <div class='connections'>
-                <div class='channels_parent'>Player</div> 
-                <video class='player' id='player' width='280' height='158' src='' preload='auto' controls></video>
+                <video class='player' id='player' width='320' height='180' src='' preload='auto' controls></video>
                 <br/>
-                <div class='channels_parent'>Playlists</div> 
-                    <div class='navigationPlaylistBox'>
-                        <p class='navigationPlaylistTitle'>[01] Earth bombs the Moon</p>
-                        <img class='navigationPlaylistImage' src='http://img.youtube.com/vi/npRste0fgAI/mqdefault.jpg' width='100' />
-                        <div class='navigationPlaylistChannel'>Rap News</div>
-                        <div>00:00:00</div>
-                        <div class='navigationPlaylistBottom'>&nbsp;</div>
-                    </div>
-                    <div class='navigationPlaylistBox'>
-                        <p class='navigationPlaylistTitle'>The Singularity - feat. Ray Kurzweil & Alex Jones [RAP NEWS 28] </p>
-                        <img class='navigationPlaylistImage' src='http://img.youtube.com/vi/dHVtUw5wToA/mqdefault.jpg' width='100' />
-                        <div class='navigationPlaylistChannel'>Rap News</div>
-                        <div>00:00:00</div>
-                        <div class='navigationPlaylistBottom'>&nbsp;</div>
-                    </div>           
+                <div class='navigationTitle'>Playlists</div> 
+                <div class='navigationRightPlaylistContainer'></div> 
             </div>
         </div>
         
@@ -132,6 +124,8 @@
                 <textarea type="text" class='chat_box_input'/></textarea>
             </div>
         </div>
+
+
         
     </body>
 </html>

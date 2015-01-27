@@ -9,7 +9,8 @@
 
 html{
     height: 100%;
-    font-family : Verdana, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+    
+    font-family: 'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;
 }
 
 body{
@@ -27,7 +28,7 @@ body{
 }
 
 h1{
-    font-size: 18px;
+    font-size: 16px;
     margin:0px;
     margin-bottom:8px;
     margin-left:2px;
@@ -39,7 +40,7 @@ h1:first-letter{
 }
 
 h2{
-    font-size: 16px;
+    font-size: 14px;
     margin:0px;
     margin-top:16px;
     margin-bottom:8px;
@@ -73,7 +74,7 @@ button:hover{
 }
 
 header{
-    position:absolute;
+    position:relative;
     width: 100%;
     height: 0px;
     background-image:url('images/box_bg_dark.png');
@@ -189,6 +190,35 @@ main{
 ##
 ##############################################################################*/
 
+.userLink{
+    position:relative;
+    height:44px;
+    margin-top:8px;
+    margin-bottom:24px;
+    vertical-align:top;
+    
+}
+
+.userLink img{
+    margin-left:8px;
+    margin-right:8px;
+    width:40px;
+    height:40px;
+    float:left;
+}
+
+.userLinkUsername{
+    padding:0px;
+    margin:0px;
+    font-weight:bold;
+}
+
+.userLinkEditProfile{
+    padding:0px;
+    margin:0px;
+    margin-top:2px;
+}
+
 .channels{
     position:absolute; 
     width: 0px; 
@@ -197,36 +227,35 @@ main{
     margin: 0px;
     padding: 0px;
     text-shadow: 1px 1px 1px black;
-    font-size:14px;
     display: table-cell;
     border-right: 1px solid black;
     background-image:url('images/box_bg.png');
     vertical-align:top;
 }
 
-.channels_parent{
-    height:26px;
-    padding-left:10px;
-    padding-top:12px;
-    background-color:#47484b;
+.navigationTitle{
+    padding-left:8px;
+    margin-top:12px;
+    margin-bottom:8px;
+    font-size:12px;
     font-weight:bold;
-    border-bottom: 1px solid #2a2b2d;
-    border-top: 1px solid #4f5053;
+    text-transform: uppercase;
     display:none;
+    color:#ffc438;
 }
 
 .navigationChannel{
-    height:28px;
-    color:#FFF;
+    position:relative;
+    height:20px;
+    width:100%;
     font-size:13px;
-    clear:left;
     display:none;
     list-style-type: none;
 }
 
 .navigationChannel img{
-    width:24px;
-    height:24px;
+    width:16px;
+    height:16px;
     margin-left:8px;
     margin-top: 3px;
     margin-bottom: 3px;
@@ -235,29 +264,28 @@ main{
 }
 
 .navigationChannel p{
-    margin-top:8px;
+    line-height:20px;
+    padding:0px;
+    margin-top:6px;
     margin-left:0px;
-    float:left;
 }
 
 .navigationEpisodeCounter{
     position:absolute;
+    text-align:center;
     right:4px;
-    padding-right:6px;
+    top:3px;
+    margin-top:0px;
     padding-left:6px;
-    padding-top:2px;
-    padding-bottom:2px;
-    border-radius:9px;
+    padding-right:6px;
+    border-radius:8px;
     background-color:#ffc438;
     font-weight:bold;    
     text-shadow: 0 -1px #000, 1px 0 #000, 0 1px #000, -1px 0 #000;
 }
 
 .navigationChannel:hover{
-    height:28px;
-    color:#fff;
     background-image:url('images/box_bg_orange.png');
-    font-size:13px;
     cursor:pointer;
 }
 
@@ -276,17 +304,15 @@ main{
 }
 
 .navigationRoom{
-    height:28px;
-    color:#FFF;
+    height:20px;
     font-size:13px;
-    clear:left;
     display:none;
     list-style-type: none;
 }
 
 .navigationRoom img{
-    width:24px;
-    height:24px;
+    width:16px;
+    height:16px;
     margin-left:8px;
     margin-top: 3px;
     margin-bottom: 3px;
@@ -295,16 +321,14 @@ main{
 }
 
 .navigationRoom p{
-    margin-top:8px;
+    line-height:20px;
+    padding:0px;
+    margin-top:6px;
     margin-left:0px;
-    float:left;
 }
 
 .navigationRoom:hover{
-    height:28px;
-    color:#fff;
     background-image:url('images/box_bg_orange.png');
-    font-size:13px;
     cursor:pointer;
 }
 
@@ -375,6 +399,13 @@ main{
     display:none;
 }
 
+.navigationRightPlaylistContainer{
+    position:relative;
+    display:block;
+    overflow:auto;
+    height:100%;
+}
+
 .navigationPlaylistBox{
     position:relative;
     display: none;
@@ -384,6 +415,7 @@ main{
     margin-bottom:0px;
     clear:left;
     text-shadow: 1px 1px 1px black;
+    border-bottom:1px solid #4b4b4b;
 }
 
 .navigationPlaylistBox:hover{
@@ -422,11 +454,20 @@ main{
 ##
 ##############################################################################*/
 
-.content_box{
+.contentContainer{
+    position:fixed;
+    
+    right:330px;
+    left:250px;
+    bottom:40px;
+    top:50px;
+}
+
+.contentBox{
     position:fixed;
     display:none;
-    right:290px;
-    left:290px;
+    right:330px;
+    left:250px;
     bottom:40px;
     top:50px;
     padding:10px;
@@ -489,6 +530,19 @@ main{
     background-color:rgba(255,255,255,0.3);
     border-radius: 9px;
     box-shadow: 1px 1px 1px #000;
+}
+
+/*##############################################################################
+##
+## Home
+##
+##############################################################################*/
+
+.homeNewPost{
+    
+    padding:10px;
+    text-shadow: 1px 1px 1px black;
+    background-color:rgba(255,255,255,0.3);
 }
 
 
@@ -611,39 +665,32 @@ main{
 ##
 ##############################################################################*/
 
+.browseChannelsNavigation{
+    position:relative;
+    width:150px;
+    float:left;
+    border-right:1px solid #4b4b4b;
+}
+
 .browseChannelsFilterBox{
     position:relative;
     display:block;
-    height:28px;
-    clear:left;
 }
 
 .browseChannelsFilterBox p{
-    display:table-cell;
     width:100px;
-    height:12px;
-    padding:6px;
-    padding-left:8px;   
     margin:0px;
+    margin-bottom:4px;
+    font-size:12px;
     font-weight:bold;
-    vertical-align:middle;
-    float:left;
+    text-transform: uppercase;
+    color:#ffc438;
 }
 
 .browseChannelsFilterEntry{
-    display:table-cell;
-    width:120px;
-    height:12px;
-    padding:6px;
-    padding-left:8px;
-    margin-right:6px;
-    vertical-align:middle;
-    font-weight:bold;
-    text-shadow: 0 -1px #000, 1px 0 #000, 0 1px #000, -1px 0 #000;
-    box-shadow:1px 1px 1px 1px #000;
-    background:rgba(255,255,255,0.3);
-    border-radius:9px;
-    float:left;
+    width:150px;
+    padding-top:4px;
+    padding-bottom:2px;
 }
 
 .browseChannelsFilterEntry img{
@@ -651,19 +698,20 @@ main{
 }
 
 .browseChannelsFilterEntry:hover{
-    background:#c68b01;
+    background-image:url('images/box_bg_orange.png');
     cursor:pointer;
 }
 
 .browseChannelsChannels{
     position:absolute;
     display:block;
+    left:164px;
+    top:30px;
+    bottom:6px;
+    
     padding:10px;
-    top:150px;
-    bottom:10px;
-    left:0px;
-    right:0px;
     overflow:auto;
+    float:left;
 }
 
 .browseChannelsChannels:focus{
@@ -678,7 +726,7 @@ main{
 .browseChannelsChannelBox{
     position:relative;
     display:block;
-    width:144px;
+    width:142px;
     height:150px;
     margin-top:10px;
     margin-right:10px;
@@ -691,6 +739,7 @@ main{
 }
 
 .browseChannelsChannelImage{
+    margin-bottom:2px;
     border-radius:9px;
     box-shadow:1px 1px 1px 1px #000;
 }
@@ -738,6 +787,11 @@ main{
     background:rgba(255,255,255,0.3);
     border-radius:9px;
     float:left;
+}
+
+#links > .channelDetailsInfoEntry:hover{
+    background:#ffc438;
+    cursor:pointer;
 }
 
 .channelDetailsInfoEntry img{
@@ -807,44 +861,41 @@ main{
     text-overflow: ellipsis;
 }
 
-.episode_play_now{
+.episodePlayNow{
     font-weight:bold;
     color:#ffc438;
     font-size:15px;
     width:120px;
     height:24px;
-    border-radius:4px;
     margin-bottom:2px;
 }
 
-.episode_play_now:hover{
+.episodePlayNow:hover{
     color:#fff;
 }
 
-.episode_play_later{
+.episodePlayLater{
     font-weight:bold;
     color:#ffc438;
     font-size:15px;
     width:120px;
     height:24px;
-    border-radius:4px;
     margin-bottom:2px;
 }
 
-.episode_play_later:hover{
+.episodePlayLater:hover{
     color:#fff;
 }
 
-.episode_download{
+.episodeDownload{
     font-weight:bold;
     color:#ffc438;
     font-size:15px;
     width:120px;
     height:24px;
-    border-radius:4px;
 }
 
-.episode_download:hover{
+.episodeDownload:hover{
     color:#fff;
 }
 
@@ -858,8 +909,8 @@ main{
 .chatBoxContainer{
     position:absolute;
     height:0px;
-    right:290px;
-    left:290px;
+    right:330px;
+    left:250px;
     bottom:0px;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;

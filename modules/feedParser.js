@@ -154,10 +154,9 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, date, callback){
                     }
                 }                    
                 
-                new DB.Episode(episode).save().then(function(err, newEpisode){
-                    if(err) console.error(err)
-                    console.log('Neue Episode: ' + newEpisode)
-                    console.log('Add to Playlist')
+                new DB.Episode(episode).save().then(function(newEpisode){
+                    newEpisode = JSON.stringify(newEpisode)
+                    //console.log('Neue Episode: ' + newEpisode)
                 }).catch(function(err){
                     console.error(err)
                 })
@@ -172,9 +171,9 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, date, callback){
 
 exports.getYoutubeUrl = function(ytid, callback){
     var url = 'https://www.youtube.com/watch?v=' + ytid
-    youtube.getInfo(url, function(err, info){
+    //youtube.getInfo(url, function(err, info){
     //youtube.getInfo(url, ['--max-quality=247'], function(err, info){
-    //youtube.getInfo(url, ['--format=mp4'], function(err, info){
+    youtube.getInfo(url, ['--format=mp4'], function(err, info){
         if(err) console.error(err)
         
         youtube.getFormats(url, function(err, formats) {

@@ -27,5 +27,12 @@ module.exports.formatChatMessage = function(message){
     message = message.replace('DOGE', '<img src=\'images/smilies/doge.png\' />')
     message = message.replace('WAITING', '<img src=\'images/smilies/waiting.png\' />')
     
+    message = message.replace(':?:', '<img src=\'images/smilies/questionblock.gif\' />')
+    message = message.replace('SMW1', '<img src=\'images/smilies/supermario.gif\' />')
+    message = message.replace('SMW2', '<img src=\'images/smilies/supmarioyoshi.gif\' />')
+    message = message.replace('CHRONO', '<img src=\'images/smilies/chrono.gif\' />')
+    message = message.replace('ALTTP', '<img src=\'images/smilies/alttp.gif\' />')
+    message = message.replace('KIRBY', '<img src=\'images/smilies/kirbydance.gif\' />')
+    
     return message
 }

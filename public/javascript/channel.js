@@ -38,7 +38,7 @@ function addChannel(){
 
 $( document ).ready(function() {
     
-    $('.content_box').on('click', 'button[name=fetchfeed]', function(){
+    $('.contentBox').on('click', 'button[name=fetchfeed]', function(){
         $('#1').hide()
         $('#2').hide()
         $('.loading').show()        
@@ -64,7 +64,7 @@ $( document ).ready(function() {
         }        
     })
     
-    $('.content_box').on('click', '.addChannelSourceButton', function(){
+    $('.contentBox').on('click', '.addChannelSourceButton', function(){
         var channelSource = $(this).attr('id')
         $('#type').val(channelSource)
         
@@ -110,19 +110,19 @@ backend.on('loadChannelList', function(channelList){
 
         list += '<div class=\'browseChannelsChannelBox\' id=\'' + channelList[i]['channel_id'] + '\'>'
 
-        list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['channel_id'] + '.jpg\' width=\'120\' height=\'120\' />'
+        list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['channel_id'] + '.jpg\' width=\'110\' height=\'110\' />'
         if(channelList[i]['type_idfs'] == '4' || channelList[i]['type_idfs'] == '1'){
-            list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:12px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:16px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
         }else{
-            list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:12px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:16px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
         }
         if(channelList[i]['user_idfs'] == readCookie('userId')){
-            list += '<img id=\'subscription\' src=\'images/icons/subscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:12px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+            list += '<img id=\'subscription\' src=\'images/icons/subscribed.gif\' height=\'14\' style=\'position:absolute;top:96px;right:16px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
         }else{
-            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'16\' style=\'position:absolute;top:104px;right:12px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'14\' style=\'position:absolute;top:96px;right:16px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
         }
 
-        list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'16\' style=\'position:absolute;top:104px;left:12px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
+        list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'14\' style=\'position:absolute;top:96px;left:16px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
 
         var newEpisodes = channelList[i]['feeds'] - channelList[i]['c']
         if(newEpisodes !== 0){
@@ -141,10 +141,11 @@ backend.on('loadChannelList', function(channelList){
 
 $( document ).ready(function() {
     
-    $('.content_box').on('click', '.browseChannelsFilterEntry', function(){
+    $('.contentBox').on('click', '.browseChannelsFilterEntry', function(){
         
-        $(this).parent('.browseChannelsFilterBox').children('.browseChannelsFilterEntry').css({ 'background':'rgba(255,255,255,0.3)'  })
-        $(this).css({ 'background':'#c68b01'  })
+        $(this).parent('.browseChannelsFilterBox').children('.browseChannelsFilterEntry').css({ 'background':'none'  })
+        $(this).css({ 'background-image':'url("images/box_bg_orange.png")'  })
+        //background-image:url('images/box_bg_orange.png');
         
         
         if($(this).attr('id') == 'subscription_all' || $(this).attr('id') == 'subscribed' || $(this).attr('id') == 'unsubscribed'){
@@ -164,23 +165,23 @@ $( document ).ready(function() {
                 if($(this).children('#type').attr('src') == 'images/icons/' + type + '.gif' || type == 'type_all'){
                     if($(this).children('#language').attr('src') == 'images/icons/languages/' + language + '.gif' || language == 'language_all'){
                         $(this).show('slow', function(){
-                            $('.browseChannelsChannels').getNiceScroll().resize();
+                            $('.browseChannelsChannels').getNiceScroll().resize()
                         })
 
                     }else{
                         $(this).hide('slow', function(){
-                            $('.browseChannelsChannels').getNiceScroll().resize();
+                            $('.browseChannelsChannels').getNiceScroll().resize()
                         })
 
                     }
                 }else{
                     $(this).hide('slow', function(){
-                        $('.browseChannelsChannels').getNiceScroll().resize();
+                        $('.browseChannelsChannels').getNiceScroll().resize()
                     })
                 }
             }else{
                 $(this).hide('slow', function(){
-                    $('.browseChannelsChannels').getNiceScroll().resize();
+                    $('.browseChannelsChannels').getNiceScroll().resize()
                 })
             }
         })   
@@ -258,7 +259,11 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
     for(var i in channelEpisodes){             
         list += '<div class=\'episode_info_row\' >'
         list += '<div class=\'episode_info_cell_left\' >'
-        list += '<h3>' + channelEpisodes[i]['title'] + '</h3>'
+        var status = ''
+        if(channelEpisodes[i]['status'] !== 1){
+            status = ' <font style=\'color:#00FF00;\'>(new)</font>'
+        }
+        list += '<h3>' + channelEpisodes[i]['title'] + status + '</h3>'
         var date = new Date(channelEpisodes[i]['date'])
         date = ('0' + date.getDate()).slice(-2) + '.' + date.getMonth()+1 + '.' + date.getFullYear() + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2)
         list += '<p class=\'episode_meta\'>' + date + ' | ' + channelEpisodes[i]['duration'].toString().toHHMMSS() + '</p>'
@@ -274,16 +279,16 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
         }
         list += '</div>'
         list += '<div class=\'episode_info_cell_right\' >'
-        list += '<button class=\'episode_play_now\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</button><br/>'
-        list += '<button class=\'episode_play_later\'><img src=\'images/icons/play_later.png\' height=\'14\' /> Play later</button><br/>'
-        list += '<button class=\'episode_download\' id=\'' + channelEpisodes[i]['url'] + '\' ><img src=\'images/icons/download.png\' height=\'14\' /> Download</button>'
+        list += '<button class=\'episodePlayNow\' id=\'' + channelEpisodes[i]['url'] + '\'><img src=\'images/icons/play.png\' height=\'14\' /> Play now</button><br/>'
+        list += '<button class=\'episodePlayLater\'><img src=\'images/icons/play_later.png\' height=\'14\' /> Play later</button><br/>'
+        list += '<button class=\'episodeDownload\' id=\'' + channelEpisodes[i]['url'] + '\' ><img src=\'images/icons/download.png\' height=\'14\' /> Download</button>'
         list += '</div>'
         list += '</div>'
     }  
     list += '</div>'
     list += '</div><br/><br/>'
 
-    $('.content_box').append(list).append(function(){        
+    $('.contentBox').append(list).append(function(){        
         $('.episodesList').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.6', background:'#584b2e', cursorborder:'0px'})
     })
 })
@@ -296,7 +301,7 @@ backend.on('loadChannelEpisodes', function(channelEpisodes){
 
 $( document ).ready(function() {
     
-    $('.content_box').on('click', '.subscribe', function(){
+    $('.contentBox').on('click', '.subscribe', function(){
         $(this).css({ 'border-color':'#FF0000', 'color':'#FF0000' })
         $(this).attr('class', 'unsubscribe')
         $(this).html('Unsubscribe')
@@ -317,7 +322,7 @@ $( document ).ready(function() {
         })
     })
     
-    $('.content_box').on('click', '.unsubscribe', function(){
+    $('.contentBox').on('click', '.unsubscribe', function(){
         $(this).css({ 'border-color':'#00FF00', 'color':'#00FF00' })
         $(this).attr('class', 'subscribe')
         $(this).html('Subscribe')
@@ -327,28 +332,27 @@ $( document ).ready(function() {
         })
     })
     
-    $('.content_box').on('click', '.flagAllDone', function(){
+    $('.contentBox').on('click', '.flagAllDone', function(){
         $(this).css({ 'border-color':'#000000', 'color':'#000000' })
         $(this).attr('disabled', 'disabled')
         $('#' + readCookie('channel') + '.navigationEpisodeCounter').fadeOut('slow')
         backend.emit('flagAllDone', readCookie('channel'), readCookie('userId'))
         $('.flagAllNew').css({ 'border-color':'#ffc438', 'color':'#ffc438' })
-        $('.flagAllNew').removeAttr('disabled');
+        $('.flagAllNew').removeAttr('disabled')
+        $('#newFeeds').html('0')
     })
     
-    $('.content_box').on('click', '.flagAllNew', function(){
+    $('.contentBox').on('click', '.flagAllNew', function(){
         $(this).css({ 'border-color':'#000000', 'color':'#000000' })
         $(this).attr('disabled', 'disabled')
+        $('#' + readCookie('channel') + '.navigationEpisodeCounter').html($('#feeds').html())
         $('#' + readCookie('channel') + '.navigationEpisodeCounter').fadeIn('slow')
         backend.emit('flagAllNew', readCookie('channel'), readCookie('userId'))   
         $('.flagAllDone').css({ 'border-color':'#ffc438', 'color':'#ffc438' })
-        $('.flagAllDone').removeAttr('disabled');
+        $('.flagAllDone').removeAttr('disabled')
+        $('#newFeeds').html($('#feeds').html())
     })
 })
-
-
-
-
 
 
 backend.on('getYoutubeUrl', function(yturl){       

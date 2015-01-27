@@ -29,7 +29,8 @@ $( document ).ready(function() {
                     }                    
                 }
             }else if($('input[name=command]').last().val() == 'register'){
-                $('#login_form').attr('action', '/register')                
+                $('#login_form').attr('action', '/register') 
+                /*
                 if(!$('input[name=code]').length){
                     line = '<font style=\'font-weight:bold;color:#00FF00; \'>code: </font>'
                     line += '<input type=\'text\' name=\'code\' class=\'terminal_input\' autocomplete=\'off\' /><br/>'
@@ -38,6 +39,7 @@ $( document ).ready(function() {
                         $('input[name=code]').focus()
                     })                
                 }else{                    
+                */
                     if(!$('input[name=username]').length){
                         line = '<font style=\'font-weight:bold;color:#00FF00; \'>username: </font>'
                         line += '<input type=\'text\' name=\'username\' class=\'terminal_input\' autocomplete=\'off\' /><br/>'
@@ -68,7 +70,7 @@ $( document ).ready(function() {
                             }                    
                         }                   
                     }                
-                }                                                
+                //}                                                
             }else{
                 e.preventDefault()
                 line = ''
