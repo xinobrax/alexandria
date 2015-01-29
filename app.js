@@ -12,6 +12,7 @@ var LocalStrategy = require('passport-local').Strategy
 var bodyParser = require('body-parser')
 var session = require('express-session')
 var bcrypt = require('bcrypt-nodejs')
+var beagle = require('beagle')
 var mysql      = require('mysql')
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -19,7 +20,6 @@ var connection = mysql.createConnection({
     password : '',
     database : 'alexandria'
 })
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -424,6 +424,16 @@ backend.on('connection', function(socket){
             socket.emit('getYoutubeUrl', yturl)
         })
     })
+    
+    socket.on('newPostGetUrlMeta', function(url){
+        //console.log(url)
+        beagle.scrape(url, function(err, bone){
+            if(bone){
+                socket.emit('newPostGetUrlMeta', bone.title, bone.images, bone.preview, bone.url)
+            }
+        })
+    })
+    
 })
 
 

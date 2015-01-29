@@ -4,8 +4,8 @@
 ##
 ##############################################################################*/
 
-::selection {background: #ffc438; color: #000;}
-::-moz-selection {background: #ffc438; color: #000;}
+::selection {background: #000; color: #ffc438;}
+::-moz-selection {background: #000; color: #ffc438;}
 
 html{
     height: 100%;
@@ -539,10 +539,161 @@ main{
 ##############################################################################*/
 
 .homeNewPost{
-    
     padding:10px;
     text-shadow: 1px 1px 1px black;
-    background-color:rgba(255,255,255,0.3);
+    background-color:rgba(255,255,255,0.2);
+}
+
+.homeNewPostInputBox{
+    display:table;
+    width:100%;
+}
+
+.homeNewPostTextareaBox{
+    display:table-cell;
+    width:100%;
+    margin:0px;
+    padding:4px;
+    background:#00FF00;
+    background-color:rgba(255,255,255,0.4)
+}
+
+.homeNewPostTextarea{
+    width:100%;
+    margin:0px;
+    padding:0px;
+    border:0px;
+    resize:none;
+    overflow:hidden;
+    background-color:rgba(255,255,255,0)
+}
+
+.homeNewPostTextarea:focus{
+    outline: 0;
+}
+
+.homeNewPostSendBox{
+    display:table-cell;
+    vertical-align:top;
+    width:100px;
+}
+
+.homeNewPostSend{
+    display:table-cell;
+    vertical-align:top;
+    width:100px;
+    margin:0px;
+    margin-left:10px;
+}
+
+.homeNewPostUrlMetaBox{
+    position:relative;
+    display:none;
+    height:80px;
+    padding:6px;
+    margin-top:10px;
+    border:1px solid #FFF;
+}
+
+.homeNewPostUrlMetaImage{
+    margin-right:6px;
+    height:80px;
+    width:80px;
+    float:left;
+}
+
+.homeNewPostUrlMetaBox h1{
+    font-size:14px;
+    margin-bottom:0px;
+}
+
+.homeNewPostUrlMetaBox font{
+    font-size:10px;
+    margin-bottom:0px;
+}
+
+.homeNewPostUrlMetaClose{
+    position:absolute;
+    width:10px;
+    top:0px;
+    right:0px;
+    padding:4px;
+    background:#FFF;
+}
+
+.homeNewPostUrlMetaClose:hover{
+    cursor:pointer;
+}
+
+.postContainer{
+
+}
+
+.postMainBox{
+    margin-top:20px;
+    padding:10px;
+    background-color:rgba(255,255,255,0.2)
+}
+
+.postAvatar{
+    position:relative;
+    margin-right:10px;
+    margin-bottom:10px;
+    width:40px;
+    float:left;
+}
+
+.postContainer h1{
+    font-size:14px;
+    margin-bottom:0px;
+}
+
+.postTime{
+    font-size:10px;
+    margin-bottom:0px;
+}
+
+.postContainer p{
+    clear:left;
+}
+
+.postActions{
+    color:#ffc438;
+}
+
+.postAnswersBox{
+    padding:10px;
+    background-color:rgba(255,255,255,0.3)
+}
+
+.postNewAnswersBox{
+    display:table;
+}
+
+.postNewAnswersAvatarBox{
+    display:table-cell;
+}
+
+.postNewAnswersAvatar{
+    width:32px;
+    margin-right:10px;
+}
+
+.postNewAnswerTextareaBox{
+    display:table-cell;
+    vertical-align:middle;
+    width:100%;
+    padding-right:8px;
+}
+
+.postNewAnswerTextarea{
+    width:100%;
+    height:1em;
+    padding-top:7px;
+    padding-bottom:7px;
+    resize:none;
+    overflow:hidden;
+    background-color:rgba(255,255,255,0.3)
 }
 
 
@@ -1111,7 +1262,8 @@ main{
     display:inline-block;
     padding:10px;
     border-radius:18px;
-    background-image:url('images/box_bg.png');
+    background-color:rgba(255,255,255,0.2);
+    
     box-shadow:1px 1px 1px 1px #000;
 }
 

@@ -1,5 +1,8 @@
-$( document ).ready(function() {
-        
+ 
+$( document ).ready(function() {    
+    
+    
+    //$('body').children('h1').css('color', 'red')
     //$('.contentBox').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.2', cursorborder:'0px'})
     
     backend.emit('getUserChannels', readCookie('userId'))
@@ -171,14 +174,15 @@ $( document ).ready(function() {
     })
     
     
-    //$('.contentBox').load('/pages/home.html')
+    $('.contentBox').load('/pages/home.html')
     
     //$('.contentBox').load('/pages/todo.html')
     //$('.contentBox').load('/pages/browseChannels.html')
-    
+    /*
     $('.contentBox').load('/pages/browseChannels.html', function(){
         loadChannelList()
     })
+    */
     
     /*
     $('.contentBox').load('/forms/addRoom.html', function(){
@@ -265,5 +269,5 @@ $( document ).ready(function() {
             $(this).val('')            
         }
     })
-    
 })
+

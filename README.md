@@ -1,6 +1,9 @@
-alexandria
-==========
+alexandria (alpha)
+==================
 Social Media Network
+
+## Support
+Bitcoin: 1H4J8mwdsaCyG7GknewdMws4JE7YqSNht9
 
 
 ## Todo...

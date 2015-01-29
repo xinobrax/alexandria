@@ -12,10 +12,6 @@ settingsChannel.on('getUserProfile', function(userProfile){
     $('input[name=toxid]').val(userProfile.toxid)
     $('input[name=diaspora]').val(userProfile.diaspora)
     $('input[name=bitcoin]').val(userProfile.bitcoin)
-    $('input[name=litecoin]').val(userProfile.litecoin)
-    $('input[name=dogecoin]').val(userProfile.dogecoin)
-    $('input[name=darkcoin]').val(userProfile.darkcoin)
-    $('input[name=namecoin]').val(userProfile.namecoin)
 })
 
 $( document ).ready(function() {
