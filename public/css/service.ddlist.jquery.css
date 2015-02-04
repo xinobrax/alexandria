@@ -1,0 +1,119 @@
+.ddListContainer {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+/* The 'selection' rectangle of the dropdownlist */
+.ddListContainer > a {
+  cursor: pointer; 
+  background-color:rgba(255,255,255,0.4);
+  overflow: hidden;
+  display: block;
+  padding: 4px;
+  color: #FFF;
+  font-weight: normal;
+}
+.ddListContainer > a:hover {
+  font-weight: normal;
+}
+.ddListContainer.ddListDisabled > a {
+  cursor: default; 
+  background-color:rgba(255,255,255,0.1);
+  color: #999;
+}
+
+/* The 'selection' rectangle of the dropdownlist when open */
+.ddListIsOpen > a,
+.ddListIsOpen > a:hover {
+  background-color:rgba(255,255,255,0.4);
+  color:#ffffff;
+}
+
+/* The right arrow in the 'selection' rectangle of the dropdownlist */
+.ddListArrow {
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -4px;
+  border: solid 7px transparent; 
+  border-top: solid 7px #FFF;
+}
+.ddListDisabled .ddListArrow {
+  border-top: solid 7px #999;
+}
+.ddListIsOpen .ddListArrow {
+  border: solid 7px transparent !important; 
+  border-bottom: solid 7px #ffffff !important; 
+  margin-top: -11px;
+}
+
+/* The 'options' list of the dropdownlist */
+.ddListContainer > ul {
+  display: none;
+  position: absolute;
+  z-index: 2000;
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color:rgba(0,0,0,0.9);
+  overflow: auto;
+}
+.ddListContainer > ul li { 
+  margin-bottom: 0;
+}
+.ddListContainer > ul > li:last-child > a {
+  border-bottom: none;
+}
+
+/* Any 'option' inside the 'options' list of the dropdownlist */
+.ddListContainer > ul li a {
+  padding: 4px;
+  display: block;
+  overflow: hidden;
+  text-decoration: none;
+  font-weight: normal;
+  color: #FFF;
+  cursor: pointer;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  -ms-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+.ddListContainer > ul li a:hover { 
+  background-color:rgba(255,255,255,0.5);
+  color: #FFF; 
+}
+
+/* A 'selected' option inside the 'options' list of the dropdownlist */
+.ddListOptionIsSelected { 
+  background-color:rgba(0,0,0,0.9);
+}
+
+/* Additional styling of text, img, description for 'selection' and 'option' */
+.ddListContainer:not(.ddListDisabled) > a > label,
+.ddListContainer:not(.ddListDisabled) > ul li a > label {
+  cursor: pointer;
+}
+.ddListContainer > a > label { 
+  font-weight:bold;
+}
+.ddListContainer > a > small,
+.ddListContainer > ul li a > small {
+  color:#aaa;
+  display:block;
+  overflow: hidden;
+  font-weight:normal;
+  line-height: 1.4em;
+}
+.ddListContainer > a > img,
+.ddListContainer > ul li a > img {
+  vertical-align: middle; 
+  float: left;
+  margin-right: 5px; 
+  height: 16px;
+}

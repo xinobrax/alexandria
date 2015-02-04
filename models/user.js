@@ -89,6 +89,8 @@ module.exports.getChannelsByLatestEpisode = function(){
     query += '    episodes '
     query += 'ON '
     query += '    (channel_id = channel_idfs) '
+    query += 'WHERE '
+    query += '    channels.active = 1 '
     query += 'GROUP BY '
     query += '    channel_idfs '
     return query

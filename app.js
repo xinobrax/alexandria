@@ -115,9 +115,8 @@ root.on('connection', function(socket){
         }else{
             msg.message = formatChatMessage.formatChatMessage(msg.message)
 
-
             new DB.Message(msg).save().then(function(){})
-            msg.username = socket.username
+            //msg.username = socket.username
             root.to(msg.room_idfs).emit('chatMessage', msg)
         }
     })
@@ -127,7 +126,15 @@ root.on('connection', function(socket){
         console.log(socket.username + ' joined ' + room_idfs)
     }) 
     
-    socket.on('getRoomHistory', function(room){
+    socket.on('getRoomHistory', function(room){        
+        var query = ''
+        query += 'SELECT '
+        query += '    user_id, '
+        query += '    username '
+        query += 'FROM '
+        query += '    users '
+        query += 'WHERE '
+        query += '    room_id = ' + room
         new DB.Room().where({ room_id:room }).fetch({ withRelated:['messages.user'] }).then(function(roomHistory){
             roomHistory = JSON.stringify(roomHistory)
             socket.emit('getRoomHistory', roomHistory) 
@@ -210,6 +217,91 @@ settingsChannel.on('connection', function(socket){
 backend = io.of('/backend')
 backend.on('connection', function(socket){
     
+    socket.on('getUserProfile', function (userId) {
+        var query = ''
+        query += 'SELECT '
+        query += '    user_id, '
+        query += '    username '
+        query += 'FROM '
+        query += '    users '
+        query += 'WHERE '
+        query += '    user_id = ' + userId
+        new DB.Query.raw(query, [1]).then(function(userProfile){
+            userProfile = JSON.stringify(userProfile[0][0])
+            
+            var query2 = ''
+            query2 += 'SELECT '
+            query2 += '    channel_id, '
+            query2 += '    title '
+            query2 += 'FROM '
+            query2 += '    x_user_channel, '
+            query2 += '    channels '
+            query2 += 'WHERE '
+            query2 += '    channel_id = channel_idfs '
+            query2 += '    AND user_idfs = ' + userId
+            new DB.Query.raw(query2, [1]).then(function(channelSubscriptions){
+                channelSubscriptions = JSON.stringify(channelSubscriptions[0])
+                
+                var query3 = ''
+                query3 += 'SELECT '
+                query3 += '    user_id, '
+                query3 += '    username, '
+                query3 += '    text, '
+                query3 += '    link_title, '
+                query3 += '    link_description, '
+                query3 += '    link_url, '
+                query3 += '    link_type, '
+                query3 += '    channel as isChannel, '
+                query3 += '    timestamp '
+                query3 += 'FROM '
+                query3 += '    posts '
+                query3 += 'INNER JOIN '
+                query3 += '    (users) ' 
+                query3 += 'ON '
+                query3 += '    (user_idfs = user_id '
+                query3 += '    AND user_idfs = ' + userId + ') '
+                query3 += 'ORDER BY '
+                query3 += '    timestamp DESC'
+                //console.log(query3)
+                new DB.Query.raw(query3, [1]).then(function(posts){
+                    posts = JSON.stringify(posts[0])
+                    socket.emit('getUserProfile', userProfile, channelSubscriptions, posts)
+                })
+                
+            })
+        })
+    })
+    
+    socket.on('newPost', function (post) {
+        var newPost = {
+            user_idfs:post.user_idfs, 
+            text:post.text, 
+            link_image:post.link_image, 
+            link_title:post.link_title, 
+            link_description:post.link_description, 
+            link_url:post.link_url, 
+            timestamp:post.timestamp 
+        }
+        
+        var query = ''
+        query += 'INSERT INTO posts '
+        query += '    (user_idfs, '
+        query += '    text, '
+        query += '    link_title, '
+        query += '    link_description, '
+        query += '    link_url, '
+        query += '    timestamp) '
+        query += 'VALUES '
+        query += '    (\'' + newPost.user_idfs + '\', '
+        query += '    \'' + newPost.text + '\', '
+        query += '    \'' + newPost.link_title + '\', '
+        query += '    \'' + newPost.link_description + '\', '
+        query += '    \'' + newPost.link_url + '\', '
+        query += '    \'' + newPost.timestamp + '\')'
+        new DB.Query.raw(query, [1]).then(function(newPost){
+        })
+    })
+        
     socket.on('getUserChannels', function (userId) {
         var query = ''
         query += 'SELECT '
@@ -235,8 +327,40 @@ backend.on('connection', function(socket){
         query += '    update_date desc'
         new DB.Query.raw(query, [1]).then(function(userChannels){
             userChannels = JSON.stringify(userChannels[0])
-            socket.emit('getUserChannels', userChannels)            
+            socket.emit('getUserChannels', userChannels)
         })
+    })
+    
+    socket.on('getPosts', function (userId) {
+        var query = ''
+        query += 'SELECT '
+        query += '    user_id, '
+        query += '    channel_id, '
+        query += '    username, '
+        query += '    title as channel, '
+        query += '    text, '
+        query += '    link_title, '
+        query += '    link_description, '
+        query += '    link_url, '
+        query += '    link_type, '
+        query += '    channel as isChannel, '
+        query += '    timestamp '
+        query += 'FROM '
+        query += '    posts '
+        query += 'LEFT JOIN '
+        query += '    (users) ' 
+        query += 'ON '
+        query += '    (user_idfs = user_id) '
+        query += 'LEFT JOIN '
+        query += '    (channels) '
+        query += 'ON '
+        query += '    (channel_idfs = channel_id) '
+        query += 'ORDER BY '
+        query += '    timestamp DESC'
+        new DB.Query.raw(query, [1]).then(function(posts){
+            posts = JSON.stringify(posts[0])
+            socket.emit('getPosts', posts)
+        })   
     })
     
     socket.on('getUserPlaylist', function (userId) {
@@ -326,6 +450,8 @@ backend.on('connection', function(socket){
         query += '    (episode_id = x_user_episode.episode_idfs '
         query += '    AND x_user_episode.user_idfs = ' + userId + ') '
         query += '    AND x_user_episode.status = 1 '
+        query += 'WHERE '
+        query += '    channels.active = 1 '
         query += 'GROUP BY'
         query += '    update_date desc'
         //console.log(query)

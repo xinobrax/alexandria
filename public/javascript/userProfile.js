@@ -4,7 +4,7 @@ function loadProfile(){
     settingsChannel.emit('getUserProfile', $('#userId').val())
 }
 
-settingsChannel.on('getUserProfile', function(userProfile){
+settingsChannel.on('getUserProfile', function(userProfile, posts){
     $('input[name=username]').val(userProfile.username)
     $('#avatar').attr({ src:'images/users/' + userProfile._id + '.jpg' })
     $('input[name=email]').val(userProfile.email)

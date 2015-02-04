@@ -50,8 +50,8 @@
                 <div class='channels'>
                     
                     <div class='userLink'>
-                        <img src='images/users/avatars/<%= user.user_id %>.jpg' /> 
-                        <p class='userLinkUsername'><%= user.username %></p>
+                        <img id='<%= user.user_id %>' class='userLinkAvatar' src='images/users/avatars/<%= user.user_id %>.jpg' /> 
+                        <p id='<%= user.user_id %>' class='userLinkUsername'><%= user.username %></p>
                         <p class='userLinkEditProfile'>Edit Profile</p>
                     </div>
 
@@ -64,16 +64,20 @@
                     
                     <br/>
                     <div class='navigationTitle'>Chat Rooms</div>
-                    <li id='1' class='navigationRoom'>
-                        <img src='images/icons/upload.png' />
-                        <p>Alexandria</p>
-                        <div id='1' class='navigationMessageCounter'>0</div>
-                    </li>
-                    <li id='2' class='navigationRoom'>
-                        <img src='http://coinmarketcap.com/static/img/coins/16x16/bitcoin.png' />
-                        <p>Bitcoin</p>
-                        <p id='2' class='navigationMessageCounter'>0</p>
-                    </li>
+                    <div class='navigationLeftUserRooms'>
+                        <li id='1' class='navigationRoom'>
+                            <img src='images/icons/upload.png' />
+                            <p>Alexandria</p>
+                            <div id='1' class='navigationMessageCounter'>0</div>
+                        </li>
+                        <li id='2' class='navigationRoom'>
+                            <img src='http://coinmarketcap.com/static/img/coins/16x16/bitcoin.png' />
+                            <p>Bitcoin</p>
+                            <div id='2' class='navigationMessageCounter'>0</div>
+                        </li>
+                    </div>
+                
+
                     
                     <br/>
                     <div class='navigationTitle'>Online Users</div>

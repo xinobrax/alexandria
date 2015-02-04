@@ -8,6 +8,7 @@ var DB = require('../models/user')
 var FeedParser = require('feedparser')
 var request = require('request')
 var youtube = require('youtube-dl')
+var gm = require('gm')
 var http = require('http')
 var html_strip = require('htmlstrip-native')
 
@@ -113,6 +114,7 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, date, callback){
     feedparser.on('readable', function(err){
         if(err) console.error(err)
             
+        var imageMagick = gm.subClass({ imageMagick: true })
         var item
         while (item = this.read()) {
             
@@ -130,19 +132,43 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, date, callback){
                     description = html_strip.html_strip(description, options)
                 }
                 
-                if(type == '1' || type == '2'){
+                if(type == '1' || type == '2'){                    
+                    
+                    try{
+                        var img = item['media:thumbnail'][0]['url']
+                    }catch(err) {
+                        var img = ''
+                    }
+                    
+                    try{
+                        var link = item['url'] 
+                    }catch(err) {
+                        var link = ''
+                    }
+                    
+                    try{
+                        var dateP = item['date']
+                    }catch(err) {
+                        var dateP = item['pubDate']
+                    }                    
+                        
                     var episode = {
                         title: item['title'],
                         description: description,
                         url: item['enclosures'][0]['url'],
-                        link: item['url'],
-                        date: item['date'],
+                        link: link,
+                        date: dateP,
                         duration: item['enclosures'][0]['length'],
                         channel_idfs: channelId
                     }
+                
+                    
                 }else if(type == '4'){
+                    
                     var ytid = item['link']
                     ytid = ytid.substring(32, 43)
+                    var img = 'http://img.youtube.com/vi/' + ytid + '/mqdefault.jpg'
+                    
                     var episode = {
                         title: item['title'],
                         description: description,
@@ -156,6 +182,15 @@ exports.fetchFeeds = function(channelId, feedUrl, type, filter, date, callback){
                 
                 new DB.Episode(episode).save().then(function(newEpisode){
                     newEpisode = JSON.stringify(newEpisode)
+                    
+                    console.log('ID: ' + newEpisode['episode_id'])
+                    console.log('IMG: ' + img)
+                    /*
+                    var request = http2.get(img , function(response) {
+                        imageMagick(response).resize(200, 200).write('images/episodes/.jpg', function(err, response){
+                        })              
+                    })
+                    */
                     //console.log('Neue Episode: ' + newEpisode)
                 }).catch(function(err){
                     console.error(err)
@@ -177,7 +212,7 @@ exports.getYoutubeUrl = function(ytid, callback){
         if(err) console.error(err)
         
         youtube.getFormats(url, function(err, formats) {
-            if (err) throw err
+            if (err) console.error(err)
 
                 /*
                 formats.forEach(function(format) {

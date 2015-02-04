@@ -100,6 +100,35 @@ function loadChannelList(){
 }
 
 backend.on('loadChannelList', function(channelList){    
+    
+
+    $('#subscription').ddlist({
+        width: 140,
+        onSelected: function (index, value, text) {
+            updateChannelList()
+        }
+    })
+    
+    $('#type').ddlist({
+        width: 140,
+        onSelected: function (index, value, text) {
+            updateChannelList()
+        }
+    })
+    
+    $('#language').ddlist({
+        width: 140,
+        onSelected: function (index, value, text) {
+            updateChannelList()
+        }
+    })
+    
+    $('#topic').ddlist({
+        width: 140,
+        onSelected: function (index, value, text) {
+            updateChannelList()
+        }
+    })    
 
     var list = ''
     list += '<div class=\'browseChannelsChannelRow\'>'
@@ -112,21 +141,21 @@ backend.on('loadChannelList', function(channelList){
 
         list += '<img class=\'browseChannelsChannelImage\' src=\'images/channels/' + channelList[i]['channel_id'] + '.jpg\' width=\'110\' height=\'110\' />'
         if(channelList[i]['type_idfs'] == '4' || channelList[i]['type_idfs'] == '1'){
-            list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:16px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            list += '<img id=\'type\' src=\'images/icons/video.gif\' height=\'16\' style=\'position:absolute;top:0px;left:18px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
         }else{
-            list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:16px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
+            list += '<img id=\'type\' src=\'images/icons/audio.gif\' height=\'16\' style=\'position:absolute;top:0px;left:18px;border-top-left-radius:9px;border-bottom-right-radius:9px;\' />'
         }
         if(channelList[i]['user_idfs'] == readCookie('userId')){
-            list += '<img id=\'subscription\' src=\'images/icons/subscribed.gif\' height=\'14\' style=\'position:absolute;top:96px;right:16px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+            list += '<img id=\'subscription\' src=\'images/icons/subscribed.gif\' height=\'14\' style=\'position:absolute;top:96px;right:17px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
         }else{
-            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'14\' style=\'position:absolute;top:96px;right:16px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
+            list += '<img id=\'subscription\' src=\'images/icons/unsubscribed.gif\' height=\'14\' style=\'position:absolute;top:96px;right:17px;border-bottom-right-radius:9px;border-top-left-radius:9px;\' />'
         }
 
-        list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'14\' style=\'position:absolute;top:96px;left:16px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
+        list += '<img id=\'language\' src=\'images/icons/languages/' + channelList[i]['language_idfs'] + '.gif\' height=\'14\' style=\'position:absolute;top:96px;left:18px;border-bottom-left-radius:9px;border-top-right-radius:9px;\' />'
 
         var newEpisodes = channelList[i]['feeds'] - channelList[i]['c']
         if(newEpisodes !== 0){
-            list += '<div id=\'feeds\' style=\'position:absolute;top:-6px;right:9px;background:#ffc438;border-radius:12px;border:4px solid #000;width:36px;color:#000;text-shadow:none;\'><b>' + newEpisodes + '</b></div>'
+            list += '<div id=\'feeds\' style=\'position:absolute;top:-6px;right:8px;background:#ffc438;border-radius:12px;border:4px solid #000;width:36px;color:#000;text-shadow:none;\'><b>' + newEpisodes + '</b></div>'
         }
         
         list += '<br/>' + channelList[i]['title']
@@ -135,13 +164,47 @@ backend.on('loadChannelList', function(channelList){
     list += '</div>'
 
     $('.browseChannelsChannels').append(list).each(function(){
-        $('.browseChannelsChannels').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.6', background:'#584b2e', cursorborder:'0px'})
+        $('.browseChannelsChannels').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.8', background:'none', cursorborder:'0px'})
     })
 })
 
-$( document ).ready(function() {
+
+function updateChannelList(){
+    var subscription = $('#subscription').val()
+    var type = $('#type').val()
+    var language = $('#language').val()
+
+    $('.browseChannelsChannelBox').each(function(){
+        if($(this).children('#subscription').attr('src') == 'images/icons/' + subscription + '.gif' || subscription == 'subscription_all'){
+            if($(this).children('#type').attr('src') == 'images/icons/' + type + '.gif' || type == 'type_all'){
+                if($(this).children('#language').attr('src') == 'images/icons/languages/' + language + '.gif' || language == 'language_all'){
+                    $(this).show('slow', function(){
+                        $('.browseChannelsChannels').getNiceScroll().resize()
+                    })
+
+                }else{
+                    $(this).hide('slow', function(){
+                        $('.browseChannelsChannels').getNiceScroll().resize()
+                    })
+
+                }
+            }else{
+                $(this).hide('slow', function(){
+                    $('.browseChannelsChannels').getNiceScroll().resize()
+                })
+            }
+        }else{
+            $(this).hide('slow', function(){
+                $('.browseChannelsChannels').getNiceScroll().resize()
+            })
+        }
+    }) 
+}
+
+$( document ).ready(function() {                
     
     $('.contentBox').on('click', '.browseChannelsFilterEntry', function(){
+        
         
         $(this).parent('.browseChannelsFilterBox').children('.browseChannelsFilterEntry').css({ 'background':'none'  })
         $(this).css({ 'background-image':'url("images/box_bg_orange.png")'  })
@@ -156,7 +219,8 @@ $( document ).ready(function() {
             $(this).parent('.browseChannelsFilterBox').children('.filter_language').attr('id', $(this).attr('id'))
         }
         
-        var subscription = $('.filter_subscription').attr('id')
+        //var subscription = $('.filter_subscription').attr('id')
+        var subscription = $('#subscription').val()
         var type = $('.filter_type').attr('id')
         var language = $('.filter_language').attr('id')
         
@@ -313,7 +377,7 @@ $( document ).ready(function() {
         
         var newFeeds = $('#newFeeds').html()
         if(newFeeds !== '0'){
-            channel += '<p id=\'' + readCookie('channel') + '\' class=\'navigationEpisodeCounter\'>' + newFeeds + '</p>'
+            channel += '<div id=\'' + readCookie('channel') + '\' class=\'navigationEpisodeCounter\'>' + newFeeds + '</div>'
         }
         
         channel += '</li>'

@@ -1,4 +1,8 @@
- 
+function loadUserProfile(userId){
+    backend.emit('getUserProfile', userId)
+} 
+
+
 $( document ).ready(function() {    
     
     
@@ -78,7 +82,9 @@ $( document ).ready(function() {
     //////////////////////////////////////////////////////////////////////////////// 
     
     $('header img').click(function(){      
-        $('.contentBox').load('/pages/home.html')    
+        $('.contentBox').load('/pages/home.html', function(){
+            loadPosts()
+        })  
     })       
     
     
@@ -174,7 +180,9 @@ $( document ).ready(function() {
     })
     
     
-    $('.contentBox').load('/pages/home.html')
+    $('.contentBox').load('/pages/home.html', function(){
+        loadPosts()
+    })
     
     //$('.contentBox').load('/pages/todo.html')
     //$('.contentBox').load('/pages/browseChannels.html')
@@ -196,6 +204,72 @@ $( document ).ready(function() {
     $('.contentBox').on('click', 'button[name=addChannel]', function(){
         addChannel()
     })
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    // Load User Profile
+    //
+    ////////////////////////////////////////////////////////////////////////////////    
+    
+    backend.on('getUserProfile', function(userProfile, channelSubscriptions, posts){
+        userProfile = JSON.parse(userProfile)
+        
+        $('.contentBox').load('/pages/userProfile.html', function(){
+            $('.userProfileTitle').html(userProfile.username)
+            $('.userProfileAvatar').attr({ src:'images/users/avatars/' + userProfile.user_id + '.jpg' })
+            
+            channelSubscriptions = JSON.parse(channelSubscriptions)
+            for(channel in channelSubscriptions){
+                var channelIcon = '<img src=\'images/channels/icons/' + channelSubscriptions[channel].channel_id + '.jpg\' title=\'' + channelSubscriptions[channel].title + '\' />'
+                $('.userProfileChannelIconsBox').append(channelIcon)
+            }
+
+            posts = JSON.parse(posts)
+            for(var i in posts){
+
+                var post = ''
+                post += '<div class=\'postMainBox\'>'
+                if(posts[i].isChannel){
+                    post += '<img id=\'' + posts[i].channel_id + '\' class=\'postAvatar\' src=\'images/channels/icons/' + posts[i].channel_id + '.jpg\' width=\'40\' />'
+                    post += '<h1 id=\'' + posts[i].channel_id + '\' class=\'postPoster\'>' + posts[i].channel + '</h1>'
+                }else{
+                    post += '<img id=\'' + posts[i].user_id + '\' class=\'postAvatar\' src=\'images/users/avatars/' + posts[i].user_id + '.jpg\' width=\'40\' />'
+                    post += '<h1 id=\'' + posts[i].user_id + '\' class=\'postPoster\'>' + posts[i].username + '</h1>'
+                }
+
+                post += '<p class=\'postTime\'>' + posts[i].timestamp + '</p>'
+                post += '<p class=\'postText\'>' + posts[i].text + '</p>'
+                post += '<font class=\'postActions\'>Like</font> | '
+                post += '<font class=\'postActions\'>Dislike</font> | '
+                post += '<font class=\'postActions\'>Share</font>'
+                post += '</div>'
+
+                post += '<div class=\'postAnswersBox\'>'
+                post += '<div class=\'postNewAnswersBox\'>'
+                post += '<div class=\'postNewAnswersAvatarBox\'>'
+                post += '<img class=\'postNewAnswersAvatar\' src=\'images/users/avatars/' + readCookie('userId') + '.jpg\' />'
+                post += '</div>'
+                post += '<div class=\'postNewAnswerTextareaBox\'>'
+                post += '<textarea class=\'postNewAnswerTextarea\'></textarea>'
+                post += '</div>'
+                post += '</div>'
+                post += '</div>'
+                
+                $('.userProfileRightContainer').append(post).each(function(){
+                    //$('.homeScrollContainer').niceScroll({cursorcolor:'#ffc438', cursorwidth:'10px', cursoropacitymin:'0.8', background:'none', cursorborder:'0px'})
+                })
+            }
+            
+        })
+    })
+    
+    $('.userLinkUsername').click(function(){        
+        loadUserProfile($(this).attr('id'))
+    })
+    
+    $('.userLinkAvatar').click(function(){        
+        loadUserProfile($(this).attr('id'))
+    })
 
     
     ////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +282,7 @@ $( document ).ready(function() {
     
     socket.on('setUserlist', function(userlist){              
         var list = ''
-        for(username in userlist){            
+        for(username in userlist){
             list += '<li class=\'navigationChannel\' ><img src=\'images/users/avatars/' + userlist[username].userId + '.jpg\' /><p>' + userlist[username].username + '</p></li>'  
         }   
         $('.left_space').html(list).append(function(){

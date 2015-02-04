@@ -1,44 +1,67 @@
 <h1>Browse Channels</h1>
 
 <br/>
-
 <div class='browseChannelsNavigation'>
     <div class='browseChannelsFilterBox'>
         <p id='subscription_all' class='filter_subscription'>Subscription</p>
+        <select id="subscription">
+            <option value='subscription_all' selected="selected">View all</option>
+            <option data-imagesrc='images/icons/subscribed.gif' value='subscribed'>Yes</option>
+            <option data-imagesrc='images/icons/unsubscribed.gif' value='unsubscribed'>No</option>
+        </select>
+        <!--
         <div id='subscription_all' class='browseChannelsFilterEntry' style='background-image:url("images/box_bg_orange.png");'>View All</div>
         <div id='subscribed' class='browseChannelsFilterEntry'><img src='images/icons/subscribed.gif' /> Yes</div>
         <div id='unsubscribed' class='browseChannelsFilterEntry'><img src='images/icons/unsubscribed.gif' /> No</div>
+        -->
     </div>
     
-    <br/>
     <div class='browseChannelsFilterBox'>
         <p id='type_all' class='filter_type'>Type</p>
+        <select id="type">
+            <option value='type_all' selected="selected">View all</option>
+            <option data-imagesrc='images/icons/video.gif' value='video'>Video</option>
+            <option data-imagesrc='images/icons/audio.gif' value='audio'>Audio</option>
+        </select>
+        <!--
         <div id='type_all' class='browseChannelsFilterEntry' style='background-image:url("images/box_bg_orange.png");'>View All</div>
         <div id='video' class='browseChannelsFilterEntry'><img src='images/icons/video.gif' /> Video</div>
         <div id='audio' class='browseChannelsFilterEntry'><img src='images/icons/audio.gif' /> Audio</div>
+        -->
     </div>
 
-    <br/>
     <div class='browseChannelsFilterBox'>
         <p id='language_all' class='filter_language'>Language</p>
+        <select id="language">
+            <option value='language_all' selected="selected">View all</option>
+            <option data-imagesrc='images/icons/languages/1.gif' value='1'>English</option>
+            <option data-imagesrc='images/icons/languages/2.gif' value='2'>German</option>
+        </select>        
+        <!--
         <div id='language_all' class='browseChannelsFilterEntry' style='background-image:url("images/box_bg_orange.png");'>View All</div>
         <div id='1' class='browseChannelsFilterEntry'><img src='images/icons/languages/1.gif' /> English</div>
         <div id='2' class='browseChannelsFilterEntry'><img src='images/icons/languages/2.gif' /> German</div>
+        -->
     </div>
     
-    <br/>
     <div class='browseChannelsFilterBox'>
         <p id='topic_all' class='filter_topic'>Topics</p>
+        <select id="topic">
+            <option value='language_all' selected="selected">View all</option>
+            <option value='1'>Politics & Economy</option>
+            <option value='3'>Technology</option>
+            <option value='4'>Entertainment</option>
+        </select>          
+        <!--
         <div id='topic_all' class='browseChannelsFilterEntry' style='background-image:url("images/box_bg_orange.png");'>View All</div>
         <div id='1' class='browseChannelsFilterEntry'>Politics</div>
         <div id='1' class='browseChannelsFilterEntry'>Economy</div>
         <div id='2' class='browseChannelsFilterEntry'>Technology</div>
         <div id='2' class='browseChannelsFilterEntry'>Entertainment</div>
+        -->
     </div>
     
 </div>
+<br style='clear:left;' />
 
-<!--
-
--->
 <div class='browseChannelsChannels'></div>
